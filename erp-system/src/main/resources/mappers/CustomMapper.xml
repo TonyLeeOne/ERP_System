@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.CustomMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.Custom">
+    <id column="custom_id" jdbcType="VARCHAR" property="customId" />
+    <result column="custom_name" jdbcType="VARCHAR" property="customName" />
+    <result column="custom_address" jdbcType="VARCHAR" property="customAddress" />
+    <result column="custom_code" jdbcType="VARCHAR" property="customCode" />
+    <result column="custom_tel" jdbcType="VARCHAR" property="customTel" />
+    <result column="custom_publish" jdbcType="VARCHAR" property="customPublish" />
+    <result column="custom_fullname" jdbcType="VARCHAR" property="customFullname" />
+    <result column="status" jdbcType="CHAR" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    custom_id, custom_name, custom_address, custom_code, custom_tel, custom_publish, 
+    custom_fullname, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from custom
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from custom
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.Custom">
+    insert into custom (custom_id, custom_name, custom_address, 
+      custom_code, custom_tel, custom_publish, 
+      custom_fullname, status)
+    values (#{customId,jdbcType=VARCHAR}, #{customName,jdbcType=VARCHAR}, #{customAddress,jdbcType=VARCHAR}, 
+      #{customCode,jdbcType=VARCHAR}, #{customTel,jdbcType=VARCHAR}, #{customPublish,jdbcType=VARCHAR}, 
+      #{customFullname,jdbcType=VARCHAR}, #{status,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.Custom">
+    insert into custom
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customId != null">
+        custom_id,
+      </if>
+      <if test="customName != null">
+        custom_name,
+      </if>
+      <if test="customAddress != null">
+        custom_address,
+      </if>
+      <if test="customCode != null">
+        custom_code,
+      </if>
+      <if test="customTel != null">
+        custom_tel,
+      </if>
+      <if test="customPublish != null">
+        custom_publish,
+      </if>
+      <if test="customFullname != null">
+        custom_fullname,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customId != null">
+        #{customId,jdbcType=VARCHAR},
+      </if>
+      <if test="customName != null">
+        #{customName,jdbcType=VARCHAR},
+      </if>
+      <if test="customAddress != null">
+        #{customAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="customCode != null">
+        #{customCode,jdbcType=VARCHAR},
+      </if>
+      <if test="customTel != null">
+        #{customTel,jdbcType=VARCHAR},
+      </if>
+      <if test="customPublish != null">
+        #{customPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="customFullname != null">
+        #{customFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Custom">
+    update custom
+    <set>
+      <if test="customName != null">
+        custom_name = #{customName,jdbcType=VARCHAR},
+      </if>
+      <if test="customAddress != null">
+        custom_address = #{customAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="customCode != null">
+        custom_code = #{customCode,jdbcType=VARCHAR},
+      </if>
+      <if test="customTel != null">
+        custom_tel = #{customTel,jdbcType=VARCHAR},
+      </if>
+      <if test="customPublish != null">
+        custom_publish = #{customPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="customFullname != null">
+        custom_fullname = #{customFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+    </set>
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Custom">
+    update custom
+    set custom_name = #{customName,jdbcType=VARCHAR},
+      custom_address = #{customAddress,jdbcType=VARCHAR},
+      custom_code = #{customCode,jdbcType=VARCHAR},
+      custom_tel = #{customTel,jdbcType=VARCHAR},
+      custom_publish = #{customPublish,jdbcType=VARCHAR},
+      custom_fullname = #{customFullname,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR}
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </update>
+</mapper>

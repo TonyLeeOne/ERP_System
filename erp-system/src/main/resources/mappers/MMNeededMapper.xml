@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.MMNeededMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.MMNeeded">
+    <id column="mmn_id" jdbcType="VARCHAR" property="mmnId" />
+    <result column="mmn_sn" jdbcType="VARCHAR" property="mmnSn" />
+    <result column="m_id" jdbcType="VARCHAR" property="mId" />
+    <result column="mmn_requestor" jdbcType="VARCHAR" property="mmnRequestor" />
+    <result column="mmn_apply" jdbcType="VARCHAR" property="mmnApply" />
+    <result column="mmn_date" jdbcType="VARCHAR" property="mmnDate" />
+    <result column="mmn_status" jdbcType="CHAR" property="mmnStatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.tony.erp.domain.MMNeededWithBLOBs">
+    <result column="mmn_needed" jdbcType="LONGVARCHAR" property="mmnNeeded" />
+    <result column="mmn_get" jdbcType="LONGVARCHAR" property="mmnGet" />
+    <result column="mmn_consume" jdbcType="LONGVARCHAR" property="mmnConsume" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mmn_id, mmn_sn, m_id, mmn_requestor, mmn_apply, mmn_date, mmn_status
+  </sql>
+  <sql id="Blob_Column_List">
+    mmn_needed, mmn_get, mmn_consume
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from manufacture_material_needed
+    where mmn_id = #{mmnId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from manufacture_material_needed
+    where mmn_id = #{mmnId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.MMNeededWithBLOBs">
+    insert into manufacture_material_needed (mmn_id, mmn_sn, m_id, 
+      mmn_requestor, mmn_apply, mmn_date, 
+      mmn_status, mmn_needed, mmn_get, 
+      mmn_consume)
+    values (#{mmnId,jdbcType=VARCHAR}, #{mmnSn,jdbcType=VARCHAR}, #{mId,jdbcType=VARCHAR}, 
+      #{mmnRequestor,jdbcType=VARCHAR}, #{mmnApply,jdbcType=VARCHAR}, #{mmnDate,jdbcType=VARCHAR}, 
+      #{mmnStatus,jdbcType=CHAR}, #{mmnNeeded,jdbcType=LONGVARCHAR}, #{mmnGet,jdbcType=LONGVARCHAR}, 
+      #{mmnConsume,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.MMNeededWithBLOBs">
+    insert into manufacture_material_needed
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mmnId != null">
+        mmn_id,
+      </if>
+      <if test="mmnSn != null">
+        mmn_sn,
+      </if>
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="mmnRequestor != null">
+        mmn_requestor,
+      </if>
+      <if test="mmnApply != null">
+        mmn_apply,
+      </if>
+      <if test="mmnDate != null">
+        mmn_date,
+      </if>
+      <if test="mmnStatus != null">
+        mmn_status,
+      </if>
+      <if test="mmnNeeded != null">
+        mmn_needed,
+      </if>
+      <if test="mmnGet != null">
+        mmn_get,
+      </if>
+      <if test="mmnConsume != null">
+        mmn_consume,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mmnId != null">
+        #{mmnId,jdbcType=VARCHAR},
+      </if>
+      <if test="mmnSn != null">
+        #{mmnSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mId != null">
+        #{mId,jdbcType=VARCHAR},
+      </if>
+      <if test="mmnRequestor != null">
+        #{mmnRequestor,jdbcType=VARCHAR},
+      </if>
+      <if test="mmnApply != null">
+        #{mmnApply,jdbcType=VARCHAR},
+      </if>
+      <if test="mmnDate != null">
+        #{mmnDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mmnStatus != null">
+        #{mmnStatus,jdbcType=CHAR},
+      </if>
+      <if test="mmnNeeded != null">
+        #{mmnNeeded,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mmnGet != null">
+        #{mmnGet,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mmnConsume != null">
+        #{mmnConsume,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.MMNeededWithBLOBs">
+    update manufacture_material_needed
+    <set>
+      <if test="mmnSn != null">
+        mmn_sn = #{mmnSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mId != null">
+        m_id = #{mId,jdbcType=VARCHAR},
+      </if>
+      <if test="mmnRequestor != null">
+        mmn_requestor = #{mmnRequestor,jdbcType=VARCHAR},
+      </if>
+      <if test="mmnApply != null">
+        mmn_apply = #{mmnApply,jdbcType=VARCHAR},
+      </if>
+      <if test="mmnDate != null">
+        mmn_date = #{mmnDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mmnStatus != null">
+        mmn_status = #{mmnStatus,jdbcType=CHAR},
+      </if>
+      <if test="mmnNeeded != null">
+        mmn_needed = #{mmnNeeded,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mmnGet != null">
+        mmn_get = #{mmnGet,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mmnConsume != null">
+        mmn_consume = #{mmnConsume,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where mmn_id = #{mmnId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tony.erp.domain.MMNeededWithBLOBs">
+    update manufacture_material_needed
+    set mmn_sn = #{mmnSn,jdbcType=VARCHAR},
+      m_id = #{mId,jdbcType=VARCHAR},
+      mmn_requestor = #{mmnRequestor,jdbcType=VARCHAR},
+      mmn_apply = #{mmnApply,jdbcType=VARCHAR},
+      mmn_date = #{mmnDate,jdbcType=VARCHAR},
+      mmn_status = #{mmnStatus,jdbcType=CHAR},
+      mmn_needed = #{mmnNeeded,jdbcType=LONGVARCHAR},
+      mmn_get = #{mmnGet,jdbcType=LONGVARCHAR},
+      mmn_consume = #{mmnConsume,jdbcType=LONGVARCHAR}
+    where mmn_id = #{mmnId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.MMNeeded">
+    update manufacture_material_needed
+    set mmn_sn = #{mmnSn,jdbcType=VARCHAR},
+      m_id = #{mId,jdbcType=VARCHAR},
+      mmn_requestor = #{mmnRequestor,jdbcType=VARCHAR},
+      mmn_apply = #{mmnApply,jdbcType=VARCHAR},
+      mmn_date = #{mmnDate,jdbcType=VARCHAR},
+      mmn_status = #{mmnStatus,jdbcType=CHAR}
+    where mmn_id = #{mmnId,jdbcType=VARCHAR}
+  </update>
+</mapper>

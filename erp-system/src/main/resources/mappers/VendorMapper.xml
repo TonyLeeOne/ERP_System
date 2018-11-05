@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.VendorMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.Vendor">
+    <id column="v_id" jdbcType="VARCHAR" property="vId" />
+    <result column="v_name" jdbcType="VARCHAR" property="vName" />
+    <result column="v_address" jdbcType="VARCHAR" property="vAddress" />
+    <result column="v_tel" jdbcType="VARCHAR" property="vTel" />
+    <result column="v_publish" jdbcType="VARCHAR" property="vPublish" />
+    <result column="v_fullname" jdbcType="VARCHAR" property="vFullname" />
+    <result column="v_status" jdbcType="CHAR" property="vStatus" />
+    <result column="v_note" jdbcType="VARCHAR" property="vNote" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    v_id, v_name, v_address, v_tel, v_publish, v_fullname, v_status, v_note
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vendor
+    where v_id = #{vId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from vendor
+    where v_id = #{vId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.Vendor">
+    insert into vendor (v_id, v_name, v_address, 
+      v_tel, v_publish, v_fullname, 
+      v_status, v_note)
+    values (#{vId,jdbcType=VARCHAR}, #{vName,jdbcType=VARCHAR}, #{vAddress,jdbcType=VARCHAR}, 
+      #{vTel,jdbcType=VARCHAR}, #{vPublish,jdbcType=VARCHAR}, #{vFullname,jdbcType=VARCHAR}, 
+      #{vStatus,jdbcType=CHAR}, #{vNote,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.Vendor">
+    insert into vendor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="vId != null">
+        v_id,
+      </if>
+      <if test="vName != null">
+        v_name,
+      </if>
+      <if test="vAddress != null">
+        v_address,
+      </if>
+      <if test="vTel != null">
+        v_tel,
+      </if>
+      <if test="vPublish != null">
+        v_publish,
+      </if>
+      <if test="vFullname != null">
+        v_fullname,
+      </if>
+      <if test="vStatus != null">
+        v_status,
+      </if>
+      <if test="vNote != null">
+        v_note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="vId != null">
+        #{vId,jdbcType=VARCHAR},
+      </if>
+      <if test="vName != null">
+        #{vName,jdbcType=VARCHAR},
+      </if>
+      <if test="vAddress != null">
+        #{vAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="vTel != null">
+        #{vTel,jdbcType=VARCHAR},
+      </if>
+      <if test="vPublish != null">
+        #{vPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="vFullname != null">
+        #{vFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="vStatus != null">
+        #{vStatus,jdbcType=CHAR},
+      </if>
+      <if test="vNote != null">
+        #{vNote,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Vendor">
+    update vendor
+    <set>
+      <if test="vName != null">
+        v_name = #{vName,jdbcType=VARCHAR},
+      </if>
+      <if test="vAddress != null">
+        v_address = #{vAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="vTel != null">
+        v_tel = #{vTel,jdbcType=VARCHAR},
+      </if>
+      <if test="vPublish != null">
+        v_publish = #{vPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="vFullname != null">
+        v_fullname = #{vFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="vStatus != null">
+        v_status = #{vStatus,jdbcType=CHAR},
+      </if>
+      <if test="vNote != null">
+        v_note = #{vNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where v_id = #{vId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Vendor">
+    update vendor
+    set v_name = #{vName,jdbcType=VARCHAR},
+      v_address = #{vAddress,jdbcType=VARCHAR},
+      v_tel = #{vTel,jdbcType=VARCHAR},
+      v_publish = #{vPublish,jdbcType=VARCHAR},
+      v_fullname = #{vFullname,jdbcType=VARCHAR},
+      v_status = #{vStatus,jdbcType=CHAR},
+      v_note = #{vNote,jdbcType=VARCHAR}
+    where v_id = #{vId,jdbcType=VARCHAR}
+  </update>
+</mapper>

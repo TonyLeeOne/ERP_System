@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.DepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.Department">
+    <id column="did" jdbcType="VARCHAR" property="did" />
+    <result column="dname" jdbcType="VARCHAR" property="dname" />
+    <result column="dmamager" jdbcType="VARCHAR" property="dmamager" />
+    <result column="duty" jdbcType="VARCHAR" property="duty" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    did, dname, dmamager, duty
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from department
+    where did = #{did,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from department
+    where did = #{did,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.Department">
+    insert into department (did, dname, dmamager, 
+      duty)
+    values (#{did,jdbcType=VARCHAR}, #{dname,jdbcType=VARCHAR}, #{dmamager,jdbcType=VARCHAR}, 
+      #{duty,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.Department">
+    insert into department
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="did != null">
+        did,
+      </if>
+      <if test="dname != null">
+        dname,
+      </if>
+      <if test="dmamager != null">
+        dmamager,
+      </if>
+      <if test="duty != null">
+        duty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="did != null">
+        #{did,jdbcType=VARCHAR},
+      </if>
+      <if test="dname != null">
+        #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="dmamager != null">
+        #{dmamager,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null">
+        #{duty,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Department">
+    update department
+    <set>
+      <if test="dname != null">
+        dname = #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="dmamager != null">
+        dmamager = #{dmamager,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null">
+        duty = #{duty,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where did = #{did,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Department">
+    update department
+    set dname = #{dname,jdbcType=VARCHAR},
+      dmamager = #{dmamager,jdbcType=VARCHAR},
+      duty = #{duty,jdbcType=VARCHAR}
+    where did = #{did,jdbcType=VARCHAR}
+  </update>
+</mapper>

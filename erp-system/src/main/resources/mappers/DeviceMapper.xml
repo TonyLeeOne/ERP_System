@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.DeviceMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.Device">
+    <id column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+    <result column="device_status" jdbcType="CHAR" property="deviceStatus" />
+    <result column="device_pur_date" jdbcType="VARCHAR" property="devicePurDate" />
+    <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+    <result column="device_vendor" jdbcType="VARCHAR" property="deviceVendor" />
+    <result column="device_vendor_tel" jdbcType="VARCHAR" property="deviceVendorTel" />
+    <result column="device_used_period" jdbcType="VARCHAR" property="deviceUsedPeriod" />
+    <result column="device_note" jdbcType="VARCHAR" property="deviceNote" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.tony.erp.domain.Device">
+    <result column="device_price" jdbcType="LONGVARCHAR" property="devicePrice" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    device_id, device_name, device_status, device_pur_date, device_code, device_vendor, 
+    device_vendor_tel, device_used_period, device_note
+  </sql>
+  <sql id="Blob_Column_List">
+    device_price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from device
+    where device_id = #{deviceId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from device
+    where device_id = #{deviceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.Device">
+    insert into device (device_id, device_name, device_status, 
+      device_pur_date, device_code, device_vendor, 
+      device_vendor_tel, device_used_period, device_note, 
+      device_price)
+    values (#{deviceId,jdbcType=VARCHAR}, #{deviceName,jdbcType=VARCHAR}, #{deviceStatus,jdbcType=CHAR}, 
+      #{devicePurDate,jdbcType=VARCHAR}, #{deviceCode,jdbcType=VARCHAR}, #{deviceVendor,jdbcType=VARCHAR}, 
+      #{deviceVendorTel,jdbcType=VARCHAR}, #{deviceUsedPeriod,jdbcType=VARCHAR}, #{deviceNote,jdbcType=VARCHAR}, 
+      #{devicePrice,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.Device">
+    insert into device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="deviceName != null">
+        device_name,
+      </if>
+      <if test="deviceStatus != null">
+        device_status,
+      </if>
+      <if test="devicePurDate != null">
+        device_pur_date,
+      </if>
+      <if test="deviceCode != null">
+        device_code,
+      </if>
+      <if test="deviceVendor != null">
+        device_vendor,
+      </if>
+      <if test="deviceVendorTel != null">
+        device_vendor_tel,
+      </if>
+      <if test="deviceUsedPeriod != null">
+        device_used_period,
+      </if>
+      <if test="deviceNote != null">
+        device_note,
+      </if>
+      <if test="devicePrice != null">
+        device_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null">
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceStatus != null">
+        #{deviceStatus,jdbcType=CHAR},
+      </if>
+      <if test="devicePurDate != null">
+        #{devicePurDate,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceCode != null">
+        #{deviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceVendor != null">
+        #{deviceVendor,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceVendorTel != null">
+        #{deviceVendorTel,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceUsedPeriod != null">
+        #{deviceUsedPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceNote != null">
+        #{deviceNote,jdbcType=VARCHAR},
+      </if>
+      <if test="devicePrice != null">
+        #{devicePrice,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Device">
+    update device
+    <set>
+      <if test="deviceName != null">
+        device_name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceStatus != null">
+        device_status = #{deviceStatus,jdbcType=CHAR},
+      </if>
+      <if test="devicePurDate != null">
+        device_pur_date = #{devicePurDate,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceCode != null">
+        device_code = #{deviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceVendor != null">
+        device_vendor = #{deviceVendor,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceVendorTel != null">
+        device_vendor_tel = #{deviceVendorTel,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceUsedPeriod != null">
+        device_used_period = #{deviceUsedPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceNote != null">
+        device_note = #{deviceNote,jdbcType=VARCHAR},
+      </if>
+      <if test="devicePrice != null">
+        device_price = #{devicePrice,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where device_id = #{deviceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tony.erp.domain.Device">
+    update device
+    set device_name = #{deviceName,jdbcType=VARCHAR},
+      device_status = #{deviceStatus,jdbcType=CHAR},
+      device_pur_date = #{devicePurDate,jdbcType=VARCHAR},
+      device_code = #{deviceCode,jdbcType=VARCHAR},
+      device_vendor = #{deviceVendor,jdbcType=VARCHAR},
+      device_vendor_tel = #{deviceVendorTel,jdbcType=VARCHAR},
+      device_used_period = #{deviceUsedPeriod,jdbcType=VARCHAR},
+      device_note = #{deviceNote,jdbcType=VARCHAR},
+      device_price = #{devicePrice,jdbcType=LONGVARCHAR}
+    where device_id = #{deviceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Device">
+    update device
+    set device_name = #{deviceName,jdbcType=VARCHAR},
+      device_status = #{deviceStatus,jdbcType=CHAR},
+      device_pur_date = #{devicePurDate,jdbcType=VARCHAR},
+      device_code = #{deviceCode,jdbcType=VARCHAR},
+      device_vendor = #{deviceVendor,jdbcType=VARCHAR},
+      device_vendor_tel = #{deviceVendorTel,jdbcType=VARCHAR},
+      device_used_period = #{deviceUsedPeriod,jdbcType=VARCHAR},
+      device_note = #{deviceNote,jdbcType=VARCHAR}
+    where device_id = #{deviceId,jdbcType=VARCHAR}
+  </update>
+</mapper>

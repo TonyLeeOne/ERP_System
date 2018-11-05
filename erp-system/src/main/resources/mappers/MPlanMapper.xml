@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.MPlanMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.MPlan">
+    <id column="m_id" jdbcType="VARCHAR" property="mId" />
+    <result column="m_sn" jdbcType="VARCHAR" property="mSn" />
+    <result column="m_pro" jdbcType="VARCHAR" property="mPro" />
+    <result column="m_start_date" jdbcType="VARCHAR" property="mStartDate" />
+    <result column="m_end_date" jdbcType="VARCHAR" property="mEndDate" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.tony.erp.domain.MPlan">
+    <result column="m_count" jdbcType="LONGVARCHAR" property="mCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    m_id, m_sn, m_pro, m_start_date, m_end_date, order_id
+  </sql>
+  <sql id="Blob_Column_List">
+    m_count
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from manufacture_plan
+    where m_id = #{mId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from manufacture_plan
+    where m_id = #{mId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.MPlan">
+    insert into manufacture_plan (m_id, m_sn, m_pro, 
+      m_start_date, m_end_date, order_id, 
+      m_count)
+    values (#{mId,jdbcType=VARCHAR}, #{mSn,jdbcType=VARCHAR}, #{mPro,jdbcType=VARCHAR}, 
+      #{mStartDate,jdbcType=VARCHAR}, #{mEndDate,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{mCount,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.MPlan">
+    insert into manufacture_plan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="mSn != null">
+        m_sn,
+      </if>
+      <if test="mPro != null">
+        m_pro,
+      </if>
+      <if test="mStartDate != null">
+        m_start_date,
+      </if>
+      <if test="mEndDate != null">
+        m_end_date,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="mCount != null">
+        m_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=VARCHAR},
+      </if>
+      <if test="mSn != null">
+        #{mSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mPro != null">
+        #{mPro,jdbcType=VARCHAR},
+      </if>
+      <if test="mStartDate != null">
+        #{mStartDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mEndDate != null">
+        #{mEndDate,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="mCount != null">
+        #{mCount,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.MPlan">
+    update manufacture_plan
+    <set>
+      <if test="mSn != null">
+        m_sn = #{mSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mPro != null">
+        m_pro = #{mPro,jdbcType=VARCHAR},
+      </if>
+      <if test="mStartDate != null">
+        m_start_date = #{mStartDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mEndDate != null">
+        m_end_date = #{mEndDate,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="mCount != null">
+        m_count = #{mCount,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where m_id = #{mId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tony.erp.domain.MPlan">
+    update manufacture_plan
+    set m_sn = #{mSn,jdbcType=VARCHAR},
+      m_pro = #{mPro,jdbcType=VARCHAR},
+      m_start_date = #{mStartDate,jdbcType=VARCHAR},
+      m_end_date = #{mEndDate,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      m_count = #{mCount,jdbcType=LONGVARCHAR}
+    where m_id = #{mId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.MPlan">
+    update manufacture_plan
+    set m_sn = #{mSn,jdbcType=VARCHAR},
+      m_pro = #{mPro,jdbcType=VARCHAR},
+      m_start_date = #{mStartDate,jdbcType=VARCHAR},
+      m_end_date = #{mEndDate,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR}
+    where m_id = #{mId,jdbcType=VARCHAR}
+  </update>
+</mapper>

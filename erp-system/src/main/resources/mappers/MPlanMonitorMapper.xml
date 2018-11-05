@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.MPlanMonitorMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.MPlanMonitor">
+    <id column="mpm_id" jdbcType="VARCHAR" property="mpmId" />
+    <result column="mpm_sn" jdbcType="VARCHAR" property="mpmSn" />
+    <result column="m_sn" jdbcType="VARCHAR" property="mSn" />
+    <result column="mpm_start_date" jdbcType="VARCHAR" property="mpmStartDate" />
+    <result column="mpm_end_date" jdbcType="VARCHAR" property="mpmEndDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.tony.erp.domain.MPlanMonitorWithBLOBs">
+    <result column="mpm_count" jdbcType="LONGVARCHAR" property="mpmCount" />
+    <result column="mpm_wait_count" jdbcType="LONGVARCHAR" property="mpmWaitCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mpm_id, mpm_sn, m_sn, mpm_start_date, mpm_end_date
+  </sql>
+  <sql id="Blob_Column_List">
+    mpm_count, mpm_wait_count
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from manufacture_plan_monitor
+    where mpm_id = #{mpmId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from manufacture_plan_monitor
+    where mpm_id = #{mpmId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.MPlanMonitorWithBLOBs">
+    insert into manufacture_plan_monitor (mpm_id, mpm_sn, m_sn, 
+      mpm_start_date, mpm_end_date, mpm_count, 
+      mpm_wait_count)
+    values (#{mpmId,jdbcType=VARCHAR}, #{mpmSn,jdbcType=VARCHAR}, #{mSn,jdbcType=VARCHAR}, 
+      #{mpmStartDate,jdbcType=VARCHAR}, #{mpmEndDate,jdbcType=VARCHAR}, #{mpmCount,jdbcType=LONGVARCHAR}, 
+      #{mpmWaitCount,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.MPlanMonitorWithBLOBs">
+    insert into manufacture_plan_monitor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mpmId != null">
+        mpm_id,
+      </if>
+      <if test="mpmSn != null">
+        mpm_sn,
+      </if>
+      <if test="mSn != null">
+        m_sn,
+      </if>
+      <if test="mpmStartDate != null">
+        mpm_start_date,
+      </if>
+      <if test="mpmEndDate != null">
+        mpm_end_date,
+      </if>
+      <if test="mpmCount != null">
+        mpm_count,
+      </if>
+      <if test="mpmWaitCount != null">
+        mpm_wait_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mpmId != null">
+        #{mpmId,jdbcType=VARCHAR},
+      </if>
+      <if test="mpmSn != null">
+        #{mpmSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mSn != null">
+        #{mSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mpmStartDate != null">
+        #{mpmStartDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mpmEndDate != null">
+        #{mpmEndDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mpmCount != null">
+        #{mpmCount,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mpmWaitCount != null">
+        #{mpmWaitCount,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.MPlanMonitorWithBLOBs">
+    update manufacture_plan_monitor
+    <set>
+      <if test="mpmSn != null">
+        mpm_sn = #{mpmSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mSn != null">
+        m_sn = #{mSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mpmStartDate != null">
+        mpm_start_date = #{mpmStartDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mpmEndDate != null">
+        mpm_end_date = #{mpmEndDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mpmCount != null">
+        mpm_count = #{mpmCount,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mpmWaitCount != null">
+        mpm_wait_count = #{mpmWaitCount,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where mpm_id = #{mpmId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tony.erp.domain.MPlanMonitorWithBLOBs">
+    update manufacture_plan_monitor
+    set mpm_sn = #{mpmSn,jdbcType=VARCHAR},
+      m_sn = #{mSn,jdbcType=VARCHAR},
+      mpm_start_date = #{mpmStartDate,jdbcType=VARCHAR},
+      mpm_end_date = #{mpmEndDate,jdbcType=VARCHAR},
+      mpm_count = #{mpmCount,jdbcType=LONGVARCHAR},
+      mpm_wait_count = #{mpmWaitCount,jdbcType=LONGVARCHAR}
+    where mpm_id = #{mpmId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.MPlanMonitor">
+    update manufacture_plan_monitor
+    set mpm_sn = #{mpmSn,jdbcType=VARCHAR},
+      m_sn = #{mSn,jdbcType=VARCHAR},
+      mpm_start_date = #{mpmStartDate,jdbcType=VARCHAR},
+      mpm_end_date = #{mpmEndDate,jdbcType=VARCHAR}
+    where mpm_id = #{mpmId,jdbcType=VARCHAR}
+  </update>
+</mapper>
