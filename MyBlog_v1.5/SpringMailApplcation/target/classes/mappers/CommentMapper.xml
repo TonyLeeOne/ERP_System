@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.blog.dao.CommentMapper">
+    <resultMap id="BaseResultMap" type="com.tony.blog.entity.Comment">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="bid" jdbcType="VARCHAR" property="bid"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="tid" jdbcType="VARCHAR" property="tid"/>
+        <result column="uid" jdbcType="VARCHAR" property="uid"/>
+        <result column="ctime" jdbcType="VARCHAR" property="ctime"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="ouid" jdbcType="VARCHAR" property="ouid"/>
+        <association property="user" javaType="com.tony.blog.entity.User">
+            <id column="uid" jdbcType="VARCHAR" property="uid"/>
+            <result column="username" jdbcType="VARCHAR" property="username"/>
+            <result column="password" jdbcType="VARCHAR" property="password"/>
+            <result column="level" jdbcType="INTEGER" property="level"/>
+        </association>
+        <association property="profile" javaType="com.tony.blog.entity.Profile">
+            <id column="id" jdbcType="VARCHAR" property="id"/>
+            <result column="uid" jdbcType="VARCHAR" property="uid"/>
+            <result column="img" jdbcType="VARCHAR" property="img"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, bid, content, tid, uid, ctime
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comment
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from comment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.tony.blog.entity.Comment">
+    insert into comment (id, bid, content, 
+      tid, uid, ctime)
+    values (#{id,jdbcType=VARCHAR}, #{bid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+      #{tid,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{ctime,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.tony.blog.entity.Comment">
+        insert into comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="bid != null">
+                bid,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="tid != null">
+                tid,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="ctime != null">
+                ctime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="bid != null">
+                #{bid,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="tid != null">
+                #{tid,jdbcType=VARCHAR},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=VARCHAR},
+            </if>
+            <if test="ctime != null">
+                #{ctime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.blog.entity.Comment">
+        update comment
+        <set>
+            <if test="bid != null">
+                bid = #{bid,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="tid != null">
+                tid = #{tid,jdbcType=VARCHAR},
+            </if>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=VARCHAR},
+            </if>
+            <if test="ctime != null">
+                ctime = #{ctime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="ouid != null">
+                ouid = #{ouid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.blog.entity.Comment">
+    update comment
+    set bid = #{bid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      tid = #{tid,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=VARCHAR},
+      status= #{status,jdbcType=CHAR},
+      ouid= #{ouid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <select id="find" parameterType="map" resultMap="BaseResultMap">
+        select
+        c.*,u.*
+        from comment c inner join user u
+        on
+        c.uid=u.uid
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="bid != null">
+                c.bid=#{bid}
+            </if>
+        </trim>
+    </select>
+
+    <select id="findByTid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        c.*,u.username,p.img,p.uid
+        from comment c
+        inner join user u on
+        c.uid=u.uid
+        inner join profile p on
+        c.uid=p.uid
+        where c.tid=#{tid} order by c.ctime DESC
+    </select>
+
+    <delete id="deleteByTid" parameterType="java.lang.String">
+        delete from
+        comment
+        where
+        tid=#{tid,jdbcType=VARCHAR}
+    </delete>
+</mapper>

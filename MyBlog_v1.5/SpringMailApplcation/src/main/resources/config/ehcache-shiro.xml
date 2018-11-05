@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ehcache names="es">
+    <diskStore path="java.io.tmpdir"/>
+
+    <!--
+    maxElementsInMemory:缓存最大数目
+    eternal:对象是否永久有效
+    overflowToDisk:系统宕机时是否保存到硬盘
+    timeToLiveSenonds：对象失效前的允许存活时间
+    clearOnFlush:内存数量最大时是否清除
+    Ehcache的三种策略：
+    FIFO,先进先出
+    LFU,LRU
+      diskExpiryThreadternalSeconds="120"
+
+      timeToLiveSeconds:x,缓存自创建起至失效的时间间隔x
+      timeToIdleSeconds:y,缓存自创建,最后一次访问至失效时间间隔y
+
+      如果两者并存，取最小值
+      计算原则：创建完没有访问，则是按照x统计，若有访问，按照最后一次+y，存活时间不超过y
+    -->
+
+    <defaultCache
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="120"
+        timeToLiveSeconds="120"
+        overflowToDisk="false"
+        diskPersistent="false"
+      />
+
+    <!--登录记录缓存10分钟，timeToLiveSeconds 最大活跃时间  timeToIdleSeconds最后一次访问到失效时间-->
+    <cache name="passwordRetryCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToLiveSeconds="600"
+           timeToIdleSeconds="600"
+           overflowToDisk="false"
+           statistics="true">
+
+    </cache>
+</ehcache>

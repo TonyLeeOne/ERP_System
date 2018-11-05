@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.blog.dao.UserAndRoleMapper">
+  <resultMap id="BaseResultMap" type="com.tony.blog.entity.UserAndRole">
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="rid" jdbcType="INTEGER" property="rid" />
+  </resultMap>
+  <insert id="insert" parameterType="com.tony.blog.entity.UserAndRole">
+    insert into user_role (uid, rid)
+    values (#{uid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.blog.entity.UserAndRole">
+    insert into user_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="rid != null">
+        rid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="rid != null">
+        #{rid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.tony.blog.entity.UserAndRole">
+    update user_role set rid=#{rid,jdbcType=VARCHAR} where uid=#{uid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="findByRid" parameterType="java.lang.String" resultType="java.lang.Integer">
+     select count(1) from user_role where rid=#{rid,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

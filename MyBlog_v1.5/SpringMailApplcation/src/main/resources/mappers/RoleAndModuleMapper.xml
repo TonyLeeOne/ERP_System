@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.blog.dao.RoleAndModuleMapper">
+  <resultMap id="BaseResultMap" type="com.tony.blog.entity.RoleAndModule">
+    <result column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="mid" jdbcType="INTEGER" property="mid" />
+  </resultMap>
+  <insert id="insert" parameterType="java.util.List">
+    insert into role_module (rid, mid)
+    values
+    <foreach collection="list" item="rm" separator="," index="index">
+      (#{rm.rid,jdbcType=VARCHAR},#{rm.mid,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.blog.entity.RoleAndModule">
+    insert into role_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
+      <if test="mid != null">
+        mid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        #{rid,jdbcType=INTEGER},
+      </if>
+      <if test="mid != null">
+        #{mid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="findByRid" parameterType="java.lang.String" resultType="java.lang.String">
+    select mid from role_module where rid=#{rid,jdbcType=VARCHAR}
+  </select>
+  <delete id="delete" parameterType="com.tony.blog.entity.RoleAndModule">
+    delete  from role_module
+    where
+    <if  test="rid!=null">
+      rid=#{rid,jdbcType=VARCHAR}
+    </if>
+    <if test="mid!=null">
+      and mid=#{mid,jdbcType=VARCHAR}
+    </if>
+  </delete>
+
+  <select id="checkExist" parameterType="com.tony.blog.entity.RoleAndModule" resultType="java.lang.Integer">
+    select count(1) from role_module
+    where
+    <if test="rid!=null">
+      rid=#{rid,jdbcType=VARCHAR}
+    </if>
+    <if test="mid!=null">
+      and mid=#{mid,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

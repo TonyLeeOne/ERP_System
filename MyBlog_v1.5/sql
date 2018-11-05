@@ -1,0 +1,150 @@
+
+CREATE TABLE blog (
+  id       varchar(50) NOT NULL,
+  uid      varchar(50) NOT NULL,
+  subject  varchar(1000) DEFAULT NULL,
+  contents mediumtext,
+  ptime    varchar(30)   DEFAULT NULL,
+  utime    varchar(30)   DEFAULT NULL,
+  tag      varchar(20) DEFAULT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+
+
+-- comment: table
+CREATE TABLE comment (
+  id      varchar(50)   NOT NULL,
+  bid     varchar(50) DEFAULT NULL,
+  content varchar(1000) NOT NULL,
+  tid     varchar(50) DEFAULT NULL,
+  uid     varchar(50)   NOT NULL,
+  ctime   varchar(30) DEFAULT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- handup: table
+CREATE TABLE handup (
+  bid varchar(40) DEFAULT NULL,
+  uid varchar(40) DEFAULT NULL
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+  -- module: table
+CREATE TABLE module (
+  mid   varchar(50) NOT NULL,
+  mname varchar(255) DEFAULT NULL,
+  PRIMARY KEY (mid)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+-- proverb: table
+CREATE TABLE proverb (
+  id      varchar(50) NOT NULL,
+  author  varchar(100)     DEFAULT NULL,
+  content varchar(1000)    DEFAULT NULL,
+  ptime   timestamp   NULL DEFAULT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+-- reply: table
+CREATE TABLE reply (
+  id      varchar(50)   NOT NULL,
+  uid     varchar(50)   NOT NULL,
+  content varchar(1000) NOT NULL,
+  cid     varchar(50)   NOT NULL,
+  ptime   varchar(50) DEFAULT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+
+  -- role: table
+CREATE TABLE role (
+  rid   varchar(50) NOT NULL,
+  rname varchar(255) DEFAULT NULL,
+  PRIMARY KEY (rid)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+CREATE TABLE role_module (
+  rid varchar(50) DEFAULT NULL,
+  mid varchar(50) DEFAULT NULL,
+  KEY r_id (rid),
+  KEY m_id (mid),
+  CONSTRAINT m_id FOREIGN KEY (mid) REFERENCES module (mid),
+  CONSTRAINT r_id FOREIGN KEY (rid) REFERENCES role (rid)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+  -- shiroConfigure: table
+CREATE TABLE shiroConfigure (
+  id        varchar(40)   NOT NULL,
+  url       varchar(1000) NOT NULL,
+  authority varchar(10) DEFAULT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE topic (
+  id      varchar(50)   NOT NULL,
+  uid     int(11)       NOT NULL,
+  subject varchar(1000) NOT NULL,
+  content mediumtext    NOT NULL,
+  image   varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+-- user: table
+CREATE TABLE user (
+  uid      varchar(50)  NOT NULL,
+  username varchar(255) NOT NULL,
+  password varchar(255) NOT NULL,
+  level    int(11)      NOT NULL,
+  PRIMARY KEY (uid)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+  CREATE TABLE user_role (
+  uid varchar(50) DEFAULT NULL,
+  rid varchar(50) DEFAULT NULL,
+  KEY u_fk (uid),
+  KEY r_fk (rid),
+  CONSTRAINT r_fk FOREIGN KEY (rid) REFERENCES role (rid),
+  CONSTRAINT u_fk FOREIGN KEY (uid) REFERENCES user (uid)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+  
+   CREATE TABLE `topic` (
+  `id` varchar(50) NOT NULL,
+  `uid` varchar(50) NOT NULL,
+  `subject` varchar(1000) NOT NULL,
+  `content` mediumtext NOT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `status` char(1) DEFAULT '0',
+  `ctime` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

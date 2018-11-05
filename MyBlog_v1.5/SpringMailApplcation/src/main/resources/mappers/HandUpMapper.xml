@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.blog.dao.HandUpMapper">
+  <resultMap id="BaseResultMap" type="com.tony.blog.entity.HandUp">
+    <result column="bid" jdbcType="VARCHAR" property="bid" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+  </resultMap>
+
+
+  <insert id="insert" parameterType="com.tony.blog.entity.HandUp">
+    insert into handup (bid, uid
+      )
+    values (#{bid,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.blog.entity.HandUp">
+    insert into handup
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bid != null">
+        bid,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bid != null">
+        #{bid,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+    <select id="find" parameterType="java.lang.String" resultType="java.lang.Integer">
+     select count(1) from handup
+     where
+    <if test="bid != null">
+      bid = #{bid,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="findHandsByUidAndBid" parameterType="com.tony.blog.entity.HandUp" resultType="java.lang.Integer">
+    select count(1) from handup
+    where
+    <if test="bid != null">
+      bid = #{bid,jdbcType=VARCHAR}
+    </if>
+    <if test="uid != null">
+      and uid = #{uid,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

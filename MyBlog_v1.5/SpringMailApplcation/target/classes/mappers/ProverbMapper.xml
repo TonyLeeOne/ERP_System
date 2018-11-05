@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.blog.dao.ProverbMapper">
+    <resultMap id="BaseResultMap" type="com.tony.blog.entity.Proverb">
+
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="author" jdbcType="VARCHAR" property="author"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="ptime" jdbcType="VARCHAR" property="ptime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    
+    id, author, content, ptime
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+        select
+        <include refid="Base_Column_List"/>
+        from proverb
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    
+    delete from proverb
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.tony.blog.entity.Proverb">
+    
+    insert into proverb (id, author, content, 
+      ptime)
+    values (#{id,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+      #{ptime,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.tony.blog.entity.Proverb">
+
+        insert into proverb
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="author != null">
+                author,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="ptime != null">
+                ptime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="author != null">
+                #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="ptime != null">
+                #{ptime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.blog.entity.Proverb">
+
+        update proverb
+        <set>
+            <if test="author != null">
+                author = #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="ptime != null">
+                ptime = #{ptime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.blog.entity.Proverb">
+    
+    update proverb
+    set author = #{author,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      ptime = #{ptime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <select id="findAllProverbs" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from proverb
+    </select>
+</mapper>

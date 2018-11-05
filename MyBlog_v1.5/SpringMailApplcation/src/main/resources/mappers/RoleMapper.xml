@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.blog.dao.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.tony.blog.entity.Role">
+        <id column="rid" jdbcType="VARCHAR" property="rid"/>
+        <result column="rname" jdbcType="VARCHAR" property="rname"/>
+        <collection property="module" ofType="com.tony.blog.entity.Module">
+            <id column="mid" property="mid"/>
+            <result column="mname" property="mname"/>
+        </collection>
+        <collection property="users" ofType="com.tony.blog.entity.User">
+            <id column="uid" property="uid"></id>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+    rid, rname
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from role
+        where rid = #{rid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from role
+    where rid = #{rid,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.tony.blog.entity.Role">
+    insert into role (rid, rname)
+    values (#{rid,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.tony.blog.entity.Role">
+        insert into role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rid != null">
+                rid,
+            </if>
+            <if test="rname != null">
+                rname,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rid != null">
+                #{rid,jdbcType=VARCHAR},
+            </if>
+            <if test="rname != null">
+                #{rname,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.blog.entity.Role">
+        update role
+        <set>
+            <if test="rname != null">
+                rname = #{rname,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where rid = #{rid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.blog.entity.Role">
+    update role
+    set rname = #{rname,jdbcType=VARCHAR}
+    where rid = #{rid,jdbcType=VARCHAR}
+  </update>
+
+    <select id="findAll" resultMap="BaseResultMap">
+    SELECT r.*,m.*,u.uid FROM
+    role r
+    left join role_module mr on mr.rid=r.rid
+    left join module m on mr.mid=m.mid
+    left join user_role ur on ur.rid=r.rid
+    left join user u on ur.uid=u.uid
+    </select>
+
+    <select id="selectByRname" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1)
+        from role
+        where rname = #{rname,jdbcType=VARCHAR}
+    </select>
+</mapper>
