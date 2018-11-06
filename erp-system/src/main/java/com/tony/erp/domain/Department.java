@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Department {
+
     private String did;
 
     private String dname;
