@@ -1,8 +1,13 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Role;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface RoleMapper {
+
     int deleteByPrimaryKey(String rid);
 
     int insert(Role record);
@@ -14,4 +19,6 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+
+    List<Role> getAllRoles();
 }

@@ -1,8 +1,13 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Product;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface ProductMapper {
+
     int deleteByPrimaryKey(String proId);
 
     int insert(Product record);
@@ -13,7 +18,7 @@ public interface ProductMapper {
 
     int updateByPrimaryKeySelective(Product record);
 
-    int updateByPrimaryKeyWithBLOBs(Product record);
-
     int updateByPrimaryKey(Product record);
+
+    List<Product> getAllProducts();
 }

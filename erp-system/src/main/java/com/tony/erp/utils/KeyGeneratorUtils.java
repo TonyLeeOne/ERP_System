@@ -1,7 +1,5 @@
 package com.tony.erp.utils;
 
-import org.apache.tomcat.jni.Local;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -32,4 +30,7 @@ public class KeyGeneratorUtils {
         return dateGenerator.format(new Date());
     }
 
+    public static void main(String[] args) {
+        System.out.println(keyUUID());
+    }
 }

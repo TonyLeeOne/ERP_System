@@ -4,7 +4,9 @@ import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.tony.erp.constant.Constant;
-import com.tony.erp.service.UrlConfigureService;
+import com.tony.erp.service.ModuleService;
+import com.tony.erp.service.RoleService;
+import com.tony.erp.service.shiro.UrlConfigureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +18,13 @@ public class CaffeineConfiguration {
 
     @Autowired
     private UrlConfigureService urlConfigureService;
+
+    @Autowired
+    private ModuleService moduleService;
+
+
+    @Autowired
+    private RoleService roleService;
     /**
      * 初始化cacheLoader实例
      * @return
@@ -54,6 +63,16 @@ public class CaffeineConfiguration {
         if(Constant.ALL_URLS.equals(key)){
             return urlConfigureService.getAllUrlsFromDB();
         }
+
+        if(Constant.ALL_MODULES.equals(key)){
+            return moduleService.getAllModules();
+        }
+
+        if(Constant.ALL_ROLES.equals(key)){
+            return roleService.getAllRoles();
+        }
+
+
 
         return null;
     }

@@ -1,7 +1,9 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Material;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MaterialMapper {
     int deleteByPrimaryKey(String mId);
 
@@ -12,8 +14,6 @@ public interface MaterialMapper {
     Material selectByPrimaryKey(String mId);
 
     int updateByPrimaryKeySelective(Material record);
-
-    int updateByPrimaryKeyWithBLOBs(Material record);
 
     int updateByPrimaryKey(Material record);
 }

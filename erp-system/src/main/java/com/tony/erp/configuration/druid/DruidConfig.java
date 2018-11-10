@@ -29,7 +29,6 @@ public class DruidConfig {
         params.put("password","root");
         params.put("resetEnable","false");
         params.put("allow","");
-
         bean.setInitParameters(params);
         return bean;
     }

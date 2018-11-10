@@ -12,28 +12,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from urlConfigure
+    from url_configure
     where id = #{id,jdbcType=VARCHAR}
   </select>
-
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from urlConfigure
-  </select>
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from urlConfigure
+    delete from url_configure
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.tony.erp.domain.UrlConfigure">
-    insert into urlConfigure (id, url, authority
+    insert into url_configure (id, url, authority
       )
     values (#{id,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{authority,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.tony.erp.domain.UrlConfigure">
-    insert into urlConfigure
+    insert into url_configure
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -58,7 +51,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.UrlConfigure">
-    update urlConfigure
+    update url_configure
     <set>
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
@@ -70,22 +63,29 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.UrlConfigure">
-    update urlConfigure
+    update url_configure
     set url = #{url,jdbcType=VARCHAR},
       authority = #{authority,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-  <insert id="insertAllUrls" parameterType="java.util.List" useGeneratedKeys="false">
-    insert into urlConfigure
-    (id,url,authority)
+  <insert id="insertAllUrls" parameterType="com.tony.erp.domain.UrlConfigure">
+    insert into url_configure (id, url, authority)
     values
     <foreach collection="list" item="item" index="index" separator=",">
-      (
-      #{item.id},
-      #{item.url},
-      #{item.authority}
-      )
+      (#{item.id,jdbcType=VARCHAR},#{item.url,jdbcType=VARCHAR},#{item.authority,jdbcType=VARCHAR})
     </foreach>
   </insert>
+
+  <delete id="batchDelete" parameterType="java.lang.String">
+    delete from url_configure where url in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select * from url_configure
+  </select>
+
 </mapper>

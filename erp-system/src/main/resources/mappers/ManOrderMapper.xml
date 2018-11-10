@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.ManOrderMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.ManOrder">
+    <id column="mo_id" jdbcType="VARCHAR" property="moId" />
+    <result column="mo_sn" jdbcType="VARCHAR" property="moSn" />
+    <result column="mo_mp_sn" jdbcType="VARCHAR" property="moMpSn" />
+    <result column="mo_start_date" jdbcType="VARCHAR" property="moStartDate" />
+    <result column="mo_end_date" jdbcType="VARCHAR" property="moEndDate" />
+    <result column="mo_count" jdbcType="INTEGER" property="moCount" />
+    <result column="mo_wait_count" jdbcType="INTEGER" property="moWaitCount" />
+    <result column="mo_status" jdbcType="CHAR" property="moStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mo_id, mo_sn, mo_mp_sn, mo_start_date, mo_end_date, mo_count, mo_wait_count, mo_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from manufacture_order
+    where mo_id = #{moId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from manufacture_order
+    where mo_id = #{moId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.ManOrder">
+    insert into manufacture_order (mo_id, mo_sn, mo_mp_sn, 
+      mo_start_date, mo_end_date, mo_count, 
+      mo_wait_count, mo_status)
+    values (#{moId,jdbcType=VARCHAR}, #{moSn,jdbcType=VARCHAR}, #{moMpSn,jdbcType=VARCHAR}, 
+      #{moStartDate,jdbcType=VARCHAR}, #{moEndDate,jdbcType=VARCHAR}, #{moCount,jdbcType=INTEGER}, 
+      #{moWaitCount,jdbcType=INTEGER}, #{moStatus,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.ManOrder">
+    insert into manufacture_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="moId != null">
+        mo_id,
+      </if>
+      <if test="moSn != null">
+        mo_sn,
+      </if>
+      <if test="moMpSn != null">
+        mo_mp_sn,
+      </if>
+      <if test="moStartDate != null">
+        mo_start_date,
+      </if>
+      <if test="moEndDate != null">
+        mo_end_date,
+      </if>
+      <if test="moCount != null">
+        mo_count,
+      </if>
+      <if test="moWaitCount != null">
+        mo_wait_count,
+      </if>
+      <if test="moStatus != null">
+        mo_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="moId != null">
+        #{moId,jdbcType=VARCHAR},
+      </if>
+      <if test="moSn != null">
+        #{moSn,jdbcType=VARCHAR},
+      </if>
+      <if test="moMpSn != null">
+        #{moMpSn,jdbcType=VARCHAR},
+      </if>
+      <if test="moStartDate != null">
+        #{moStartDate,jdbcType=VARCHAR},
+      </if>
+      <if test="moEndDate != null">
+        #{moEndDate,jdbcType=VARCHAR},
+      </if>
+      <if test="moCount != null">
+        #{moCount,jdbcType=INTEGER},
+      </if>
+      <if test="moWaitCount != null">
+        #{moWaitCount,jdbcType=INTEGER},
+      </if>
+      <if test="moStatus != null">
+        #{moStatus,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.ManOrder">
+    update manufacture_order
+    <set>
+      <if test="moSn != null">
+        mo_sn = #{moSn,jdbcType=VARCHAR},
+      </if>
+      <if test="moMpSn != null">
+        mo_mp_sn = #{moMpSn,jdbcType=VARCHAR},
+      </if>
+      <if test="moStartDate != null">
+        mo_start_date = #{moStartDate,jdbcType=VARCHAR},
+      </if>
+      <if test="moEndDate != null">
+        mo_end_date = #{moEndDate,jdbcType=VARCHAR},
+      </if>
+      <if test="moCount != null">
+        mo_count = #{moCount,jdbcType=INTEGER},
+      </if>
+      <if test="moWaitCount != null">
+        mo_wait_count = #{moWaitCount,jdbcType=INTEGER},
+      </if>
+      <if test="moStatus != null">
+        mo_status = #{moStatus,jdbcType=CHAR},
+      </if>
+    </set>
+    where mo_id = #{moId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.ManOrder">
+    update manufacture_order
+    set mo_sn = #{moSn,jdbcType=VARCHAR},
+      mo_mp_sn = #{moMpSn,jdbcType=VARCHAR},
+      mo_start_date = #{moStartDate,jdbcType=VARCHAR},
+      mo_end_date = #{moEndDate,jdbcType=VARCHAR},
+      mo_count = #{moCount,jdbcType=INTEGER},
+      mo_wait_count = #{moWaitCount,jdbcType=INTEGER},
+      mo_status = #{moStatus,jdbcType=CHAR}
+    where mo_id = #{moId,jdbcType=VARCHAR}
+  </update>
+</mapper>

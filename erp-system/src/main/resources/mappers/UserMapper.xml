@@ -2,15 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tony.erp.dao.UserMapper">
   <resultMap id="BaseResultMap" type="com.tony.erp.domain.User">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="uname" jdbcType="VARCHAR" property="uname" />
-    <result column="upass" jdbcType="VARCHAR" property="upass" />
-    <result column="departId" jdbcType="VARCHAR" property="departid" />
-    <result column="status" jdbcType="CHAR" property="status" />
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="uname" jdbcType="VARCHAR" property="uname"/>
+    <result column="upass" jdbcType="VARCHAR" property="upass"/>
+    <result column="departId" jdbcType="VARCHAR" property="departId"/>
+    <result column="status" jdbcType="CHAR" property="status"/>
+    <association property="department" javaType="com.tony.erp.domain.Department">
+      <id column="d_id" jdbcType="VARCHAR" property="dId" />
+      <result column="d_name" jdbcType="VARCHAR" property="dName" />
+      <result column="d_mamager" jdbcType="VARCHAR" property="dMamager" />
+      <result column="d_duty" jdbcType="VARCHAR" property="dDuty" />
+    </association>
     <collection property="roles" ofType="com.tony.erp.domain.Role">
-      <id column="rid" javaType="VARCHAR" property="rid"></id>
+      <id column="rid" jdbcType="VARCHAR" property="rid"></id>
       <result column="rname" jdbcType="VARCHAR" property="rname"></result>
-      <collection property="module" ofType="com.tony.erp.domain.Module">
+      <collection property="modules" ofType="com.tony.erp.domain.Module">
         <id column="mid" jdbcType="VARCHAR" property="mid"></id>
         <result column="mname" jdbcType="VARCHAR" property="mname"></result>
       </collection>
@@ -19,12 +25,11 @@
   <sql id="Base_Column_List">
     id, uname, upass, departId, status
   </sql>
-  <select id="selectUserProperties" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user
-    where uname = #{id,jdbcType=VARCHAR}
-    and
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from user
@@ -102,11 +107,23 @@
 
   <!--根据用户名查找其角色和权限信息-->
   <select id="findPropertiesByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT u.*,r.*,m.* FROM user u inner join user_role ur on ur.uid=u.id
+    SELECT u.*,r.*,m.*,d.* FROM user u
+    left join department d on u.departId=d.d_id
+    inner join user_role ur on ur.uid=u.id
     inner join role r on r.rid=ur.rid
     inner join role_module mr on mr.rid=r.rid
     inner join module m on mr.mid=m.mid
-    WHERE username=#{username,jdbcType=VARCHAR};
+    <if test="uname != null">
+    WHERE u.uname=#{uname,jdbcType=VARCHAR}
+    </if>
     </select>
 
+  <select id="selectByUname" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(1)
+    from
+    user
+    where
+    uname=#{uname,jdbcType=VARCHAR}
+  </select>
 </mapper>

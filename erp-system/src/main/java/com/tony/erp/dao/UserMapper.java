@@ -1,11 +1,13 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface UserMapper {
-
     int deleteByPrimaryKey(String id);
 
     int insert(User record);
@@ -18,5 +20,7 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    User findPropertiesByUsername(String  username);
+    List<User> findPropertiesByUsername(@Param("uname") String uname);
+
+    int selectByUname(String uname);
 }

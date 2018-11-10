@@ -1,7 +1,9 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Profile;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProfileMapper {
     int deleteByPrimaryKey(String pid);
 

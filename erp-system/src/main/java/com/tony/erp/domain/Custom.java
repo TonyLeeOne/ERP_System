@@ -15,7 +15,7 @@ public class Custom {
 
     private String customFullname;
 
-    private String status;
+    private String customStatus;
 
     public String getCustomId() {
         return customId;
@@ -73,11 +73,11 @@ public class Custom {
         this.customFullname = customFullname == null ? null : customFullname.trim();
     }
 
-    public String getStatus() {
-        return status;
+    public String getCustomStatus() {
+        return customStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setCustomStatus(String customStatus) {
+        this.customStatus = customStatus == null ? null : customStatus.trim();
     }
 }
