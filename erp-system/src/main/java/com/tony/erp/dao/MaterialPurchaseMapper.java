@@ -3,6 +3,8 @@ package com.tony.erp.dao;
 import com.tony.erp.domain.MaterialPurchase;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MaterialPurchaseMapper {
     int deleteByPrimaryKey(String mphId);
@@ -16,4 +18,8 @@ public interface MaterialPurchaseMapper {
     int updateByPrimaryKeySelective(MaterialPurchase record);
 
     int updateByPrimaryKey(MaterialPurchase record);
+
+    List<MaterialPurchase> selectAll();
+
+    List<MaterialPurchase> selectByMphSn(String mphSn);
 }

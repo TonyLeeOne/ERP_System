@@ -17,6 +17,21 @@
     mc_id, mc_mp_sn, mc_mo_sn, mc_m_sn, mc_count_needed, mc_count_indeed, mc_requestor, 
     mc_operator, mc_date, mc_status
   </sql>
+
+  <select id="selectByMcMSn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from material_consume
+    where mc_m_sn = #{mcMSn,jdbcType=VARCHAR} order by mc_date DESC
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from material_consume
+    order by mc_date desc
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

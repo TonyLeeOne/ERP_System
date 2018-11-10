@@ -24,6 +24,21 @@
     from material_purchase
     where mph_id = #{mphId,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectByMphsn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from material_purchase
+    where mph_sn = #{mphSn,jdbcType=VARCHAR} order by mph_date DESC
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from material_purchase
+    order by mph_date DESC
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from material_purchase
     where mph_id = #{mphId,jdbcType=VARCHAR}

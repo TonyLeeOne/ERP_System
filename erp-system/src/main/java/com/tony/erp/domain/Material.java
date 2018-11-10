@@ -1,6 +1,7 @@
 package com.tony.erp.domain;
 
 public class Material {
+
     private String mId;
 
     private String mName;

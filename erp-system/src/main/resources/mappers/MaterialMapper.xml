@@ -12,12 +12,20 @@
   <sql id="Base_Column_List">
     m_id, m_name, m_sn, m_count, m_note, m_status
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
+  <select id="checkBySn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
     from material
-    where m_id = #{mId,jdbcType=VARCHAR}
+    where m_sn = #{m_sn,jdbcType=VARCHAR}
   </select>
+
+  <select id="getAllMaterials" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from material
+    order by m_sn
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from material
     where m_id = #{mId,jdbcType=VARCHAR}
