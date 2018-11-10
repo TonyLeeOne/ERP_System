@@ -1,201 +1,241 @@
-# 用户表
-create table user (
-  id varchar(50) not null primary key comment ''主键'',
-  uname varchar(50) not null comment ''用户名'',
-  upass varchar(50) not null comment ''用户密码'',
-  departId varchar(50) not null comment ''部门id'',
-  status char(1) not null comment ''用户状态 1代表正常  2代表锁定''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table custom
+(
+	custom_id varchar(50) not null comment '主键'
+		primary key,
+	custom_name varchar(100) not null comment '客户名字',
+	custom_address varchar(200) null comment '客户地址',
+	custom_code varchar(20) null comment '客户编号',
+	custom_tel varchar(20) null comment '客户电话',
+	custom_publish varchar(20) null comment '客户法人',
+	custom_fullname varchar(20) null comment '客户全名',
+	custom_status char null comment '客户状态  1代表有效   2代表无效'
+)
+;
 
-# 角色表
-CREATE TABLE role (
-  rid varchar(50) NOT NULL comment ''主键'',
-  rname varchar(255) DEFAULT NULL comment ''角色名'',
-  PRIMARY KEY (`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table department
+(
+	d_id varchar(50) not null comment '主键'
+		primary key,
+	d_name varchar(50) null comment '部门名称',
+	d_mamager varchar(50) null comment '部门主管',
+	d_duty varchar(200) null comment '部门职责'
+)
+;
 
-# 用户角色关联表
-CREATE TABLE user_role (
-  uid varchar(50) DEFAULT NULL comment ''用户id'',
-  rid varchar(50) DEFAULT NULL comment ''角色id'',
-  KEY `u_fk` (`uid`),
-  KEY `r_fk` (`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table device
+(
+	device_id varchar(50) not null comment '主键'
+		primary key,
+	device_name varchar(100) null comment '设备名称',
+	device_pur_date varchar(20) null comment '设备采购日期',
+	device_price int null comment '设备单价',
+	device_code varchar(100) null comment '设备编号',
+	device_vendor varchar(100) null comment '设备供应商',
+	device_vendor_tel varchar(100) null comment '供应商联系电话',
+	device_used_period varchar(20) null comment '设备使用截止日期',
+	device_note varchar(200) null comment '备注',
+	device_status char null comment '设备状态，1代表良好，2代表待维修，3代表维修OK'
+)
+;
 
-# 权限表
-CREATE TABLE module (
-  mid varchar(50) NOT NULL comment ''主键'',
-  mname varchar(255) DEFAULT NULL comment ''权限名称'',
-  PRIMARY KEY (`mid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table device_maintain_his
+(
+	his_id varchar(50) not null comment '主键'
+		primary key,
+	his_device_code varchar(100) null comment '设备编号',
+	his_date varchar(20) null comment '设备保养日期',
+	his_operator varchar(10) null comment '设备保养人员签字',
+	his_result char null comment '设备检查结果 1代表良好 2代表故障',
+	his_note varchar(200) null comment '备注'
+)
+;
 
-# 角色权限关联表
-CREATE TABLE role_module (
-  rid varchar(50) DEFAULT NULL comment ''角色id'',
-  mid varchar(50) DEFAULT NULL comment ''权限id'',
-  KEY `r_id` (`rid`),
-  KEY `m_id` (`mid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table manufacture_order
+(
+	mo_id varchar(50) not null comment '主键'
+		primary key,
+	mo_sn varchar(50) null comment '生产工单编号',
+	mo_mp_sn varchar(50) null comment '生产计划编号',
+	mo_start_date varchar(50) null comment '生产开始时间',
+	mo_end_date varchar(50) null comment '生产结束时间',
+	mo_count int null comment '已生产数量',
+	mo_wait_count int null comment '待生产数量',
+	mo_status char null comment '状态 1进行中 2已完工'
+)
+;
 
-# 部门表
-create table department(
-  d_id varchar(50) primary key comment ''主键'',
-  d_name varchar(50) comment ''部门名称'',
-  d_mamager varchar(50) comment ''部门主管'',
-  d_duty varchar(200) comment ''部门职责''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table manufacture_plan
+(
+	mp_id varchar(50) not null comment '主键'
+		primary key,
+	mp_sn varchar(50) null comment '生产计划编号',
+	mp_pro_code varchar(50) null comment '产品编号',
+	mp_start_date varchar(50) null comment '生产计划开始日期',
+	mp_end_date varchar(50) null comment '生产计划结束日期',
+	mp_count int null comment '计划生产数量',
+	mp_order_id varchar(50) null comment '订单id',
+	mp_status char null comment '1代表生成进行中，2代表生产完成'
+)
+;
 
-# 用户信息表
-create table profile(
-  pid varchar(50) primary key not null comment ''主键'',
-  p_uid varchar(50) not null comment ''用户id'',
-  p_indate varchar(20) not null comment ''入职日期'',
-  p_faredate varchar(20) not null comment ''离职日期'',
-  p_major varchar(50)  comment ''专业'',
-  p_id varchar(20) comment ''身份证号'',
-  p_sex char(1) comment ''性别'',
-  p_edu varchar(10) comment ''教育程度'',
-  p_tel varchar(15) comment ''联系方式'',
-  p_name varchar (20) comment ''中文名或别名'',
-  p_wechat varchar (50) comment ''微信''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table material
+(
+	m_id varchar(50) not null comment '主键'
+		primary key,
+	m_name varchar(50) null comment '物料名称',
+	m_sn varchar(50) null comment '物料编号',
+	m_count int null comment '仓库物料剩余数量',
+	m_note varchar(200) null comment '备注',
+	m_status char null comment '物料状态，1代表可用物料，2代表禁止使用'
+)
+;
 
-# 客户表
-create table custom(
-  custom_id varchar(50) primary key not null comment ''主键'',
-  custom_name varchar(100) not null comment ''客户名字'',
-  custom_address varchar(200) comment ''客户地址'',
-  custom_code varchar(20) comment ''客户编号'',
-  custom_tel varchar(20) comment ''客户电话'',
-  custom_publish varchar(20) comment ''客户法人'',
-  custom_fullname varchar(20) comment ''客户全名'',
-  custom_status char(1) comment ''客户状态  1代表有效   2代表无效''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table material_consume
+(
+	mc_id varchar(50) not null comment '主键'
+		primary key,
+	mc_mp_sn varchar(50) null comment '对应生产计划编号',
+	mc_mo_sn varchar(50) null comment '对应生产工单编号',
+	mc_m_sn varchar(50) null comment '物料编号',
+	mc_count_needed int null comment '物料需求数量',
+	mc_count_indeed int null comment '物料实际领取数量',
+	mc_requestor varchar(20) null comment '领料员',
+	mc_operator varchar(20) null comment '发料员',
+	mc_date varchar(20) null comment '领料时间',
+	mc_status char null comment '领料状态 1，待领料，2 已待领料'
+)
+;
 
+create table material_purchase
+(
+	mph_id varchar(50) not null comment '主键'
+		primary key,
+	mph_name varchar(50) null comment '物料名称',
+	mph_sn varchar(50) null comment '物料编号',
+	mph_price float null comment '物料单价',
+	mph_count int null comment '物料入库数量',
+	mph_vendor_id varchar(50) null comment '供应商id',
+	mph_vendor_code varchar(50) null comment '供应商物料编号',
+	mph_sender varchar(100) null comment '送货人',
+	mph_operator varchar(10) null comment '入库员',
+	mph_date varchar(20) null comment '入库日期',
+	mph_note varchar(200) null comment '备注'
+)
+;
 
-# 产品表
-create table product(
-  pro_id  varchar(50) not null primary key comment ''主键'',
-  pro_code varchar(100) comment ''产品编号'',
-  pro_name varchar(100) comment ''产品名称'',
-  pro_count int comment ''产品当前库存数量'',
-  pro_price float comment ''产品单价'',
-  pro_image varchar(200) comment ''产品图片的url'',
-  pro_note varchar(200) comment ''产品介绍'',
-  pro_status char(1) comment ''产品状态，1代表已量产，2代表已停产'',
-  unique index pro_code (pro_code)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table module
+(
+	mid varchar(50) not null comment '主键'
+		primary key,
+	mname varchar(255) null comment '权限名称'
+)
+;
 
+create table product
+(
+	pro_id varchar(50) not null comment '主键'
+		primary key,
+	pro_code varchar(100) null comment '产品编号',
+	pro_name varchar(100) null comment '产品名称',
+	pro_count int null comment '产品当前库存数量',
+	pro_price float null comment '产品单价',
+	pro_image varchar(200) null comment '产品图片的url',
+	pro_note varchar(200) null comment '产品介绍',
+	pro_status char null comment '产品状态，1代表已量产，2代表已停产',
+	constraint pro_code
+		unique (pro_code)
+)
+;
 
-# 设备表
-create table device(
-  device_id varchar(50) not null primary key comment ''主键'',
-  device_name varchar(100) comment ''设备名称'',
-  device_pur_date varchar(20) comment ''设备采购日期'',
-  device_price int comment ''设备单价'',
-  device_code varchar(100) comment ''设备编号'',
-  device_vendor varchar(100) comment ''设备供应商'',
-  device_vendor_tel varchar(100) comment ''供应商联系电话'',
-  device_used_period varchar(20) comment ''设备使用截止日期'',
-  device_note varchar(200) comment ''备注'',
-  device_status char(1) comment ''设备状态，1代表良好，2代表待维修，3代表维修OK''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table profile
+(
+	pid varchar(50) not null comment '主键'
+		primary key,
+	p_uid varchar(50) not null comment '用户id',
+	p_indate varchar(20) not null comment '入职日期',
+	p_faredate varchar(20) not null comment '离职日期',
+	p_major varchar(50) null comment '专业',
+	p_id varchar(20) null comment '身份证号',
+	p_sex char null comment '性别',
+	p_edu varchar(10) null comment '教育程度',
+	p_tel varchar(15) null comment '联系方式',
+	p_name varchar(20) null comment '中文名或别名',
+	p_wechat varchar(50) null comment '微信'
+)
+;
 
-# 设备保养表
-create table device_maintain_his(
-  his_id varchar(50) primary key comment ''主键'',
-  his_device_code varchar(100) comment ''设备编号'',
-  his_date varchar(20) comment ''设备保养日期'',
-  his_operator varchar(10) comment ''设备保养人员签字'',
-  his_result char(1) comment ''设备检查结果 1代表良好 2代表故障'',
-  his_note varchar(200) comment ''备注''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table role
+(
+	rid varchar(50) not null comment '主键'
+		primary key,
+	rname varchar(255) null comment '角色名'
+)
+;
 
-# 生产计划表
-create table manufacture_plan(
-  mp_id varchar(50) primary key comment ''主键'',
-  mp_sn varchar(50) comment ''生产计划编号'',
-  mp_pro_code varchar(50) comment ''产品编号'',
-  mp_start_date varchar(50) comment ''生产计划开始日期'',
-  mp_end_date varchar(50) comment ''生产计划结束日期'',
-  mp_count int comment ''计划生产数量'',
-  mp_order_id varchar(50) comment ''订单id'',
-  mp_status char(1) comment ''1代表生成进行中，2代表生产完成''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table role_module
+(
+	rid varchar(50) null comment '角色id',
+	mid varchar(50) null comment '权限id'
+)
+;
 
-# 生产工单
-create table manufacture_order(
-  mo_id varchar(50) primary key comment ''主键'',
-  mo_sn varchar(50) comment ''生产工单编号'',
-  mo_mp_sn varchar(50) comment ''生产计划编号'',
-  mo_start_date varchar(50) comment ''生产开始时间'',
-  mo_end_date varchar(50) comment ''生产结束时间'',
-  mo_count int comment ''已生产数量'',
-  mo_wait_count int comment ''待生产数量'',
-  mo_status char (1) comment ''状态 1进行中 2已完工''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create index m_id
+	on role_module (mid)
+;
 
-#物料消耗表/领料表
-create table manufacture_material_consume(
-  mmc_id varchar(50) primary key comment ''主键'',
-  mmc_mp_sn varchar(50) comment ''对应生产计划编号'',
-  mmc_mo_sn varchar(50) comment ''对应生产工单编号'',
-  mmc_m_sn varchar(50) comment ''物料编号'',
-  mmc_count_needed int comment ''物料需求数量'',
-  mmc_count_indeed int comment ''物料实际领取数量'',
-  mmc_requestor varchar(20) comment ''领料员'',
-  mmc_operator varchar(20) comment ''发料员'',
-  mmc_date varchar(20) comment ''领料时间'',
-  mmc_status char(1) comment ''领料状态 1，待领料，2 已待领料''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create index r_id
+	on role_module (rid)
+;
 
-# 物料表
-create table material(
-  m_id varchar(50) primary key comment ''主键'',
-  m_name varchar(50) comment ''物料名称'',
-  m_sn varchar(50) comment ''物料编号'',
-  m_count int comment ''仓库物料剩余数量'',
-  m_note varchar(200) comment ''备注'',
-  m_status char(1) comment ''物料状态，1代表可用物料，2代表禁止使用''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table url_configure
+(
+	id varchar(40) not null comment '主键'
+		primary key,
+	url varchar(200) not null comment 'url',
+	authority varchar(10) null comment '权限配置'
+)
+;
 
-# 物料采购表
-create table material_pur_his(
-  mph_id varchar(50) primary key comment ''主键'',
-  mph_name varchar(50) comment ''物料名称'',
-  mph_sn varchar(50) comment ''物料编号'',
-  mph_price float comment ''物料单价'',
-  mph_count int comment ''物料入库数量'',
-  mph_vendor_id varchar (50) comment ''供应商id'',
-  mph_vendor_code varchar (50) comment ''供应商物料编号'',
-  mph_sender varchar(100) comment ''送货人'',
-  mph_operator varchar(10) comment ''入库员'',
-  mph_date varchar(20) comment ''入库日期'',
-  mph_note varchar(200) comment ''备注''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create table user
+(
+	id varchar(50) not null comment '主键'
+		primary key,
+	uname varchar(50) not null comment '用户名',
+	upass varchar(50) not null comment '用户密码',
+	departId varchar(50) not null comment '部门id',
+	status char not null comment '用户状态 1代表正常  2代表锁定'
+)
+;
 
+create table user_role
+(
+	uid varchar(50) null comment '用户id',
+	rid varchar(50) null comment '角色id'
+)
+;
 
+create index r_fk
+	on user_role (rid)
+;
 
-# 供应商管理
-create table vendor(
-  v_id varchar(50) primary key comment ''主键'',
-  v_name varchar(100) comment ''供应商名字'',
-  v_address varchar(200) comment ''供应商地址'',
-  v_tel varchar(20) comment ''供应商联系方式'',
-  v_publish varchar(10) comment ''供应商法人代表'',
-  v_fullname varchar(20) comment ''供应商全名'',
-  v_status char(1) comment ''供应商状态 1代表正常 2代表终止合作'',
-  v_note  varchar(200) comment ''备注''
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+create index u_fk
+	on user_role (uid)
+;
 
+create table vendor
+(
+	v_id varchar(50) not null comment '主键'
+		primary key,
+	v_name varchar(100) null comment '供应商名字',
+	v_address varchar(200) null comment '供应商地址',
+	v_tel varchar(20) null comment '供应商联系方式',
+	v_publish varchar(10) null comment '供应商法人代表',
+	v_fullname varchar(20) null comment '供应商全名',
+	v_status char null comment '供应商状态 1代表正常 2代表终止合作',
+	v_note varchar(200) null comment '备注'
+)
+;
 
--- # 新增url权限配置
-CREATE TABLE urlConfigure (
-  id varchar(40) NOT NULL primary key comment ''主键'',
-  url varchar(200) NOT NULL comment ''url'',
-  authority varchar(10) DEFAULT NULL comment ''权限配置'',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- 固定权限值
