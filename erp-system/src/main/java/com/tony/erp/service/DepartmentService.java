@@ -10,33 +10,29 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class DepartmentService {
 
     @Autowired
     private DepartmentMapper departmentMapper;
 
-    @Transactional
     public int addDepart(Department department) {
         department.setdId(KeyGeneratorUtils.keyUUID());
         return departmentMapper.insertSelective(department);
     }
 
-    @Transactional
     public int updateDepart(Department department) {
         return departmentMapper.updateByPrimaryKeySelective(department);
     }
 
-    @Transactional
     public int delDepart(String did) {
         return departmentMapper.deleteByPrimaryKey(did);
     }
 
-    @Transactional
     public List<Department> getAllDeparts() {
         return departmentMapper.selectAll();
     }
 
-    @Transactional
     public Department getDepart(String did) {
         return departmentMapper.selectByPrimaryKey(did);
     }

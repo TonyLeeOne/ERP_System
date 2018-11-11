@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class RoleModuleService {
 
     @Autowired
@@ -28,7 +29,6 @@ public class RoleModuleService {
      * @param rid
      * @return
      */
-    @Transactional
     public int insert(List<String> mids,String rid){
         List<String> exists=this.selectMidByRid(rid);
         int result=0;
@@ -69,7 +69,6 @@ public class RoleModuleService {
      * 获取所有的mids
      * @return
      */
-    @Transactional
     public List<String> getAllMids(){
         List<Module> modules=moduleService.getAllModules();
         List<String> mids=new ArrayList<>();
@@ -85,7 +84,6 @@ public class RoleModuleService {
      * @param rid
      * @return
      */
-    @Transactional
     public List<String> selectMidByRid(String rid){
         return roleModuleMapper.selectMidByRid(rid);
     }
@@ -95,7 +93,6 @@ public class RoleModuleService {
      * @param rid
      * @return
      */
-    @Transactional
     public int deleteByRid(String rid){
         return roleModuleMapper.deleteByRid(rid);
     }

@@ -54,9 +54,9 @@ public class VendorController {
 
     @PostMapping("/getVendor")
     @ResponseBody
-    public Vendor getVendor(String v_id){
-        if(!StringUtils.isEmpty(v_id)){
-            return vendorService.getSingleVendor(v_id);
+    public Vendor getVendor(String vid){
+        if(!StringUtils.isEmpty(vid)){
+            return vendorService.getSingleVendor(vid);
         }
         return null;
     }

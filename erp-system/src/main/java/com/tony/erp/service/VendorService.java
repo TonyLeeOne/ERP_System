@@ -10,35 +10,31 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class VendorService {
 
     @Autowired
     private VendorMapper vendorMapper;
 
-    @Transactional
     public int addVendor(Vendor vendor) {
         vendor.setvId(KeyGeneratorUtils.keyUUID());
         vendor.setvStatus("1");
         return vendorMapper.insert(vendor);
     }
 
-    @Transactional
     public int upVendor(Vendor vendor) {
         return vendorMapper.updateByPrimaryKeySelective(vendor);
     }
 
-    @Transactional
     public List<Vendor> getAllVendors() {
         return vendorMapper.getAllVendors();
     }
 
-    @Transactional
-    public int delVendor(String v_id) {
-        return vendorMapper.deleteByPrimaryKey(v_id);
+    public int delVendor(String vid) {
+        return vendorMapper.deleteByPrimaryKey(vid);
     }
 
-    @Transactional
-    public Vendor getSingleVendor(String v_id) {
-        return vendorMapper.selectByPrimaryKey(v_id);
+    public Vendor getSingleVendor(String vid) {
+        return vendorMapper.selectByPrimaryKey(vid);
     }
 }

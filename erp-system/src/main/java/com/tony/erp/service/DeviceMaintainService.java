@@ -10,33 +10,29 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class DeviceMaintainService {
 
     @Autowired
     private DeviceMaintainMapper deviceMaintainMapper;
 
-    @Transactional
     public int addDeviceMain(DeviceMaintain deviceMaintain) {
         deviceMaintain.setHisId(KeyGeneratorUtils.keyUUID());
         deviceMaintain.setHisDate(KeyGeneratorUtils.dateGenerator());
         return deviceMaintainMapper.insert(deviceMaintain);
     }
 
-    @Transactional
     public int delDeviceMain(String hisId){
         return deviceMaintainMapper.deleteByPrimaryKey(hisId);
     }
-    @Transactional
     public int update(DeviceMaintain deviceMaintain){
         return deviceMaintainMapper.updateByPrimaryKeySelective(deviceMaintain);
     }
 
-    @Transactional
-    public List<DeviceMaintain> getDeviceMain(String device_code){
-        return deviceMaintainMapper.selectByDeviceCode(device_code);
+    public List<DeviceMaintain> getDeviceMain(String deviceCode){
+        return deviceMaintainMapper.selectByDeviceCode(deviceCode);
     }
 
-    @Transactional
     public List<DeviceMaintain> getAllDeviceMain(){
         return deviceMaintainMapper.selectAll();
     }

@@ -18,7 +18,6 @@ public class ModuleService {
      * 获取所有的权限信息
      * @return
      */
-    @Transactional
     public List<Module> getAllModules(){
         return moduleMapper.getAllModules();
     }

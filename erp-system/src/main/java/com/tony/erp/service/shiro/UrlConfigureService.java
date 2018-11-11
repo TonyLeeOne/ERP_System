@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UrlConfigureService {
 
     @Autowired
@@ -21,12 +22,13 @@ public class UrlConfigureService {
     @Autowired
     private UrlService service;
 
+
+    private final String ERROR_PATH="/error";
     /**
      * 获取项目中所有url(全量)，并保存到数据库中，默认权限为anon
      *
      * @return
      */
-    @Transactional
     public int insertAllUrls() {
         Map<String, List<String>> urls = service.getDifference();
         List<UrlConfigure> inserts = new ArrayList<>();
@@ -37,7 +39,7 @@ public class UrlConfigureService {
         if (CollectionUtils.isEmpty(all)) {
             if (!CollectionUtils.isEmpty(insert)) {
                 insert.forEach(url -> {
-                    if (!url.equals("/error")) {
+                    if (!ERROR_PATH.equals(url)) {
                         UrlConfigure configure = new UrlConfigure(KeyGeneratorUtils.keyUUID(), url, "anon");
                         inserts.add(configure);
                     }
@@ -52,7 +54,7 @@ public class UrlConfigureService {
             return res;
         } else {
             all.forEach(url -> {
-                if (!url.equals("/error")) {
+                if (!ERROR_PATH.equals(url)) {
                     UrlConfigure configure = new UrlConfigure(KeyGeneratorUtils.keyUUID(), url, "anon");
                     inserts.add(configure);
                 }
@@ -69,7 +71,6 @@ public class UrlConfigureService {
      *
      * @return
      */
-    @Transactional
     public List<UrlConfigure> getAllUrlsFromDB() {
         return mapper.selectAll();
 
@@ -82,7 +83,6 @@ public class UrlConfigureService {
      * @param authority
      * @return
      */
-    @Transactional
     public int updateUrlConfigure(String urlId, String authority) {
         UrlConfigure configure = new UrlConfigure();
         configure.setId(urlId);

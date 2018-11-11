@@ -68,13 +68,13 @@ public class MaterialPurchaseController {
 
     /**
      * 删除采购记录
-     * @param mp_id
+     * @param mpid
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String delPurchase(String mp_id){
-        return materialPurchaseService.delMPurchase(mp_id)>1? Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
+    public String delPurchase(String mpid){
+        return materialPurchaseService.delMPurchase(mpid)>1? Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
     }
 
 

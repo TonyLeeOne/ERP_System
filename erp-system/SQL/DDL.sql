@@ -236,6 +236,38 @@ create table vendor
 )
 ;
 
+-- 新增订单表
+
+create table orders
+(
+  o_id varchar(50) not null comment '主键'
+    primary key,
+  o_modifier         varchar(20) comment '修改人',
+  o_creator          varchar(20) comment '创建人',
+  o_no               varchar(50) comment '订单号',
+  o_com_no           varchar(50) comment '公司单号',
+  o_product_code varchar(10) comment '产品编号',
+  o_count            int comment '订单数量',
+  o_indeed_count     int comment '实际出货数量',
+  o_create_date      varchar(50) comment '下单日期',
+  o_shipment_date    varchar(50) comment '出货日期',
+  o_custom_name      varchar(50) comment '客户名',
+  o_pay              varchar(20) comment '结算方式',
+  o_pay_category     varchar(20) comment '币种',
+  o_exchange_rate    varchar(20) comment '汇率',
+  o_shipment_method  varchar(20) comment '交货方式',
+  o_contacts         varchar(20) comment '联系人',
+  o_tel              varchar(20) comment '联系人电话',
+  o_address          varchar(100) comment '客户地址',
+  o_salesman         varchar(20) comment '业务员名称',
+  o_salesman_depart  varchar(20) comment '业务员部门',
+  o_salesman_contact varchar(20) comment '业务员联系方式',
+  o_auditor          varchar(20) comment '审核人',
+  o_audit_date       varchar(20) comment '审核日期',
+  o_note             varchar(100) comment '备注',
+  o_status           char(1) comment '订单状态 1代表待审核 2代表审核未通过 3 代表审核通过 4代表待出货 5代表已安排出货'
+);
+
 
 
 -- 固定权限值

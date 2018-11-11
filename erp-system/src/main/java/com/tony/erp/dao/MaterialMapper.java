@@ -13,7 +13,7 @@ public interface MaterialMapper {
 
     int insertSelective(Material record);
 
-    Material checkBySn(String m_sn);
+    Material checkBySn(String msn);
 
     int updateByPrimaryKeySelective(Material record);
 

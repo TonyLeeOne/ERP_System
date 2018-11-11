@@ -23,5 +23,5 @@ public interface DeviceMapper {
 
     List<Device> getAllDevices();
 
-    int checkDeviceCode(@Param("device_code")String device_code);
+    int checkDeviceCode(@Param("deviceCode")String deviceCode);
 }

@@ -11,6 +11,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class RoleService {
 
     @Autowired
@@ -20,7 +21,6 @@ public class RoleService {
      * 从数据库中取出所有role,并去除超级管理员
      * @return
      */
-    @Transactional
     public List<Role> getAllRoles(){
         return roleMapper.getAllRoles();
     }
@@ -30,7 +30,6 @@ public class RoleService {
      * @param roleName
      * @return
      */
-    @Transactional
     public Role addRole(String roleName){
         if(ObjectUtils.isEmpty(roleName)){
             return null;
@@ -47,7 +46,6 @@ public class RoleService {
      * @param role
      * @return
      */
-    @Transactional
     public int updateRole(Role role){
         return roleMapper.updateByPrimaryKeySelective(role);
     }

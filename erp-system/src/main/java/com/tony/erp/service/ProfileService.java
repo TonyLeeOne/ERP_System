@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class ProfileService {
 
     @Autowired
@@ -18,7 +19,6 @@ public class ProfileService {
      * @param profile
      * @return
      */
-    @Transactional
     public int addProfile(Profile profile){
         profile.setPid(KeyGeneratorUtils.keyUUID());
         return profileMapper.insertSelective(profile);
@@ -29,7 +29,6 @@ public class ProfileService {
      * @param profile
      * @return
      */
-    @Transactional
     public int upProfile(Profile profile){
         return profileMapper.updateByPrimaryKeySelective(profile);
     }

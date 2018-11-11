@@ -15,8 +15,8 @@ public class Constant {
     /**
      * 数据加密参数
      */
-    public static final String HasAlgorithmName = "MD5";
-    public static final int HasIterations = 1024;
+    public static final String ALGORITHM = "MD5";
+    public static final int  ITERATORS = 1024;
 
     /**
      * 处理结果集

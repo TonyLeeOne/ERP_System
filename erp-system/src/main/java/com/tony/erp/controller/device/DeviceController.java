@@ -8,10 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/device")
@@ -22,13 +19,18 @@ public class DeviceController {
 
     @GetMapping("/getAllDevices")
     public String getAllDevices(int pageNum, ModelMap modelMap) {
-        if (ObjectUtils.isEmpty(pageNum)) {
             modelMap.addAttribute("devices", deviceService.getAllDevices(1));
             return "";
-        }
+
+    }
+
+
+    @GetMapping("/getAllDevices/{pageNum}")
+    public String getAllDevice(@PathVariable int pageNum, ModelMap modelMap) {
         modelMap.addAttribute("devices", deviceService.getAllDevices(pageNum));
         return "";
     }
+
     @PostMapping("/add")
     @ResponseBody
     public String addDevice(Device device){

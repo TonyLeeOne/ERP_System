@@ -72,6 +72,8 @@ public class UserController {
             token.setRememberMe(remember);
             try {
                 subject.login(token);
+//                设置session超时时间30 mins
+                subject.getSession().setTimeout(1800000);
                 User uToken = (User) subject.getPrincipal();
                 session.setAttribute("user", uToken);
             } catch (Exception e) {
@@ -155,7 +157,7 @@ public class UserController {
      */
     @PostMapping("/addProfile")
     @ResponseBody
-    public String AddUserProfile(Profile profile) {
+    public String addUserProfile(Profile profile) {
         return profileService.addProfile(profile) > 0 ? DATA_ADD_SUCCESS : DATA_ADD_FAILED;
     }
 

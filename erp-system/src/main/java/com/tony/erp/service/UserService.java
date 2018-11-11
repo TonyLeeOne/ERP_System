@@ -13,6 +13,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserService {
 
     @Autowired
@@ -25,7 +26,6 @@ public class UserService {
      * @param username
      * @return
      */
-    @Transactional
     public User getUserPropertiesByUsername(String username){
         List<User> users=userMapper.findPropertiesByUsername(username);
         if(!ObjectUtils.isEmpty(users)){
@@ -38,7 +38,6 @@ public class UserService {
      * 添加新用户
      * @return
      */
-    @Transactional
     public User saveUser(User user){
         user.setId(KeyGeneratorUtils.keyUUID());
         user.setStatus("1");
@@ -51,7 +50,6 @@ public class UserService {
      * update用户信息
      * @return
      */
-    @Transactional
     public int updateUser(User user){
         return userMapper.updateByPrimaryKeySelective(user);
     }
@@ -61,7 +59,6 @@ public class UserService {
      * 获取所有用户信息
      * @return
      */
-    @Transactional
     public List<User> getAllUsers(int pageSize){
         PageHelper.startPage(pageSize,10);
         return userMapper.findPropertiesByUsername(null);
@@ -72,7 +69,6 @@ public class UserService {
      * @param uanme
      * @return
      */
-    @Transactional
     public boolean checkExists(String uanme){
         return userMapper.selectByUname(uanme)>0?true:false;
     }

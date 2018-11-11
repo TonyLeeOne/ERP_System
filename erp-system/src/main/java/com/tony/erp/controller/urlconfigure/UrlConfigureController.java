@@ -1,4 +1,4 @@
-package com.tony.erp.controller.urlConfigure;
+package com.tony.erp.controller.urlconfigure;
 
 import com.tony.erp.constant.Constant;
 import com.tony.erp.service.shiro.ShiroService;

@@ -62,29 +62,29 @@ public class CustomController {
 
     /**
      * 删除客户信息
-     * @param c_id
+     * @param cid
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String delCus(String c_id){
-        if(ObjectUtils.isEmpty(c_id)){
+    public String delCus(String cid){
+        if(ObjectUtils.isEmpty(cid)){
             return Constant.ARG_EXCEPTION;
         }
-        return customService.delCustom(c_id)>0?Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
+        return customService.delCustom(cid)>0?Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
     }
 
     /**
      * 根据主键获取客户信息
-     * @param c_id
+     * @param cid
      * @return
      */
     @RequestMapping("/getCustom")
     @ResponseBody
-    public Custom getCus(String c_id){
-        if(ObjectUtils.isEmpty(c_id)){
+    public Custom getCus(String cid){
+        if(ObjectUtils.isEmpty(cid)){
             return null;
         }
-        return customService.getCustom(c_id);
+        return customService.getCustom(cid);
     }
 }

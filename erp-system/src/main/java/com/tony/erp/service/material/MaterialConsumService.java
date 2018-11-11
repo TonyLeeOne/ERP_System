@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class MaterialConsumService {
 
     @Autowired
@@ -24,7 +25,6 @@ public class MaterialConsumService {
     @Autowired
     private MaterialService materialService;
 
-    @Transactional
     public List<MaterialConsume> getAll(int pageNum){
         PageHelper.startPage(pageNum);
         return materialConsumeMapper.selectAll();
@@ -35,7 +35,6 @@ public class MaterialConsumService {
      * @param consume
      * @return
      */
-    @Transactional
     public int addMConsume(MaterialConsume consume){
         consume.setMcId(KeyGeneratorUtils.keyUUID());
         consume.setMcDate(KeyGeneratorUtils.dateGenerator());
@@ -63,7 +62,6 @@ public class MaterialConsumService {
      * @param consume
      * @return
      */
-    @Transactional
     public int upMConsum(MaterialConsume consume){
         MaterialConsume mc=materialConsumeMapper.selectByPrimaryKey(consume.getMcId());
         if(StringUtils.isEmpty(consume.getMcMSn())){
@@ -83,24 +81,22 @@ public class MaterialConsumService {
 
     /**
      * 删除领料记录
-     * @param mc_id
+     * @param mcid
      * @return
      */
-    @Transactional
-    public int delMConsume(String mc_id){
-        if(StringUtils.isEmpty(mc_id)){
+    public int delMConsume(String mcid){
+        if(StringUtils.isEmpty(mcid)){
             return -1;
         }
-        MaterialConsume consume=materialConsumeMapper.selectByPrimaryKey(mc_id);
+        MaterialConsume consume=materialConsumeMapper.selectByPrimaryKey(mcid);
         Material material=materialService.checkSnExist(consume.getMcMSn());
-        if(consume.getMcStatus().equals("1")){
+        if("1".equals(consume.getMcStatus())){
             material.setmCount(material.getmCount()+consume.getMcCountIndeed());
-            return materialConsumeMapper.deleteByPrimaryKey(mc_id)+materialService.upMaterial(material);
+            return materialConsumeMapper.deleteByPrimaryKey(mcid)+materialService.upMaterial(material);
         }
-        return materialConsumeMapper.deleteByPrimaryKey(mc_id);
+        return materialConsumeMapper.deleteByPrimaryKey(mcid);
     }
 
-    @Transactional
     public List<MaterialConsume> getByMsn(String msn){
         return materialConsumeMapper.selectByMcMSn(msn);
     }

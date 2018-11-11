@@ -11,34 +11,30 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class DeviceService {
 
     @Autowired
     private DeviceMapper deviceMapper;
 
-    @Transactional
     public List<Device> getAllDevices(int pageNum){
         PageHelper.startPage(pageNum,10);
         return deviceMapper.getAllDevices();
     }
 
-    @Transactional
     public int addDevice(Device device){
         device.setDeviceId(KeyGeneratorUtils.keyUUID());
         device.setDeviceStatus("1");
         return deviceMapper.insert(device);
     }
-    @Transactional
     public int upDevice(Device device){
         return deviceMapper.updateByPrimaryKeySelective(device);
     }
-    @Transactional
     public int delDevice(String did){
         return deviceMapper.deleteByPrimaryKey(did);
     }
-    @Transactional
-    public boolean checkDeviceCode(String device_code){
-        return deviceMapper.checkDeviceCode(device_code)>0?true:false;
+    public boolean checkDeviceCode(String deviceCode){
+        return deviceMapper.checkDeviceCode(deviceCode)>0?true:false;
     }
 
 

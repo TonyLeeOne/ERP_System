@@ -10,24 +10,24 @@ import java.util.UUID;
  */
 public class KeyGeneratorUtils {
 
-    private final static SimpleDateFormat date=new SimpleDateFormat("yyyyMMdd",Locale.CHINA);
-    private final static SimpleDateFormat time=new SimpleDateFormat("yyyyMMddhhmm",Locale.CHINA);
-    private final static SimpleDateFormat dateGenerator=new SimpleDateFormat("yyyy年MM月dd日 a hh时mm分",Locale.CHINA);
+    private final static SimpleDateFormat DATE=new SimpleDateFormat("yyyyMMdd",Locale.CHINA);
+    private final static SimpleDateFormat TIME=new SimpleDateFormat("yyyyMMddhhmm",Locale.CHINA);
+    private final static SimpleDateFormat DATE_GENERATOR=new SimpleDateFormat("yyyy年MM月dd日 a hh时mm分",Locale.CHINA);
 
-    public static String keyUUID(){
+    public static  String keyUUID(){
         return UUID.randomUUID().toString().replaceAll("-","");
     }
 
-    public static String keyTime(){
-        return time.format(new Date());
+    public static synchronized String keyTime(){
+        return TIME.format(new Date());
     }
 
-    public static String keyDate(){
-        return date.format(new Date());
+    public static synchronized String keyDate(){
+        return DATE.format(new Date());
     }
 
-    public static String dateGenerator(){
-        return dateGenerator.format(new Date());
+    public static synchronized String dateGenerator(){
+        return DATE_GENERATOR.format(new Date());
     }
 
     public static void main(String[] args) {

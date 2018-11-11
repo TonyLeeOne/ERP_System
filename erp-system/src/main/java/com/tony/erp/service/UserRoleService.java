@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserRoleService {
 
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-    @Transactional
     public boolean insertUserRole(String uid,String rid){
         if(StringUtils.isEmpty(rid)){
             return false;
@@ -27,7 +27,6 @@ public class UserRoleService {
      * @param rid
      * @return
      */
-    @Transactional
     public boolean check(String rid){
         return userRoleMapper.selectByRid(rid)>0?true:false;
     }
@@ -37,7 +36,6 @@ public class UserRoleService {
      * @param rid
      * @return
      */
-    @Transactional
     public int deleteByRid(String rid){
         return userRoleMapper.delete(rid);
     }

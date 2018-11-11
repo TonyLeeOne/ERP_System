@@ -2,9 +2,7 @@ package com.tony.erp.controller.material;
 
 import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.MaterialConsume;
-import com.tony.erp.domain.MaterialPurchase;
 import com.tony.erp.service.material.MaterialConsumService;
-import com.tony.erp.service.material.MaterialPurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,7 +49,7 @@ public class MaterialConsumeController {
      */
     @RequestMapping("/add")
     @ResponseBody
-    public String addPurchase(MaterialConsume consume){
+    public String addConsume(MaterialConsume consume){
         int i=materialConsumService.addMConsume(consume);
         if(i==-2){
             return Constant.NUMBER_BIG;
@@ -67,7 +65,7 @@ public class MaterialConsumeController {
      */
     @RequestMapping("/update")
     @ResponseBody
-    public String upPurchase(MaterialConsume consume){
+    public String upConsume(MaterialConsume consume){
         int i=materialConsumService.upMConsum(consume);
         if(i==-2){
             return Constant.NUMBER_BIG;
@@ -77,13 +75,13 @@ public class MaterialConsumeController {
 
     /**
      * 删除领料记录
-     * @param mc_id
+     * @param mcid
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String delPurchase(String mc_id){
-        return materialConsumService.delMConsume(mc_id)>1? Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
+    public String delConsume(String mcid){
+        return materialConsumService.delMConsume(mcid)>1? Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
     }
 
     /**
@@ -93,7 +91,7 @@ public class MaterialConsumeController {
      */
     @RequestMapping("/getByMsn")
     @ResponseBody
-    public List<MaterialConsume> getConsum(String msn){
+    public List<MaterialConsume> getConsumeByMsn(String msn){
         return materialConsumService.getByMsn(msn);
     }
 

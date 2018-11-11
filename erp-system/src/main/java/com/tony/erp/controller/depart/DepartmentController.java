@@ -18,6 +18,11 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
+    /**
+     * 添加新部门
+     * @param department
+     * @return
+     */
     @RequestMapping("/add")
     @ResponseBody
     public String addDepart(Department department){
@@ -27,6 +32,11 @@ public class DepartmentController {
         return departmentService.addDepart(department)>0?Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
     }
 
+    /**
+     * 更新部门信息
+     * @param department
+     * @return
+     */
     @RequestMapping("/update")
     @ResponseBody
     public String upDepart(Department department){
@@ -36,6 +46,11 @@ public class DepartmentController {
         return departmentService.updateDepart(department)>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
     }
 
+    /**
+     * 删除部门信息
+     * @param did
+     * @return
+     */
     @RequestMapping("/delete")
     @ResponseBody
     public String delDepart(String did){
@@ -46,6 +61,10 @@ public class DepartmentController {
     }
 
 
+    /**
+     * 查询所有部门信息
+     * @return
+     */
     @RequestMapping("/query")
     @ResponseBody
     public List<Department> delDepart(){
@@ -53,6 +72,11 @@ public class DepartmentController {
     }
 
 
+    /**
+     * 获取单个部门信息
+     * @param did
+     * @return
+     */
     @RequestMapping("/getDepart")
     @ResponseBody
     public Department getDepart(String did){

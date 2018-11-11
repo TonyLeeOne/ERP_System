@@ -7,6 +7,6 @@ import org.apache.shiro.util.ByteSource;
 public class SecurityUtils {
     public static String getSecurityResult(String username,String password){
         ByteSource byteSource=ByteSource.Util.bytes(username);
-        return new SimpleHash(Constant.HasAlgorithmName,password,byteSource,Constant.HasIterations).toString().trim();
+        return new SimpleHash(Constant.ALGORITHM,password,byteSource,Constant.ITERATORS).toString().trim();
     }
 }

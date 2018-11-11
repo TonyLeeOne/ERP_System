@@ -19,7 +19,7 @@ public interface DeviceMaintainMapper {
 
     int updateByPrimaryKey(DeviceMaintain record);
 
-    List<DeviceMaintain> selectByDeviceCode(String device_code);
+    List<DeviceMaintain> selectByDeviceCode(String deviceCode);
 
     List<DeviceMaintain> selectAll();
 }
