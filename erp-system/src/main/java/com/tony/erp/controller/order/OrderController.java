@@ -1,21 +1,24 @@
 package com.tony.erp.controller.order;
 
+import com.google.gson.Gson;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.Order;
 import com.tony.erp.service.OrderService;
-import org.apache.tomcat.util.bcel.Const;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author jli2
  * @date  2018/11/12
  */
 @Controller
 @RequestMapping("/order")
+@Slf4j
 public class OrderController {
 
     @Autowired
@@ -24,7 +27,7 @@ public class OrderController {
     @RequestMapping("/getAllOrders")
     public String getAllOrders(ModelMap modelMap){
         modelMap.addAttribute("orders",orderService.getAllOrders(1));
-        return "";
+        return "order/list";
     }
 
     @RequestMapping("/getAllOrders/{pageNum}")
@@ -33,10 +36,12 @@ public class OrderController {
         return "";
     }
 
-    @RequestMapping("/add")
+    @PostMapping("/add")
     @ResponseBody
-    public String addOrders(Order order){
-        return orderService.addOrder(order)>0?Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
+    public String addOrders(@RequestBody Order order, HttpServletRequest httpServletRequest){
+        System.out.println(order.toString());
+        String data = orderService.addOrder(order)>0?Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
+        return new Gson().toJson(data);
     }
 
     @RequestMapping("/update")

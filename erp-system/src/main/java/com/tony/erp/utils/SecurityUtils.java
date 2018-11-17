@@ -19,4 +19,8 @@ public class SecurityUtils {
         ByteSource byteSource=ByteSource.Util.bytes(username);
         return new SimpleHash(Constant.ALGORITHM,password,byteSource,Constant.ITERATORS).toString().trim();
     }
+
+    public static void main(String[] args) {
+        System.out.println(getSecurityResult("test","test"));
+    }
 }

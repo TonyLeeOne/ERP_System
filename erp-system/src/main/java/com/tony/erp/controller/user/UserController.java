@@ -1,11 +1,13 @@
 package com.tony.erp.controller.user;
 
+import com.google.gson.Gson;
 import com.tony.erp.domain.Profile;
 import com.tony.erp.domain.User;
 import com.tony.erp.service.ProfileService;
 import com.tony.erp.service.UserRoleService;
 import com.tony.erp.service.UserService;
 import com.tony.erp.utils.SecurityUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
@@ -28,6 +30,7 @@ import static com.tony.erp.constant.Constant.*;
  */
 @Controller
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
     @Autowired
     private UserService userService;
@@ -65,7 +68,7 @@ public class UserController {
      */
     @PostMapping("/doLogin")
     @ResponseBody
-    public String login(User user, boolean remember, HttpSession session) {
+    public String login(@RequestBody User user, boolean remember, HttpSession session) {
         Subject subject = org.apache.shiro.SecurityUtils.getSubject();
         cache = cacheManager.getCache("passwordRetryCache");
         if (!subject.isAuthenticated()) {
@@ -86,17 +89,16 @@ public class UserController {
                     return ACOUNT_LOCAKED;
                 }
                 cache.put(user.getUname(), retry);
-                return "账号或密码错误,还有" + (4 - retry.get()) + "次就会被锁定";
+                return new Gson().toJson("账号或密码错误,还有" + (4 - retry.get()) + "次就会被锁定");
             }
         }
 
         if (cache.get(user.getUname()) != null && (cache.get(user.getUname()).incrementAndGet() > 4)) {
-            return ACOUNT_LOCAKED;
+            return new Gson().toJson(ACOUNT_LOCAKED);
         } else {
             cache.remove(user.getUname());
         }
-
-        return LOGIN_SUCCESS;
+        return new Gson().toJson(LOGIN_SUCCESS);
     }
 
 

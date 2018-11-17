@@ -17,6 +17,7 @@ public class ResponseResult {
     private Object data;
 
     public static ResponseResult serverError(String msg,Object data){
+
         return new ResponseResult(HttpStatus.INTERNAL_SERVER_ERROR.value(),msg,data);
     }
 
