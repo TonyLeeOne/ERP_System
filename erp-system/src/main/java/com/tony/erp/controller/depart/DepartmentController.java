@@ -5,12 +5,17 @@ import com.tony.erp.domain.Department;
 import com.tony.erp.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Controller
 @RequestMapping("/depart")
 public class DepartmentController {
@@ -66,9 +71,20 @@ public class DepartmentController {
      * @return
      */
     @RequestMapping("/query")
-    @ResponseBody
-    public List<Department> delDepart(){
-       return departmentService.getAllDeparts();
+    public String queryDepart(ModelMap modelMap){
+        modelMap.addAttribute("departments",departmentService.getAllDeparts(1));
+       return "";
+    }
+
+
+    /**
+     * 查询所有部门信息
+     * @return
+     */
+    @RequestMapping("/query/{pageNum}")
+    public String query(@PathVariable int pageNum,ModelMap modelMap){
+        modelMap.addAttribute("departments",departmentService.getAllDeparts(pageNum));
+        return "";
     }
 
 

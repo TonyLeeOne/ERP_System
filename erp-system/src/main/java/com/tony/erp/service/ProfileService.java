@@ -6,7 +6,10 @@ import com.tony.erp.utils.KeyGeneratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ProfileService {
@@ -32,4 +35,11 @@ public class ProfileService {
     public int upProfile(Profile profile){
         return profileMapper.updateByPrimaryKeySelective(profile);
     }
+    
+    
+    
+    
+    
+    
+    
 }

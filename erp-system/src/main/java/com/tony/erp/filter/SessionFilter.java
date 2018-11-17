@@ -6,8 +6,9 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 /**
+ * @author jli2
+ * @date  2018/11/12
  * session过滤器，修改response对象，设置session超时标识
  */
 //@Component

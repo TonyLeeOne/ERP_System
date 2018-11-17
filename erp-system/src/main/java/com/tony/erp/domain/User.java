@@ -4,6 +4,11 @@ import lombok.Data;
 
 import java.util.HashSet;
 import java.util.Set;
+
+/**
+ * @author jli2
+ * @date 2018/11/12
+ */
 @Data
 public class User {
 
@@ -17,9 +22,10 @@ public class User {
 
     private String status;
 
-    private Department department=new Department();
+    private Profile profile=new Profile();
+    
+    private Department department = new Department();
 
-    private Set<Role> roles=new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
-
-    }
+}

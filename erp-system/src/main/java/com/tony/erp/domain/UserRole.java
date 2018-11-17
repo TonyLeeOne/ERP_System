@@ -1,7 +1,10 @@
 package com.tony.erp.domain;
 
 import lombok.AllArgsConstructor;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @AllArgsConstructor
 public class UserRole {
     private String uid;

@@ -15,7 +15,10 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Configuration
 @Slf4j
 public class DruidConfig {
@@ -24,7 +27,7 @@ public class DruidConfig {
         ServletRegistrationBean bean=new ServletRegistrationBean();
         bean.setServlet(new StatViewServlet());
         bean.addUrlMappings("/druid/*");
-        Map<String,String> params=new HashMap<>();
+        Map<String,String> params=new HashMap<>(4);
         params.put("username","root");
         params.put("password","root");
         params.put("resetEnable","false");

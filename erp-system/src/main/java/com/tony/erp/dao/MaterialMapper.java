@@ -4,9 +4,13 @@ import com.tony.erp.domain.Material;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Repository
 public interface MaterialMapper {
+
     int deleteByPrimaryKey(String mId);
 
     int insert(Material record);
@@ -20,4 +24,5 @@ public interface MaterialMapper {
     int updateByPrimaryKey(Material record);
 
     List<Material> getAllMaterials();
+
 }

@@ -76,6 +76,7 @@
         where o.o_id = #{oId,jdbcType=VARCHAR}
     </select>
 
+
     <select id="find" parameterType="map" resultMap="BaseResultMap">
         select
         o.o_id,
@@ -100,10 +101,13 @@
                 o.o_product_code=#{pro_code}
             </if>
             <if test="custom_name != null">
-                and o.o_custom_name=#{custom_name}
+                 o.o_custom_name=#{custom_name}
             </if>
             <if test="salesman != null">
-                and o.o_salesman=#{salesman}
+                 o.o_salesman=#{salesman}
+            </if>
+            <if test="oNo != null">
+                o.o_no=#{oNo}
             </if>
         </trim>
         order by o.o_create_date DESC

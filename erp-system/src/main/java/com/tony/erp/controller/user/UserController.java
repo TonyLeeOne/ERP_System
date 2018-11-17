@@ -15,16 +15,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.tony.erp.constant.Constant.*;
 
+/**
+ * @author jli2
+ * @date 2018/11/12
+ */
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -142,10 +143,18 @@ public class UserController {
      */
     @GetMapping("/getAllUsers")
     public String getAllUsers(int pageSize, ModelMap modelMap) {
-        if(ObjectUtils.isEmpty(pageSize)){
-            modelMap.addAttribute("users",userService.getAllUsers(1));
-        }
-        modelMap.addAttribute("users",userService.getAllUsers(pageSize));
+        modelMap.addAttribute("users", userService.getAllUsers(1));
+        return "";
+    }
+
+    /**
+     * 分页获取用户信息
+     *
+     * @return
+     */
+    @GetMapping("/getAllUsers/{pageNum}")
+    public String getAllUser(@PathVariable int pageNum, ModelMap modelMap) {
+        modelMap.addAttribute("users", userService.getAllUsers(pageNum));
         return "";
     }
 
@@ -189,16 +198,17 @@ public class UserController {
 
     /**
      * 添加新用户时判断用户名是否重复
+     *
      * @param uname
      * @return
      */
     @RequestMapping("/asyncUname")
     @ResponseBody
-    public String asyncGetUname(String uname){
-        if(StringUtils.isEmpty(uname)){
+    public String asyncGetUname(String uname) {
+        if (StringUtils.isEmpty(uname)) {
             return ARG_EXCEPTION;
         }
-        if(userService.checkExists(uname)){
+        if (userService.checkExists(uname)) {
             return UNAME_EXISTS;
         }
         return UNAME_NOT_EXISTS;

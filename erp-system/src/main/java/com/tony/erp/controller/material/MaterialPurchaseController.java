@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Controller
 @RequestMapping("/materialPurchase")
 public class MaterialPurchaseController {

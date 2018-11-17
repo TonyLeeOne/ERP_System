@@ -1,5 +1,8 @@
 package com.tony.erp.domain;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 public class Custom {
     private String customId;
 

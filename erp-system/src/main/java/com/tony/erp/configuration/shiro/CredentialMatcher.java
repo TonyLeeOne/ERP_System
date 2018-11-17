@@ -9,6 +9,8 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
 /**
+ * @author jli2
+ * @date  2018/11/12
  * 自定义shiro密码比较器
  */
 public class CredentialMatcher extends SimpleCredentialsMatcher {

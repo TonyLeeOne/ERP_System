@@ -1,16 +1,18 @@
 package com.tony.erp.controller.product;
 
 import com.tony.erp.constant.Constant;
-import com.tony.erp.dao.ProductMapper;
 import com.tony.erp.domain.Product;
-import com.tony.erp.service.ProductService;
+import com.tony.erp.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -33,7 +35,11 @@ public class ProductController {
     @RequestMapping("/add")
     @ResponseBody
     public String addProduct(Product product){
-        return productService.addProduct(product)>0?Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
+        int result=productService.addProduct(product);
+        if(Constant.STATUS_CANNOT_CHANGED==result){
+            return Constant.PROD_CODE_EXISTS;
+        }
+        return result>0?Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
     }
 
     @RequestMapping("/update")

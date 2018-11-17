@@ -7,9 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Controller
 @RequestMapping("/custom")
 public class CustomController {
@@ -19,18 +23,28 @@ public class CustomController {
 
     /**
      * 获取所有客户信息
-     * @param pageSize
      * @param modelMap
      * @return
      */
     @RequestMapping("/getAllCustoms")
-    public String getAllCustoms(int pageSize, ModelMap modelMap){
-        if(ObjectUtils.isEmpty(pageSize)){
+    public String getAllCustoms(ModelMap modelMap){
             modelMap.addAttribute("customs",customService.getAllCustoms(1));
-        }
+
+        return "";
+    }
+
+    /**
+     * 分页查询客户信息
+     * @param pageSize
+     * @param modelMap
+     * @return
+     */
+    @RequestMapping("/getAllCustoms/{pageSize}")
+    public String getAllCustom(@PathVariable int pageSize, ModelMap modelMap){
         modelMap.addAttribute("customs",customService.getAllCustoms(pageSize));
         return "";
     }
+
 
     /**
      * 新增客户信息

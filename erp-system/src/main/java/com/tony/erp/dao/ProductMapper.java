@@ -4,7 +4,10 @@ import com.tony.erp.domain.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Repository
 public interface ProductMapper {
 
@@ -14,7 +17,7 @@ public interface ProductMapper {
 
     int insertSelective(Product record);
 
-    Product selectByPrimaryKey(String proId);
+    Product selectByProCode(String proCode);
 
     int updateByPrimaryKeySelective(Product record);
 

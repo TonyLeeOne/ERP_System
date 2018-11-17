@@ -12,7 +12,10 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class RoleModuleService {
@@ -24,7 +27,7 @@ public class RoleModuleService {
     private ModuleService moduleService;
 
     /**
-     * 更新角色及其权限信息
+     * 添加/更新角色及其权限信息
      * @param mids
      * @param rid
      * @return

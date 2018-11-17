@@ -13,6 +13,10 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Configuration
 public class CaffeineConfiguration {
 
@@ -71,9 +75,6 @@ public class CaffeineConfiguration {
         if(Constant.ALL_ROLES.equals(key)){
             return roleService.getAllRoles();
         }
-
-
-
         return null;
     }
 

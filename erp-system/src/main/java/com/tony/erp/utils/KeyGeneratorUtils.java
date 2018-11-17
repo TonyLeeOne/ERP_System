@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.UUID;
 
 /**
+ * @author jli2
+ * @date  2018/11/12
  * 主键生成策略及日期转换工具类
  */
 public class KeyGeneratorUtils {
@@ -30,7 +32,4 @@ public class KeyGeneratorUtils {
         return DATE_GENERATOR.format(new Date());
     }
 
-    public static void main(String[] args) {
-        System.out.println(keyUUID());
-    }
 }

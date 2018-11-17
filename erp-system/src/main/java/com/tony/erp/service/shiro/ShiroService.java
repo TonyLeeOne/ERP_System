@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * @author jli2
+ * @date  2018/11/12
  * 动态配置url权限信息
  */
 @Service

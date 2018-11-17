@@ -25,12 +25,21 @@
     where mc_m_sn = #{mcMSn,jdbcType=VARCHAR} order by mc_date DESC
   </select>
 
+  <select id="countByMcMSn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    count(mc_count_indeed)
+    from material_consume
+    where mc_m_sn=#{mcMSn,jdbcType=VARCHAR} and mc_status = '1'
+  </select>
+
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from material_consume
     order by mc_date desc
   </select>
+
+
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 

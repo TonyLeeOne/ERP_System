@@ -4,7 +4,10 @@ import com.tony.erp.constant.Constant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @AllArgsConstructor
 @Data
 public class ResponseResult {

@@ -9,7 +9,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Controller
 @RequestMapping("/device")
 public class DeviceController {

@@ -11,7 +11,10 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UrlConfigureService {

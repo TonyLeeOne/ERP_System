@@ -18,7 +18,10 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Configuration
 public class ShiroConfiguration {
 

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * @author jli2
+ * @date  2018/11/12
  * 全局异常处理类
  */
 @ControllerAdvice

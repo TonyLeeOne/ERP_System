@@ -18,8 +18,9 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 /**
+ * @author jli2
+ * @date  2018/11/12
  * 自定义authRealm
  */
 @Slf4j

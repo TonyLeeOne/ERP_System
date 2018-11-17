@@ -1,10 +1,14 @@
 package com.tony.erp.service;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.tony.erp.constant.Constant;
 import com.tony.erp.dao.UserMapper;
 import com.tony.erp.domain.Profile;
 import com.tony.erp.domain.User;
+import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.utils.KeyGeneratorUtils;
+import com.tony.erp.utils.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,12 +16,17 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private ProfileService profileService;
 
@@ -40,7 +49,7 @@ public class UserService {
      */
     public User saveUser(User user){
         user.setId(KeyGeneratorUtils.keyUUID());
-        user.setStatus("1");
+        user.setStatus(Constant.STRING_ONE);
         userMapper.insertSelective(user);
         return userMapper.selectByPrimaryKey(user.getId());
     }
@@ -59,9 +68,15 @@ public class UserService {
      * 获取所有用户信息
      * @return
      */
-    public List<User> getAllUsers(int pageSize){
+    public PageHelperEntity getAllUsers(int pageSize){
         PageHelper.startPage(pageSize,10);
-        return userMapper.findPropertiesByUsername(null);
+        List<User> users=userMapper.findPropertiesByUsername(null);
+        PageHelperEntity pageHelperEntity=new PageHelperEntity();
+        pageHelperEntity.setRows(users);
+        PageInfo<User> pageInfo=new PageInfo<>(users);
+        pageHelperEntity.setTotal(pageInfo.getTotal());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(),10));
+        return pageHelperEntity;
     }
 
     /**

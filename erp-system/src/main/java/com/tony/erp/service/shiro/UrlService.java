@@ -11,7 +11,10 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.*;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Service
 public class UrlService {
 
@@ -47,7 +50,7 @@ public class UrlService {
      */
     public Map<String, List<String>> getDifference(){
         List<UrlConfigure> origin=service.getAllUrlsFromDB();
-        Map<String,List<String>> map=new HashMap<>();
+        Map<String,List<String>> map=new HashMap<>(2);
         if(!CollectionUtils.isEmpty(origin)){
             List<String> urls=new ArrayList<>();
             origin.forEach(configure->{

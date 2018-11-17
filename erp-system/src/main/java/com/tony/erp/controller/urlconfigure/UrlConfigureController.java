@@ -1,6 +1,7 @@
 package com.tony.erp.controller.urlconfigure;
 
 import com.tony.erp.constant.Constant;
+import com.tony.erp.service.caffeine.CaffeineService;
 import com.tony.erp.service.shiro.ShiroService;
 import com.tony.erp.service.shiro.UrlConfigureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Controller
 @RequestMapping("/urlConfigure")
 public class UrlConfigureController {
@@ -21,6 +25,9 @@ public class UrlConfigureController {
 
     @Autowired
     private ShiroService shiroService;
+    
+    @Autowired
+    private CaffeineService caffeineService;
 
     /**
      * 初始化所有的url,默认授权为anon
@@ -35,7 +42,7 @@ public class UrlConfigureController {
 
     @RequestMapping("/getAllUrls")
     public String getAllUrls(ModelMap modelMap) {
-        modelMap.addAttribute("urls", service.getAllUrlsFromDB());
+        modelMap.addAttribute("urls", caffeineService.getAllUrls());
         return "";
     }
 

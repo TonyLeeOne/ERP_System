@@ -12,31 +12,35 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class ProductService {
 
     @Autowired
     private ProductMapper productMapper;
 
+    @Transactional
     public List<Product> getAllProducts(int pageNum){
         PageHelper.startPage(pageNum,10);
         return productMapper.getAllProducts();
     }
 
+    @Transactional
     public int addProduct(Product product){
         product.setProId(KeyGeneratorUtils.keyUUID());
         product.setProStatus("1");
         return productMapper.insert(product);
     }
 
+    @Transactional
     public int upProduct(Product product){
         return productMapper.updateByPrimaryKeySelective(product);
     }
 
+    @Transactional
     public int delProduct(String pid){
         return productMapper.deleteByPrimaryKey(pid);
     }
 
+    @Transactional
     public Product getProduct(String pid){
         return productMapper.selectByPrimaryKey(pid);
     }

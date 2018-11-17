@@ -1,3 +1,4 @@
+-- we don't know how to generate schema erp_system (class Schema) :(
 create table custom
 (
 	custom_id varchar(50) not null comment '主键'
@@ -8,8 +9,11 @@ create table custom
 	custom_tel varchar(20) null comment '客户电话',
 	custom_publish varchar(20) null comment '客户法人',
 	custom_fullname varchar(20) null comment '客户全名',
-	custom_status char null comment '客户状态  1代表有效   2代表无效'
+	custom_status char null comment '客户状态  1代表有效   2代表无效',
+	constraint custom_custom_code_uindex
+		unique (custom_code)
 )
+comment '客户表'
 ;
 
 create table department
@@ -20,6 +24,7 @@ create table department
 	d_mamager varchar(50) null comment '部门主管',
 	d_duty varchar(200) null comment '部门职责'
 )
+comment '部门表'
 ;
 
 create table device
@@ -36,6 +41,7 @@ create table device
 	device_note varchar(200) null comment '备注',
 	device_status char null comment '设备状态，1代表良好，2代表待维修，3代表维修OK'
 )
+comment '设备表'
 ;
 
 create table device_maintain_his
@@ -48,6 +54,7 @@ create table device_maintain_his
 	his_result char null comment '设备检查结果 1代表良好 2代表故障',
 	his_note varchar(200) null comment '备注'
 )
+comment '设备保养记录表'
 ;
 
 create table manufacture_order
@@ -59,9 +66,12 @@ create table manufacture_order
 	mo_start_date varchar(50) null comment '生产开始时间',
 	mo_end_date varchar(50) null comment '生产结束时间',
 	mo_count int null comment '已生产数量',
-	mo_wait_count int null comment '待生产数量',
-	mo_status char null comment '状态 1进行中 2已完工'
+	mo_wait_count int null comment '计划生产数量',
+	mo_status char null comment '状态 1进行中 2已完工',
+	constraint manufacture_order_mo_sn_uindex
+		unique (mo_sn)
 )
+comment '生产工单表'
 ;
 
 create table manufacture_plan
@@ -72,10 +82,13 @@ create table manufacture_plan
 	mp_pro_code varchar(50) null comment '产品编号',
 	mp_start_date varchar(50) null comment '生产计划开始日期',
 	mp_end_date varchar(50) null comment '生产计划结束日期',
-	mp_count int null comment '计划生产数量',
+	mp_count int default '0' null comment '计划生产数量',
 	mp_order_id varchar(50) null comment '订单id',
-	mp_status char null comment '1代表生成进行中，2代表生产完成'
+	mp_status char null comment '1代表生成进行中，2代表生产完成',
+	constraint manufacture_plan_mp_sn_uindex
+		unique (mp_sn)
 )
+comment '生产计划表'
 ;
 
 create table material
@@ -86,8 +99,11 @@ create table material
 	m_sn varchar(50) null comment '物料编号',
 	m_count int null comment '仓库物料剩余数量',
 	m_note varchar(200) null comment '备注',
-	m_status char null comment '物料状态，1代表可用物料，2代表禁止使用'
+	m_status char null comment '物料状态，1 ,充足  2,短缺',
+	constraint material_m_sn_uindex
+		unique (m_sn)
 )
+comment '物料表'
 ;
 
 create table material_consume
@@ -102,8 +118,9 @@ create table material_consume
 	mc_requestor varchar(20) null comment '领料员',
 	mc_operator varchar(20) null comment '发料员',
 	mc_date varchar(20) null comment '领料时间',
-	mc_status char null comment '领料状态 1，待领料，2 已待领料'
+	mc_status char null comment '领料状态 1,可领料 2,已领料'
 )
+comment '领料表'
 ;
 
 create table material_purchase
@@ -121,6 +138,7 @@ create table material_purchase
 	mph_date varchar(20) null comment '入库日期',
 	mph_note varchar(200) null comment '备注'
 )
+comment '采购表'
 ;
 
 create table module
@@ -129,6 +147,41 @@ create table module
 		primary key,
 	mname varchar(255) null comment '权限名称'
 )
+comment '权限表'
+;
+
+create table orders
+(
+	o_id varchar(50) not null comment '主键'
+		primary key,
+	o_modifier varchar(20) null comment '修改人',
+	o_creator varchar(20) null comment '创建人',
+	o_no varchar(50) null comment '订单号',
+	o_com_no varchar(50) null comment '公司单号',
+	o_product_code varchar(10) null comment '产品编号',
+	o_count int null comment '订单数量',
+	o_indeed_count int null comment '实际出货数量',
+	o_create_date varchar(50) null comment '下单日期',
+	o_shipment_date varchar(50) null comment '出货日期',
+	o_custom_name varchar(50) null comment '客户名',
+	o_pay varchar(20) null comment '结算单价',
+	o_pay_category varchar(20) null comment '币种',
+	o_exchange_rate varchar(20) null comment '汇率',
+	o_shipment_method varchar(20) null comment '交货方式',
+	o_contacts varchar(20) null comment '联系人',
+	o_tel varchar(20) null comment '联系人电话',
+	o_address varchar(100) null comment '客户地址',
+	o_salesman varchar(20) null comment '业务员名称',
+	o_salesman_depart varchar(20) null comment '业务员部门',
+	o_salesman_contact varchar(20) null comment '业务员联系方式',
+	o_auditor varchar(20) null comment '审核人',
+	o_audit_date varchar(20) null comment '审核日期',
+	o_note varchar(100) null comment '备注',
+	o_status char null comment '订单状态 1代表待审核 2代表审核未通过  3代表待出货 4代表已安排出货',
+	constraint orders_o_no_uindex
+		unique (o_no)
+)
+comment '订单表'
 ;
 
 create table product
@@ -145,6 +198,7 @@ create table product
 	constraint pro_code
 		unique (pro_code)
 )
+comment '产品管理表'
 ;
 
 create table profile
@@ -162,6 +216,7 @@ create table profile
 	p_name varchar(20) null comment '中文名或别名',
 	p_wechat varchar(50) null comment '微信'
 )
+comment '用户信息表'
 ;
 
 create table role
@@ -170,6 +225,7 @@ create table role
 		primary key,
 	rname varchar(255) null comment '角色名'
 )
+comment '角色表'
 ;
 
 create table role_module
@@ -177,6 +233,7 @@ create table role_module
 	rid varchar(50) null comment '角色id',
 	mid varchar(50) null comment '权限id'
 )
+comment '角色权限分配表'
 ;
 
 create index m_id
@@ -187,6 +244,38 @@ create index r_id
 	on role_module (rid)
 ;
 
+create table shipment
+(
+	s_id varchar(50) not null comment '主键'
+		primary key,
+	s_order_no varchar(50) null comment '订单编号',
+	s_pro_code varchar(50) null comment '产品编号',
+	s_ship_count int null comment '出货数量',
+	s_auditor varchar(10) null comment '审核人',
+	s_surer varchar(10) null comment '确认人',
+	s_audit_date varchar(20) null comment '审核日期',
+	s_ship_date varchar(20) null comment '出货日期',
+	s_status char null comment '1,待审核 2,审核不通过 3,待确认 4,已安排出货'
+)
+comment '出货表'
+;
+
+create table storage
+(
+	sto_id varchar(50) not null comment '主键'
+		primary key,
+	sto_mp_sn varchar(50) null comment '生产计划编号',
+	sto_mo_sn varchar(50) null comment '生产工单标号',
+	sto_pro_code varchar(100) null comment '入库产品编号',
+	sto_indeed_num int null comment '入库数量',
+	sto_real_date varchar(20) null comment '入库日期',
+	sto_surer varchar(10) null comment '确认人',
+	sto_sender varchar(10) null comment '送料员',
+	sto_status char null comment '1,待确认 2,入库失败 3,入库成功 '
+)
+comment '成品入库表'
+;
+
 create table url_configure
 (
 	id varchar(40) not null comment '主键'
@@ -194,6 +283,7 @@ create table url_configure
 	url varchar(200) not null comment 'url',
 	authority varchar(10) null comment '权限配置'
 )
+comment 'url权限配置表'
 ;
 
 create table user
@@ -203,8 +293,11 @@ create table user
 	uname varchar(50) not null comment '用户名',
 	upass varchar(50) not null comment '用户密码',
 	departId varchar(50) not null comment '部门id',
-	status char not null comment '用户状态 1代表正常  2代表锁定'
+	status char not null comment '用户状态 1代表正常  2代表锁定',
+	constraint user_uname_uindex
+		unique (uname)
 )
+comment '用户表'
 ;
 
 create table user_role
@@ -212,6 +305,7 @@ create table user_role
 	uid varchar(50) null comment '用户id',
 	rid varchar(50) null comment '角色id'
 )
+comment '用户角色分配表'
 ;
 
 create index r_fk
@@ -234,39 +328,8 @@ create table vendor
 	v_status char null comment '供应商状态 1代表正常 2代表终止合作',
 	v_note varchar(200) null comment '备注'
 )
+comment '供应商管理表'
 ;
-
--- 新增订单表
-
-create table orders
-(
-  o_id varchar(50) not null comment '主键'
-    primary key,
-  o_modifier         varchar(20) comment '修改人',
-  o_creator          varchar(20) comment '创建人',
-  o_no               varchar(50) comment '订单号',
-  o_com_no           varchar(50) comment '公司单号',
-  o_product_code varchar(10) comment '产品编号',
-  o_count            int comment '订单数量',
-  o_indeed_count     int comment '实际出货数量',
-  o_create_date      varchar(50) comment '下单日期',
-  o_shipment_date    varchar(50) comment '出货日期',
-  o_custom_name      varchar(50) comment '客户名',
-  o_pay              varchar(20) comment '结算方式',
-  o_pay_category     varchar(20) comment '币种',
-  o_exchange_rate    varchar(20) comment '汇率',
-  o_shipment_method  varchar(20) comment '交货方式',
-  o_contacts         varchar(20) comment '联系人',
-  o_tel              varchar(20) comment '联系人电话',
-  o_address          varchar(100) comment '客户地址',
-  o_salesman         varchar(20) comment '业务员名称',
-  o_salesman_depart  varchar(20) comment '业务员部门',
-  o_salesman_contact varchar(20) comment '业务员联系方式',
-  o_auditor          varchar(20) comment '审核人',
-  o_audit_date       varchar(20) comment '审核日期',
-  o_note             varchar(100) comment '备注',
-  o_status           char(1) comment '订单状态 1代表待审核 2代表审核未通过 3 代表审核通过 4代表待出货 5代表已安排出货'
-);
 
 
 

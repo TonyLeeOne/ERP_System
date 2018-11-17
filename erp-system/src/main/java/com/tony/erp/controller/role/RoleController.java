@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Controller
 @RequestMapping("/role")
 public class RoleController {
@@ -52,7 +55,7 @@ public class RoleController {
      */
     @PostMapping("/add")
     @ResponseBody
-    public String addRole(String roleName,List<String> mids){
+    public String addRole(List<String> mids,String roleName){
         Role role=roleService.addRole(roleName);
         if(ObjectUtils.isEmpty(role)||CollectionUtils.isEmpty(mids)){
             return Constant.ARG_EXCEPTION;
@@ -67,15 +70,6 @@ public class RoleController {
     @PostMapping("/update")
     @ResponseBody
     public String upRole(Role role,List<String> mids){
-//        String roleName="角色管理员";
-//        Role role=new Role();
-//        role.setRname(roleName);
-//        role.setRid("c0d8e7ef02be4aa7a1ab0a3938e9eca7");
-//        List<String> mids=new ArrayList<>();
-//        mids.add("495ba188daa446e380c5448a94073d41");
-//        mids.add("aa83386d79f74f4fa40917b4526ca22a");
-//        mids.add("a4e6f7a2c46e4ae99620b204f8ec4da8");
-//        mids.add("0f63060888d44433b07ae23fd7ca3e41");
         if(ObjectUtils.isEmpty(role)||CollectionUtils.isEmpty(mids)){
             return Constant.ARG_EXCEPTION;
         }

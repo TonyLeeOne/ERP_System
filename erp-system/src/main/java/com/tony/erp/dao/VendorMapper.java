@@ -4,7 +4,10 @@ import com.tony.erp.domain.Vendor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Repository
 public interface VendorMapper {
     int deleteByPrimaryKey(String vId);

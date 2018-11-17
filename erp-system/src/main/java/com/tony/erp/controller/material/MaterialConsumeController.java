@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Controller
 @RequestMapping("/materialConsume")
 public class MaterialConsumeController {
@@ -26,7 +30,7 @@ public class MaterialConsumeController {
      */
     @RequestMapping("/getAll")
     public String getAll(ModelMap modelMap){
-        modelMap.addAttribute("comsumes",materialConsumService.getAll(1));
+        modelMap.addAttribute("consumes",materialConsumService.getAll(1));
         return "";
     }
 
@@ -38,7 +42,7 @@ public class MaterialConsumeController {
      */
     @RequestMapping("/getAll/{pageNum}")
     public String getAll(@PathVariable int pageNum, ModelMap modelMap){
-        modelMap.addAttribute("purchases",materialConsumService.getAll(pageNum));
+        modelMap.addAttribute("consumes",materialConsumService.getAll(pageNum));
         return "";
     }
 
@@ -51,7 +55,7 @@ public class MaterialConsumeController {
     @ResponseBody
     public String addConsume(MaterialConsume consume){
         int i=materialConsumService.addMConsume(consume);
-        if(i==-2){
+        if(Constant.STATUS_CANNOT_CHANGED==i){
             return Constant.NUMBER_BIG;
         }
         return i>1? Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
@@ -67,7 +71,7 @@ public class MaterialConsumeController {
     @ResponseBody
     public String upConsume(MaterialConsume consume){
         int i=materialConsumService.upMConsum(consume);
-        if(i==-2){
+        if(Constant.STATUS_CANNOT_CHANGED==i){
             return Constant.NUMBER_BIG;
         }
         return i>1? Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
@@ -95,4 +99,15 @@ public class MaterialConsumeController {
         return materialConsumService.getByMsn(msn);
     }
 
+    /**
+     * 确认领料单接口
+     * @param mcId  领料单主键
+     * @param indeed 实际领料数量
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/confirm")
+    public String sure(String mcId,int indeed){
+        return materialConsumService.sureConsume(mcId,indeed)>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+    }
 }

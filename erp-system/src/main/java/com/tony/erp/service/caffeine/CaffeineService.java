@@ -1,6 +1,7 @@
 package com.tony.erp.service.caffeine;
 
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.github.pagehelper.PageHelper;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.Module;
 import com.tony.erp.domain.Role;
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Service
 public class CaffeineService {
 

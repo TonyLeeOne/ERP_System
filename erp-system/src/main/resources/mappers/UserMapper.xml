@@ -7,6 +7,19 @@
     <result column="upass" jdbcType="VARCHAR" property="upass"/>
     <result column="departId" jdbcType="VARCHAR" property="departId"/>
     <result column="status" jdbcType="CHAR" property="status"/>
+    <association property="profile" javaType="com.tony.erp.domain.Profile">
+      <id column="pid" jdbcType="VARCHAR" property="pid" />
+      <result column="p_uid" jdbcType="VARCHAR" property="pUid" />
+      <result column="p_indate" jdbcType="VARCHAR" property="pIndate" />
+      <result column="p_faredate" jdbcType="VARCHAR" property="pFaredate" />
+      <result column="p_major" jdbcType="VARCHAR" property="pMajor" />
+      <result column="p_id" jdbcType="VARCHAR" property="pId" />
+      <result column="p_sex" jdbcType="CHAR" property="pSex" />
+      <result column="p_edu" jdbcType="VARCHAR" property="pEdu" />
+      <result column="p_tel" jdbcType="VARCHAR" property="pTel" />
+      <result column="p_name" jdbcType="VARCHAR" property="pName" />
+      <result column="p_wechat" jdbcType="VARCHAR" property="pWechat" />
+    </association>
     <association property="department" javaType="com.tony.erp.domain.Department">
       <id column="d_id" jdbcType="VARCHAR" property="dId" />
       <result column="d_name" jdbcType="VARCHAR" property="dName" />
@@ -27,10 +40,23 @@
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=VARCHAR}
+
+    from user u left join profile p on u.id=p.p_uid
+    inner join user_role ur on u.id=ur.uid
+    inner join role r on ur.rid=r.rid
+    where u.id = #{id,jdbcType=VARCHAR}
   </select>
+
+  <select id="getAllUsers" resultMap="BaseResultMap">
+    select
+    *
+    from user u left join profile p on u.id=p.p_uid
+    inner join user_role ur on u.id=ur.uid
+    inner join role r on ur.rid=r.rid
+    order by p.p_indate
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from user
     where id = #{id,jdbcType=VARCHAR}
@@ -109,6 +135,7 @@
   <select id="findPropertiesByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT u.*,r.*,m.*,d.* FROM user u
     left join department d on u.departId=d.d_id
+    left join profile p on u.id=p.p_uid
     inner join user_role ur on ur.uid=u.id
     inner join role r on r.rid=ur.rid
     inner join role_module mr on mr.rid=r.rid
@@ -116,6 +143,7 @@
     <if test="uname != null">
     WHERE u.uname=#{uname,jdbcType=VARCHAR}
     </if>
+    order by p.p_indate desc
     </select>
 
   <select id="selectByUname" parameterType="java.lang.String" resultType="java.lang.Integer">

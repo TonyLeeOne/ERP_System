@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.StorageMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.Storage">
+    <id column="sto_id" jdbcType="VARCHAR" property="stoId" />
+    <result column="sto_mp_sn" jdbcType="VARCHAR" property="stoMpSn" />
+    <result column="sto_mo_sn" jdbcType="VARCHAR" property="stoMoSn" />
+    <result column="sto_pro_code" jdbcType="VARCHAR" property="stoProCode" />
+    <result column="sto_indeed_num" jdbcType="INTEGER" property="stoIndeedNum" />
+    <result column="sto_real_date" jdbcType="VARCHAR" property="stoRealDate" />
+    <result column="sto_surer" jdbcType="VARCHAR" property="stoSurer" />
+    <result column="sto_sender" jdbcType="VARCHAR" property="stoSender" />
+    <result column="sto_status" jdbcType="CHAR" property="stoStatus" />
+    <association property="product" javaType="com.tony.erp.domain.Product">
+      <id column="pro_id" jdbcType="VARCHAR" property="proId"/>
+      <result column="pro_code" jdbcType="VARCHAR" property="proCode"/>
+      <result column="pro_name" jdbcType="VARCHAR" property="proName"/>
+      <result column="pro_count" jdbcType="INTEGER" property="proCount"/>
+      <result column="pro_price" jdbcType="REAL" property="proPrice"/>
+      <result column="pro_image" jdbcType="VARCHAR" property="proImage"/>
+      <result column="pro_note" jdbcType="VARCHAR" property="proNote"/>
+      <result column="pro_status" jdbcType="CHAR" property="proStatus"/>
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    sto_id, sto_mp_sn, sto_mo_sn, sto_pro_code, sto_indeed_num, sto_real_date, sto_surer, 
+    sto_sender, sto_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from storage
+    where sto_id = #{stoId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="find" parameterType="map" resultMap="BaseResultMap">
+    select
+    p.pro_code,p.pro_name,s.sto_mp_sn,s.sto_mo_sn,s.sto_indeed_num,s.sto_sender,s.sto_surer,s.sto_real_date
+    from storage s inner join product p
+    on s.sto_pro_code=p.pro_code
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+      <if test="stoMpSn !=null">
+        s.sto_mp_sn=#{stoMpSn}
+      </if>
+      <if test="stoMoSn !=null">
+        s.sto_mo_sn=#{stoMoSn}
+      </if>
+      <if test="stoSender !=null">
+        s.sto_sender=#{stoSender}
+      </if>
+    </trim>
+    order by s.sto_real_date DESC
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from storage
+    where sto_id = #{stoId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.Storage">
+    insert into storage (sto_id, sto_mp_sn, sto_mo_sn, 
+      sto_pro_code, sto_indeed_num, sto_real_date, 
+      sto_surer, sto_sender, sto_status
+      )
+    values (#{stoId,jdbcType=VARCHAR}, #{stoMpSn,jdbcType=VARCHAR}, #{stoMoSn,jdbcType=VARCHAR}, 
+      #{stoProCode,jdbcType=VARCHAR}, #{stoIndeedNum,jdbcType=INTEGER}, #{stoRealDate,jdbcType=VARCHAR}, 
+      #{stoSurer,jdbcType=VARCHAR}, #{stoSender,jdbcType=VARCHAR}, #{stoStatus,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.Storage">
+    insert into storage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stoId != null">
+        sto_id,
+      </if>
+      <if test="stoMpSn != null">
+        sto_mp_sn,
+      </if>
+      <if test="stoMoSn != null">
+        sto_mo_sn,
+      </if>
+      <if test="stoProCode != null">
+        sto_pro_code,
+      </if>
+      <if test="stoIndeedNum != null">
+        sto_indeed_num,
+      </if>
+      <if test="stoRealDate != null">
+        sto_real_date,
+      </if>
+      <if test="stoSurer != null">
+        sto_surer,
+      </if>
+      <if test="stoSender != null">
+        sto_sender,
+      </if>
+      <if test="stoStatus != null">
+        sto_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stoId != null">
+        #{stoId,jdbcType=VARCHAR},
+      </if>
+      <if test="stoMpSn != null">
+        #{stoMpSn,jdbcType=VARCHAR},
+      </if>
+      <if test="stoMoSn != null">
+        #{stoMoSn,jdbcType=VARCHAR},
+      </if>
+      <if test="stoProCode != null">
+        #{stoProCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stoIndeedNum != null">
+        #{stoIndeedNum,jdbcType=INTEGER},
+      </if>
+      <if test="stoRealDate != null">
+        #{stoRealDate,jdbcType=VARCHAR},
+      </if>
+      <if test="stoSurer != null">
+        #{stoSurer,jdbcType=VARCHAR},
+      </if>
+      <if test="stoSender != null">
+        #{stoSender,jdbcType=VARCHAR},
+      </if>
+      <if test="stoStatus != null">
+        #{stoStatus,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Storage">
+    update storage
+    <set>
+      <if test="stoMpSn != null">
+        sto_mp_sn = #{stoMpSn,jdbcType=VARCHAR},
+      </if>
+      <if test="stoMoSn != null">
+        sto_mo_sn = #{stoMoSn,jdbcType=VARCHAR},
+      </if>
+      <if test="stoProCode != null">
+        sto_pro_code = #{stoProCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stoIndeedNum != null">
+        sto_indeed_num = #{stoIndeedNum,jdbcType=INTEGER},
+      </if>
+      <if test="stoRealDate != null">
+        sto_real_date = #{stoRealDate,jdbcType=VARCHAR},
+      </if>
+      <if test="stoSurer != null">
+        sto_surer = #{stoSurer,jdbcType=VARCHAR},
+      </if>
+      <if test="stoSender != null">
+        sto_sender = #{stoSender,jdbcType=VARCHAR},
+      </if>
+      <if test="stoStatus != null">
+        sto_status = #{stoStatus,jdbcType=CHAR},
+      </if>
+    </set>
+    where sto_id = #{stoId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Storage">
+    update storage
+    set sto_mp_sn = #{stoMpSn,jdbcType=VARCHAR},
+      sto_mo_sn = #{stoMoSn,jdbcType=VARCHAR},
+      sto_pro_code = #{stoProCode,jdbcType=VARCHAR},
+      sto_indeed_num = #{stoIndeedNum,jdbcType=INTEGER},
+      sto_real_date = #{stoRealDate,jdbcType=VARCHAR},
+      sto_surer = #{stoSurer,jdbcType=VARCHAR},
+      sto_sender = #{stoSender,jdbcType=VARCHAR},
+      sto_status = #{stoStatus,jdbcType=CHAR}
+    where sto_id = #{stoId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Repository
 public interface DeviceMapper {
     int deleteByPrimaryKey(String deviceId);

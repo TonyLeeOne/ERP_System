@@ -7,7 +7,10 @@ import lombok.experimental.Accessors;
 
 import java.util.HashSet;
 import java.util.Set;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Data
 @EqualsAndHashCode
 public class Role {

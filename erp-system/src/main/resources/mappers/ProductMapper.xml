@@ -14,11 +14,11 @@
   <sql id="Base_Column_List">
     pro_id, pro_code, pro_name, pro_count, pro_price, pro_image, pro_note, pro_status
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByProCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from product
-    where pro_id = #{proId,jdbcType=VARCHAR}
+    where pro_code = #{proCode,jdbcType=VARCHAR}
   </select>
 
   <select id="getAllProducts" parameterType="java.lang.String" resultMap="BaseResultMap">

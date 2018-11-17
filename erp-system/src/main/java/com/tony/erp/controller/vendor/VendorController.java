@@ -8,10 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+/**
+ * @author jli2
+ * @date  2018/11/12
+ */
 @Controller
 @RequestMapping("/vendor")
 public class VendorController {
@@ -21,7 +25,13 @@ public class VendorController {
 
     @RequestMapping("/getAllVendors")
     public String getAllVendors(ModelMap modelMap){
-        modelMap.addAttribute("vendors",vendorService.getAllVendors());
+        modelMap.addAttribute("vendors",vendorService.getAllVendors(1));
+        return "";
+    }
+
+    @RequestMapping("/getAllVendors/{pageNum}")
+    public String getAllVendor(@PathVariable int pageNum, ModelMap modelMap){
+        modelMap.addAttribute("vendors",vendorService.getAllVendors(pageNum));
         return "";
     }
 
