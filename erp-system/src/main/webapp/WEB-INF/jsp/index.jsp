@@ -22,7 +22,7 @@
 <body>
 <!-- 顶部开始 -->
 <div class="container">
-    <div class="logo"><a href="./index.html">ERP管理系统 v1.0</a></div>
+    <div class="logo"><a href="/index">ERP管理系统 v1.0</a></div>
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
@@ -77,10 +77,9 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="member-list.html">
+                        <a _href="/custom/getAllCustoms">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有客户</cite>
-
                         </a>
                     </li>
                 </ul>
@@ -93,7 +92,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="member-list.html">
+                        <a _href="/vendor/getAllVendors">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有供应商</cite>
                         </a>
@@ -108,7 +107,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/manPlan/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>生产计划</cite>
                         </a>

@@ -9,22 +9,20 @@
             <input class="layui-input" placeholder="截止日" name="end" id="end">
             <div class="layui-input-inline">
                 <select name="contrller">
-                    <option value="">订单状态</option>
-                    <option value="1">待审核</option>
-                    <option value="2">审核未通过</option>
-                    <option value="3">待出货</option>
-                    <option value="4">已安排出货</option>
+                    <option value="">客户状态</option>
+                    <option value="1">有效</option>
+                    <option value="2">无效</option>
                 </select>
             </div>
-            <input type="text" name="oNo" placeholder="请输入订单号" autocomplete="off" class="layui-input">
+            <input type="text" name="customName" placeholder="请输入姓名" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit')"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit')"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：${orders.total} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据：${customs.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -33,51 +31,41 @@
                 <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i
                         class="layui-icon">&#xe605;</i></div>
             </th>
-            <th>订单编号</th>
-            <th>公司单号</th>
-            <th>业务员名称</th>
-            <th>订单数量</th>
-            <th>客户名</th>
-            <th>联系人</th>
-            <th>联系人电话</th>
-            <th>下单日期</th>
-            <th>产品单价</th>
-            <th>产品名称</th>
-            <th>产品图片</th>
-            <th>订单状态</th>
+            <th>客户名字</th>
+            <th>客户地址</th>
+            <th>客户编号</th>
+            <th>客户电话</th>
+            <th>客户法人</th>
+            <th>客户全名</th>
+            <th>客户状态</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        <c:if test="${orders.total > 0}">
-            <c:forEach items="${orders.rows}" var="order">
+        <c:if test="${customs.total > 0}">
+            <c:forEach items="${customs.rows}" var="custom">
                 <tr>
                     <td>
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i
                                 class="layui-icon">&#xe605;</i></div>
                     </td>
-                    <td>${order.ONo}</td>
-                    <td>${order.OComNo}</td>
-                    <td>${order.OSalesman}</td>
-                    <td>${order.OCount}</td>
-                    <td>${order.OCustomName}</td>
-                    <td>${order.OContacts}</td>
-                    <td>${order.OTel}</td>
-                    <td>${order.OCreateDate}</td>
-                    <td>${order.product.proPrice}</td>
-                    <td>${order.product.proName}</td>
-                    <td><img src="${order.product.proImage}" alt="${order.product.proName}"></td>
+                    <td>${custom.customName}</td>
+                    <td>${custom.customAddress}</td>
+                    <td>${custom.customCode}</td>
+                    <td>${custom.customTel}</td>
+                    <td>${custom.customPublish}</td>
+                    <td>${custom.customFullname}</td>
                     <td>
-                        <%@include file="../common/order_status.jsp" %>
+                        <%@include file="../common/custom_status.jsp" %>
                     </td>
                     <td class="td-manage">
-                        <a title="查看" onclick="x_admin_show('查看','/order/show?oId=${order.OId}')" href="javascript:;">
+                        <a title="查看" onclick="x_admin_show('查看','/custom/show?customId=${custom.customId}')" href="javascript:;">
                             <i class="layui-icon">&#xe63c;</i>
                         </a>
-                        <a title="编辑" onclick="x_admin_show('编辑','/order/edit?oId=${order.OId}',730,550)" href="javascript:;">
+                        <a title="编辑" onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customId}',700,350)" href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
-                        <a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">
+                        <a title="删除" onclick="member_del(this,'${custom.customId}')" href="javascript:;">
                             <i class="layui-icon">&#xe640;</i>
                         </a>
                     </td>
@@ -142,7 +130,7 @@
     function member_del(obj, id) {
         layer.confirm('确认要删除吗？', function (index) {
             //发异步删除数据
-            $.post('/order/delete', {"oid": id}, function (res) {
+            $.post('/custom/delete', {"customId": id}, function (res) {
                 if (res == '数据删除成功') {
                     // $(obj).parents("tr").remove();
                     layer.msg('已删除!', {icon: 1, time: 1000});
