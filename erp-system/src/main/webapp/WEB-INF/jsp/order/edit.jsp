@@ -146,9 +146,17 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">
                 </label>
-                <button class="layui-btn" lay-filter="edit" lay-submit="">
-                    增加
-                </button>
+                <c:if test="${not empty order.OId}">
+                    <button class="layui-btn" lay-filter="edit" lay-submit="">
+                        更新
+                    </button>
+                </c:if>
+                <c:if test="${empty order.OId}">
+                    <button class="layui-btn" lay-filter="add" lay-submit="">
+                        新增
+                    </button>
+                </c:if>
+
             </div>
         </div>
     </form>
@@ -185,16 +193,19 @@
                     // contentType: "application/json",
                     async: false,
                     success: function (res) {
-                        console.log(res);
-                        //发异步，把数据提交给php
-                        layer.alert("增加成功", {icon: 6}, function () {
-                            // 获得frame索引
-                            var index = parent.layer.getFrameIndex(window.name);
-                            //关闭当前frame
-                            window.parent.location.reload();
-                            parent.layer.close(index);
+                        if (res == '数据新增成功') {
+                            //发异步，把数据提交给php
+                            layer.alert("增加成功", {icon: 6}, function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                window.parent.location.reload();
+                                parent.layer.close(index);
 
-                        });
+                            });
+                        } else {
+                            layer.alert("新增失败")
+                        }
                         return false;
                     },
                     error: function (res) {
@@ -214,16 +225,20 @@
                     // contentType: "application/json",
                     async: false,
                     success: function (res) {
-                        console.log(res);
-                        //发异步，把数据提交给php
-                        layer.alert("更新成功", {icon: 6}, function () {
-                            // 获得frame索引
-                            var index = parent.layer.getFrameIndex(window.name);
-                            //关闭当前frame
-                            window.parent.location.reload();
-                            parent.layer.close(index);
+                        if (res == "数据更新成功") {
+                            //发异步，把数据提交给php
+                            layer.alert("更新成功", {icon: 6}, function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                window.parent.location.reload();
+                                parent.layer.close(index);
 
-                        });
+                            });
+                        } else {
+                            layer.alert("更新失败");
+                        }
+
                         return false;
                     },
                     error: function (res) {
