@@ -27,4 +27,6 @@ public interface ManPlanMapper {
 
     <T, K, V> List<T> find(Map<K, V> params);
 
+    int getTotal();
+
 }

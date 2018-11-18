@@ -52,5 +52,13 @@ public class CustomService {
         return customMapper.selectByPrimaryKey(cid);
     }
 
+    /**
+     * 获取所有有效客户的数量
+     * @return
+     */
+    public int getTotal(){
+        return customMapper.getTotal();
+    }
+
 
 }

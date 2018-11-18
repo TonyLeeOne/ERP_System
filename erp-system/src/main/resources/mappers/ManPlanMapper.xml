@@ -22,6 +22,13 @@
         where mp_id = #{mpId,jdbcType=VARCHAR}
     </select>
 
+    <select id="getTotal"  resultType="java.lang.Integer">
+        select
+        count(1)
+        from manufacture_plan
+        where mp_status='1'
+    </select>
+
     <select id="find" parameterType="map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

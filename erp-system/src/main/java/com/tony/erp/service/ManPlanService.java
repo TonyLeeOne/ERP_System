@@ -91,4 +91,12 @@ public class ManPlanService {
         return (ManPlan) manPlanMapper.find(params).get(0);
     }
 
+    /**
+     * 获取所有在进行中的生产计划数量
+     * @return
+     */
+    public int getTotal(){
+        return manPlanMapper.getTotal();
+    }
+
 }

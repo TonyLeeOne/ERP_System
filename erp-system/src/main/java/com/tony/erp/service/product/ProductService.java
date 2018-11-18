@@ -61,4 +61,8 @@ public class ProductService {
         return productMapper.selectByProCode(proCode);
     }
 
+    public int getTotal(){
+        return productMapper.getTotal();
+    }
+
 }

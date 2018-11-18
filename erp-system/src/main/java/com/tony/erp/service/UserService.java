@@ -89,4 +89,12 @@ public class UserService {
     }
 
 
+    /**
+     * 查看所有用户数量
+     * @return
+     */
+    public int getTotal(){
+        return userMapper.selectByUname(null);
+    }
+
 }

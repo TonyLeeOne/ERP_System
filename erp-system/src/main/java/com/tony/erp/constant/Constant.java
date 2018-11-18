@@ -16,6 +16,13 @@ public class Constant {
     public static final String ALL_MODULES="all_modules";
     public static final String ALL_ROLES="all_roles";
 
+    public static final String USER_COUNTS="user_count";
+    public static final String ORDERS_COUNTS="order_count";
+    public static final String PRODUCT_COUNTS="productCount";
+    public static final String MAN_PLANS="mps_count";
+    public static final String MAN_ORDERS="orders_count";
+    public static final String CUSTOM_COUNTS="cus_count";
+
     /**
      * 数据加密参数
      */

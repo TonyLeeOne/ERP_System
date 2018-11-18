@@ -27,4 +27,6 @@ public interface ManOrderMapper {
 
     List<String> selectStatusByMpSn(@Param("moMpSn")String moMpSn);
 
+    int getTotal();
+
 }

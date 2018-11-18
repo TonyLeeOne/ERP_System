@@ -153,6 +153,5 @@
     <if test="uname != null">
       where uname=#{uname,jdbcType=VARCHAR}
     </if>
-
   </select>
 </mapper>

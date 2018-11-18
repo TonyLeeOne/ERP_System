@@ -277,7 +277,8 @@
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <iframe src='welcome.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                <iframe src="/welcome" frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                <%--<%@include file="welcome.jsp"%>--%>
             </div>
         </div>
     </div>

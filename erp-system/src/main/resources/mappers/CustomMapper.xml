@@ -33,6 +33,14 @@
       #{customCode,jdbcType=VARCHAR}, #{customTel,jdbcType=VARCHAR}, #{customPublish,jdbcType=VARCHAR}, 
       #{customFullname,jdbcType=VARCHAR}, #{customStatus,jdbcType=CHAR})
   </insert>
+
+    <select id="getTotal"  resultType="java.lang.Integer">
+        select
+        count(1)
+        from custom
+        where custom_status='1'
+    </select>
+
     <insert id="insertSelective" parameterType="com.tony.erp.domain.Custom">
         insert into custom
         <trim prefix="(" suffix=")" suffixOverrides=",">
