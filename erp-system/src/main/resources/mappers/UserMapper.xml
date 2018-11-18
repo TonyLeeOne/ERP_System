@@ -39,8 +39,7 @@
     id, uname, upass, departId, status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-
+    select *
     from user u left join profile p on u.id=p.p_uid
     inner join user_role ur on u.id=ur.uid
     inner join role r on ur.rid=r.rid
@@ -151,7 +150,9 @@
     count(1)
     from
     user
-    where
-    uname=#{uname,jdbcType=VARCHAR}
+    <if test="uname != null">
+      where uname=#{uname,jdbcType=VARCHAR}
+    </if>
+
   </select>
 </mapper>

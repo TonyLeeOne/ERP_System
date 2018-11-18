@@ -77,16 +77,16 @@ public class UserController {
             try {
                 subject.login(token);
 //                设置session超时时间30 mins
-                subject.getSession().setTimeout(1800000);
-                User uToken = (User) subject.getPrincipal();
-                session.setAttribute("user", uToken);
+//                subject.getSession().setTimeout(1800000);
+                User u = (User) subject.getPrincipal();
+                session.setAttribute("user", u);
             } catch (Exception e) {
                 AtomicInteger retry = cache.get(user.getUname());
                 if (null == retry) {
                     retry = new AtomicInteger(0);
                 }
                 if (retry.incrementAndGet() > 3) {
-                    return ACOUNT_LOCAKED;
+                    return new Gson().toJson(ACOUNT_LOCAKED);
                 }
                 cache.put(user.getUname(), retry);
                 return new Gson().toJson("账号或密码错误,还有" + (4 - retry.get()) + "次就会被锁定");
@@ -187,7 +187,6 @@ public class UserController {
 
     /**
      * 重置密码
-     *
      * @param user
      * @return
      */

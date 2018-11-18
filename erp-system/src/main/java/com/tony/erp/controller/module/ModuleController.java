@@ -1,6 +1,7 @@
 package com.tony.erp.controller.module;
 
 import com.tony.erp.domain.Module;
+import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.service.caffeine.CaffeineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

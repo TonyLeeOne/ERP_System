@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
@@ -37,13 +38,13 @@
     </ul>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
-            <a href="javascript:;">admin</a>
+            <a href="javascript:;">${sessionScope.user.uname}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onclick="x_admin_show('个人信息','admin-edit.html',600)">个人信息</a></dd>
-                <dd><a href="/login">退出</a></dd>
+                <dd><a href="/user/logout">退出</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
+        <li class="layui-nav-item to-index"><a href="/">前台页面</a></li>
     </ul>
 
 </div>
