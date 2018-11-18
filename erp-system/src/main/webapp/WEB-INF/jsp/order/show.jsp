@@ -1,167 +1,146 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <title>欢迎页面-ERP管理系统1.0</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="css/font.css">
-    <link rel="stylesheet" href="css/xadmin.css">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/xadmin.js"></script>
-    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-    <!--[if lt IE 9]>
-    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <style>
-        .layui-form-label {
-            width: 100px;
-        }
-    </style>
-</head>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@include file="../common/header.jsp"%>
+<style>
+    .layui-form-label {
+        width: 100px;
+    }
+</style>
 <body>
 <div class="x-body">
     <form class="layui-form">
         <div class="layui-form-item">
             <label for="oNo" class="layui-form-label">
-                  订单号
+                订单号
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oNo" name="oNo"      
+                <input type="text" id="oNo" name="oNo"
                        autocomplete="off" class="layui-input">
             </div>
 
             <label for="oComNo" class="layui-form-label">
-                  公司单号
+                公司单号
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oComNo" name="oComNo"      
+                <input type="text" id="oComNo" name="oComNo"
                        autocomplete="off" class="layui-input">
             </div>
 
             <label for="oProductCode" class="layui-form-label">
-                  产品编号
+                产品编号
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oProductCode" name="oProductCode"   
+                <input type="text" id="oProductCode" name="oProductCode"
                        autocomplete="off" class="layui-input">
             </div>
 
             <label for="oCount" class="layui-form-label">
-                  订单数量
+                订单数量
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oCount" name="oCount"      
+                <input type="text" id="oCount" name="oCount"
                        autocomplete="off" class="layui-input">
             </div>
 
             <label for="oIndeedCount" class="layui-form-label">
-                  实际出货数量
+                实际出货数量
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oIndeedCount" name="oIndeedCount"      
+                <input type="text" id="oIndeedCount" name="oIndeedCount"
                        autocomplete="off" class="layui-input">
             </div>
             <label for="oCustomName" class="layui-form-label">
-                  客户名
+                客户名
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oCustomName" name="oCustomName"   
+                <input type="text" id="oCustomName" name="oCustomName"
                        autocomplete="off" class="layui-input">
             </div>
 
             <label for="oPay" class="layui-form-label">
-                  结算单价
+                结算单价
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oPay" name="oPay"   
+                <input type="text" id="oPay" name="oPay"
                        autocomplete="off" class="layui-input">
             </div>
 
             <label for="oPayCategory" class="layui-form-label">
-                  币种
+                币种
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oPayCategory" name="oPayCategory"   
+                <input type="text" id="oPayCategory" name="oPayCategory"
                        autocomplete="off" class="layui-input">
             </div>
 
 
             <label for="oExchangeRate" class="layui-form-label">
-                  汇率
+                汇率
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oExchangeRate" name="oExchangeRate"   
+                <input type="text" id="oExchangeRate" name="oExchangeRate"
                        autocomplete="off" class="layui-input">
             </div>
 
 
             <label for="oShipmentMethod" class="layui-form-label">
-                  交货方式
+                交货方式
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oShipmentMethod" name="oShipmentMethod"   
+                <input type="text" id="oShipmentMethod" name="oShipmentMethod"
                        autocomplete="off" class="layui-input">
             </div>
 
-            
+
             <label for="oContacts" class="layui-form-label">
-                  联系人
+                联系人
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oContacts" name="oContacts"   
+                <input type="text" id="oContacts" name="oContacts"
                        autocomplete="off" class="layui-input">
             </div>
 
 
             <label for="oTel" class="layui-form-label">
-                  联系人电话
+                联系人电话
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oTel" name="oTel"   
+                <input type="text" id="oTel" name="oTel"
                        autocomplete="off" class="layui-input">
             </div>
 
 
             <label for="oAddress" class="layui-form-label">
-                  客户地址
+                客户地址
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oAddress" name="oAddress"   
+                <input type="text" id="oAddress" name="oAddress"
                        autocomplete="off" class="layui-input">
             </div>
 
 
             <label for="oSalesman" class="layui-form-label">
-                  业务员名称
+                业务员名称
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oSalesman" name="oSalesman"   
+                <input type="text" id="oSalesman" name="oSalesman"
                        autocomplete="off" class="layui-input">
             </div>
 
 
             <label for="oSalesmanDepart" class="layui-form-label">
-                  业务员部门
+                业务员部门
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oSalesmanDepart" name="oSalesmanDepart"   
+                <input type="text" id="oSalesmanDepart" name="oSalesmanDepart"
                        autocomplete="off" class="layui-input">
             </div>
 
 
             <label for="oSalesmanContact" class="layui-form-label">
-                  业务员联系方式
+                业务员联系方式
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="oSalesmanContact" name="oSalesmanContact"   
+                <input type="text" id="oSalesmanContact" name="oSalesmanContact"
                        autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-item">

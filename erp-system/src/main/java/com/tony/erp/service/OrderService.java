@@ -35,8 +35,8 @@ public class OrderService {
      * @return
      */
     public PageHelperEntity getAllOrders(int pageNum){
-        PageHelper.startPage(pageNum,10);
         List<Order> orders= orderMapper.find(null);
+        PageHelper.startPage(pageNum,10);
         PageHelperEntity pageHelperEntity=new PageHelperEntity();
         pageHelperEntity.setRows(orders);
         PageInfo<Order> pageInfo=new PageInfo<>(orders);
@@ -51,6 +51,8 @@ public class OrderService {
      * @return
      */
     public int addOrder(Order order){
+        System.out.println(order.toString());
+        order.setOStatus(Constant.STRING_ONE);
         order.setOId(KeyGeneratorUtils.keyUUID());
         order.setOCreateDate(KeyGeneratorUtils.dateGenerator());
         order.setOCreator(CurrentUser.getCurrentUser().getUname());

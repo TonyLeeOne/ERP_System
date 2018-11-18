@@ -52,7 +52,7 @@
                             if (res.toString() == "登陆成功") {
                                 window.location.href = "/index";
                             }
-                        }, 3000)
+                        }, 1000)
                     },
                     error: function (res) {
                         console.log("error:");

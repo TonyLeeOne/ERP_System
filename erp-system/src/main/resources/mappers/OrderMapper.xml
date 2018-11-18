@@ -87,7 +87,6 @@
         o.o_custom_name,
         o.o_contacts,
         o.o_tel,
-        o.o_status,
         o.o_create_date,
         o.o_status,
         p.pro_price,
@@ -97,9 +96,6 @@
         left join product p
         on o.o_product_code=p.pro_code
         <trim prefix="WHERE" prefixOverrides="AND |OR ">
-            <if test="pro_code != null">
-                o.o_product_code=#{pro_code}
-            </if>
             <if test="custom_name != null">
                  o.o_custom_name=#{custom_name}
             </if>
