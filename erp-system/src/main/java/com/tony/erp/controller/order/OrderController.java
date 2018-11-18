@@ -58,4 +58,11 @@ public class OrderController {
     }
 
 
+    @RequestMapping("/query/{oid}")
+    public String queryOrder(@PathVariable String oid,ModelMap modelMap){
+        modelMap.addAttribute("order",orderService.getByOid(oid)) ;
+        return "";
+    }
+
+
 }

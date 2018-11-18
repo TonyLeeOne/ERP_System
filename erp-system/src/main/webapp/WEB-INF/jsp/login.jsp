@@ -47,12 +47,12 @@
                     contentType: "application/json",
                     async: false,
                     success: function (res) {
-                        layer.msg(res, {time: 2000});
+                        layer.msg(res, {time: 1000});
                         setTimeout(function () {
                             if (res.toString() == "登陆成功") {
                                 window.location.href = "/index";
                             }
-                        }, 3000)
+                        }, 1000)
                     },
                     error: function (res) {
                         console.log("error:");

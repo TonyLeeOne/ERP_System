@@ -77,7 +77,7 @@ public class AuthRealm extends AuthorizingRealm {
         String username = passwordToken.getUsername();
         User u = userService.getUserPropertiesByUsername(username);
         if (ObjectUtils.isEmpty(u)) {
-            log.error("当前用户没找到:[{}]" + username);
+            log.error("当前用户没找到:[{}]", username);
             throw new UnknownAccountException();
         }
 //        使用用户名加盐

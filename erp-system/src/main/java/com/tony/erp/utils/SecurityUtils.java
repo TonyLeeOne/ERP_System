@@ -23,4 +23,5 @@ public class SecurityUtils {
     public static void main(String[] args) {
         System.out.println(getSecurityResult("test","test"));
     }
+
 }
