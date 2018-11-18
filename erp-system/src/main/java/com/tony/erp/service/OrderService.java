@@ -122,4 +122,13 @@ public class OrderService {
         return orderMapper.find(params);
     }
 
+
+    /**
+     * 获取进行中的订单总数量
+     * @return
+     */
+    public int getTotal(){
+        return orderMapper.getTotal();
+    }
+
 }

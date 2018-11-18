@@ -132,4 +132,7 @@
       pro_status = #{proStatus,jdbcType=CHAR}
     where pro_id = #{proId,jdbcType=VARCHAR}
   </update>
+  <select id="getTotal" resultType="java.lang.Integer">
+    select count(pro_count) from product where pro_status ='1'
+  </select>
 </mapper>

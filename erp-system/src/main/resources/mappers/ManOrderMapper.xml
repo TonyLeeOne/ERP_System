@@ -21,6 +21,14 @@
     where mo_id = #{moId,jdbcType=VARCHAR}
   </select>
 
+
+  <select id="getTotal"  resultType="java.lang.Integer">
+        select
+        count(1)
+        from manufacture_order
+        where mo_status='1'
+    </select>
+
   <select id="selectStatusByMpSn" parameterType="java.lang.String" resultType="java.lang.String">
     select
     mo_status

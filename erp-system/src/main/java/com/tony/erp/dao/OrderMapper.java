@@ -26,4 +26,6 @@ public interface OrderMapper {
 
     <T, K, V> List<T> find(Map<K, V> params);
 
+    int getTotal();
+
 }

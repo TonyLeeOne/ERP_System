@@ -396,4 +396,7 @@
       o_status = #{oStatus,jdbcType=CHAR}
     where o_id = #{oId,jdbcType=VARCHAR}
   </update>
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(1) from orders where o_status != 4
+    </select>
 </mapper>

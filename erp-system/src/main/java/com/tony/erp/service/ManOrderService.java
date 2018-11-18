@@ -87,4 +87,12 @@ public class ManOrderService {
     }
 
 
+    /**
+     * 获取所有正在进行的生产工单
+     * @return
+     */
+    public int getTotal(){
+        return manOrderMapper.getTotal();
+    }
+
 }

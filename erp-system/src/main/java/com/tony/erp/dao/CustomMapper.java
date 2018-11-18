@@ -24,4 +24,6 @@ public interface CustomMapper {
     int updateByPrimaryKey(Custom record);
 
     List<Custom> getAllCustoms();
+
+    int getTotal();
 }
