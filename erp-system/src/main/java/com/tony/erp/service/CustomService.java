@@ -23,14 +23,14 @@ public class CustomService {
     @Autowired
     private CustomMapper customMapper;
 
-    public PageHelperEntity getAllCustoms(int pageSize) {
-        List<Custom> customs=customMapper.getAllCustoms();
-        PageHelper.startPage(pageSize, 10);
-        PageHelperEntity pageHelperEntity=new PageHelperEntity();
+    public PageHelperEntity getAllCustoms(int pageNum, int pageSize) {
+        List<Custom> customs = customMapper.getAllCustoms(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(customs);
-        PageInfo<Custom> pageInfo=new PageInfo<>(customs);
+        PageInfo<Custom> pageInfo = new PageInfo<>(customs);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(),10));
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 
@@ -54,9 +54,10 @@ public class CustomService {
 
     /**
      * 获取所有有效客户的数量
+     *
      * @return
      */
-    public int getTotal(){
+    public int getTotal() {
         return customMapper.getTotal();
     }
 

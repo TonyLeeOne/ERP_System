@@ -22,7 +22,7 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit')"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit',730,550)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：${orders.total} 条</span>
     </xblock>

@@ -2,6 +2,7 @@ package com.tony.erp.controller.custom;
 
 import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.Custom;
+import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.service.CustomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +28,13 @@ public class CustomController {
      * @return
      */
     @RequestMapping("/getAllCustoms")
-    public String getAllCustoms(ModelMap modelMap) {
-        modelMap.addAttribute("customs", customService.getAllCustoms(1));
+    public String getAllCustoms(@RequestParam(defaultValue = "1") int pageNum,
+                                @RequestParam(defaultValue = "5") int pageSize,
+                                @RequestParam(defaultValue = "desc") String direction,
+                                ModelMap modelMap) {
+        PageHelperEntity custom = customService.getAllCustoms(pageNum, pageSize);
+        System.out.println(custom.toString());
+        modelMap.addAttribute("customs", custom);
         return "/custom/list";
     }
 
@@ -39,11 +45,11 @@ public class CustomController {
      * @param modelMap
      * @return
      */
-    @RequestMapping("/getAllCustoms/{pageSize}")
-    public String getAllCustom(@PathVariable int pageSize, ModelMap modelMap) {
-        modelMap.addAttribute("customs", customService.getAllCustoms(pageSize));
-        return "";
-    }
+//    @RequestMapping("/getAllCustoms/{pageSize}")
+//    public String getAllCustom(@PathVariable int pageSize, ModelMap modelMap) {
+//        modelMap.addAttribute("customs", customService.getAllCustoms(pageSize));
+//        return "";
+//    }
 
 
     /**
@@ -63,6 +69,7 @@ public class CustomController {
 
     /**
      * 新增/编辑客户信息页面
+     *
      * @param customId
      * @param modelMap
      * @return
