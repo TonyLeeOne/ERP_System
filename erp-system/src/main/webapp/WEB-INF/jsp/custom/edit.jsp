@@ -75,23 +75,11 @@
                 </div>
             </div>
             <div class="layui-row">
-<<<<<<< HEAD
                 <div class="layui-form-item">
                     <label class="layui-form-label">客户状态</label>
                     <div class="layui-input-block" id="single" value="${custom.customStatus}">
                         <input type="radio" name="customStatus" value="1" title="有效" id="pro">
                         <input type="radio" name="customStatus" value="2" title="无效" id="stop">
-=======
-
-                <div class="layui-col-md6">
-
-                    <label for="customStatus" class="layui-form-label">
-                        客户状态
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="customStatus" name="customStatus"
-                               value="${custom.customStatus}" autocomplete="off" class="layui-input">
->>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
                     </div>
                 </div>
             </div>
@@ -116,7 +104,6 @@
 </div>
 <script>
     $(function () {
-<<<<<<< HEAD
 
         if ($("#single").attr('value') == '1') {
             $("#pro").attr('checked', true);
@@ -128,12 +115,6 @@
         layui.use(['form', 'layer'], function () {
             // $ = layui.jquery;
             var form = layui.form,layer = layui.layer;
-=======
-        layui.use(['form', 'layer'], function () {
-            // $ = layui.jquery;
-            var form = layui.form
-                , layer = layui.layer;
->>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
 
             //自定义验证规则
             // form.verify({

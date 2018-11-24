@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.Order;
 import com.tony.erp.service.OrderService;
+import com.tony.erp.utils.CurrentUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,8 @@ public class OrderController {
     @ResponseBody
     @RequestMapping("/confirm")
     public String confirm(Order order) {
+        System.out.println(CurrentUser.getCurrentUser().getUname());
+        System.out.println(order);
         return orderService.confirmOrder(order.getOId(), order.getOStatus(), order.getONote()) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
     }
 
