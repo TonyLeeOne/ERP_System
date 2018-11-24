@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@include file="../common/header.jsp" %>
 <body>
+<<<<<<< HEAD
 <%@include file="../common/breadcrumb.jsp" %>
+=======
+<%@include file="../common/breadcrumb.jsp"%>
+>>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
@@ -22,7 +26,7 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit')"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit',730,550)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据: ${orders.total} 条</span>
     </xblock>
@@ -83,9 +87,13 @@
                            href="javascript:;">
                             <i class="layui-icon">&#xe63c;</i>
                         </a>
+<<<<<<< HEAD
                         <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
                         <a title="编辑" onclick="x_admin_show('编辑','/order/edit?oId=${order.OId}',730,550)"
                            href="javascript:;">
+=======
+                        <a title="编辑" onclick="x_admin_show('编辑','/order/edit?oId=${order.OId}',730,550)" href="javascript:;">
+>>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
                             <i class="layui-icon">&#xe642;</i>
                         </a>
                         </c:if>

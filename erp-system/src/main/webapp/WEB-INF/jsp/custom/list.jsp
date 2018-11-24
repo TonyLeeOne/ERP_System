@@ -20,7 +20,11 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+<<<<<<< HEAD
         <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit')"><i class="layui-icon"></i>添加
+=======
+        <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit',700,350)"><i class="layui-icon"></i>添加
+>>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
         </button>
         <span class="x-right" style="line-height:40px">共有数据：${customs.total} 条</span>
     </xblock>
@@ -31,10 +35,17 @@
                 <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i
                         class="layui-icon">&#xe605;</i></div>
             </th>
+<<<<<<< HEAD
             <th>客户编号</th>
             <th>客户名</th>
             <th>客户电话</th>
             <th>客户地址</th>
+=======
+            <th>客户名字</th>
+            <th>客户地址</th>
+            <th>客户编号</th>
+            <th>客户电话</th>
+>>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
             <th>客户法人</th>
             <th>客户全名</th>
             <th>客户状态</th>
@@ -46,6 +57,7 @@
             <c:forEach items="${customs.rows}" var="custom">
                 <tr>
                     <td>
+<<<<<<< HEAD
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${custom.customName}'><i
                                 class="layui-icon">&#xe605;</i></div>
                     </td>
@@ -53,15 +65,31 @@
                     <td>${custom.customName}</td>
                     <td>${custom.customTel}</td>
                     <td>${custom.customAddress}</td>
+=======
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i
+                                class="layui-icon">&#xe605;</i></div>
+                    </td>
+                    <td>${custom.customName}</td>
+                    <td>${custom.customAddress}</td>
+                    <td>${custom.customCode}</td>
+                    <td>${custom.customTel}</td>
+>>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
                     <td>${custom.customPublish}</td>
                     <td>${custom.customFullname}</td>
                     <td>
                         <%@include file="../common/custom_status.jsp" %>
                     </td>
+<<<<<<< HEAD
                     <td class="td-manage"　>
                         <%--<a title="查看" onclick="x_admin_show('查看','/custom/show?customId=${custom.customId}')" href="javascript:;">--%>
                             <%--<i class="layui-icon">&#xe63c;</i>--%>
                         <%--</a>--%>
+=======
+                    <td class="td-manage">
+                        <a title="查看" onclick="x_admin_show('查看','/custom/show?customId=${custom.customId}')" href="javascript:;">
+                            <i class="layui-icon">&#xe63c;</i>
+                        </a>
+>>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
                         <a title="编辑" onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customId}',700,350)" href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
@@ -75,6 +103,7 @@
         </c:if>
         </tbody>
     </table>
+<<<<<<< HEAD
     <div class="page">
         <div>
             <a class="prev" href="">&lt;&lt;</a>
@@ -86,6 +115,9 @@
         </div>
     </div>
 
+=======
+    <jsp:include page="../common/pagination.jsp"><jsp:param value="${customs.total}" name="total"/><jsp:param value="${customs.pageNum}" name="pageNum"/></jsp:include>
+>>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
 </div>
 <script>
     layui.use('laydate', function () {
@@ -147,7 +179,11 @@
 
         var data = tableCheck.getData();
 
+<<<<<<< HEAD
         layer.confirm('确认要删除客户[' + data+"]吗？", function (index) {
+=======
+        layer.confirm('确认要删除吗？' + data, function (index) {
+>>>>>>> 74567b02b01685cb5748adfaf9b79817fd9458bc
             //捉到所有被选中的，发异步进行删除
             layer.msg('删除成功', {icon: 1});
             $(".layui-form-checked").not('.header').parents('tr').remove();

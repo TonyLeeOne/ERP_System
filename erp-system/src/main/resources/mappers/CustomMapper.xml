@@ -135,9 +135,9 @@
     where custom_id = #{customId,jdbcType=VARCHAR}
   </update>
 
-    <select id="getAllCustoms" resultMap="BaseResultMap">
+    <select id="getAllCustoms" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
-        from custom order by custom_name
+        from custom order by custom_name LIMIT #{offset},#{limit}
     </select>
 </mapper>
