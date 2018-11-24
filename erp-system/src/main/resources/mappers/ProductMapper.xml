@@ -133,6 +133,17 @@
     where pro_id = #{proId,jdbcType=VARCHAR}
   </update>
   <select id="getTotal" resultType="java.lang.Integer">
-    select count(pro_count) from product where pro_status ='1'
+    select IFNULL(sum(pro_count),0) from product where pro_status ='1'
+  </select>
+  
+  <delete id="batchDeleteByProCode" parameterType="java.lang.String">
+     delete from product where pro_code in
+    <foreach collection="proCodes" item="proCode" index="index" open="(" close=")" separator=",">
+      #{proCode}
+    </foreach>
+  </delete>
+
+  <select id="selectProCodes" resultType="java.lang.String">
+    select concat(pro_name,'(',pro_code,')') from product where pro_status='1' order by pro_name
   </select>
 </mapper>

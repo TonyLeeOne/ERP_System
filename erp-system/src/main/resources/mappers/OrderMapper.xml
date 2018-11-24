@@ -82,16 +82,18 @@
         o.o_id,
         o.o_no,
         o.o_com_no,
-        o.o_salesman,
         o.o_count,
         o.o_custom_name,
         o.o_contacts,
         o.o_tel,
         o.o_create_date,
         o.o_status,
+        o.o_pay,
+        o.o_note,
+        o.o_product_code,
+        o.o_indeed_count,
         p.pro_price,
-        p.pro_name,
-        p.pro_image
+        p.pro_name
         from orders o
         left join product p
         on o.o_product_code=p.pro_code
@@ -396,7 +398,19 @@
       o_status = #{oStatus,jdbcType=CHAR}
     where o_id = #{oId,jdbcType=VARCHAR}
   </update>
+
     <select id="getTotal" resultType="java.lang.Integer">
-        select count(1) from orders where o_status != 4
+        select count(1) from orders where o_status != '4'
+    </select>
+
+    <delete id="batchDeleteByOno" parameterType="java.lang.String">
+        delete from orders where o_no in
+        <foreach collection="orderNos" item="orderNo" index="index" open="(" close=")" separator=",">
+            #{orderNo}
+        </foreach>
+    </delete>
+
+    <select id="getONos" resultType="java.lang.String">
+        select concat(o_custom_name,'(',o_no,')') from orders where o_status = '3' order by o_no
     </select>
 </mapper>

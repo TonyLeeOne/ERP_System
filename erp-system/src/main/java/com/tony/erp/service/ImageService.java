@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 public class ImageService {
 
-    @Value("{web.upload-path}")
+    @Value("${web.upload-path}")
     private String imgPath;
 
     /**
@@ -31,7 +31,7 @@ public class ImageService {
         if(!CollectionUtils.isEmpty(images)){
             String[] paths=new String[images.size()];
             for (int i = 0; i <images.size() ; i++) {
-                if(images.get(i).isEmpty()){
+                if(!images.get(i).isEmpty()){
                     String fileName = images.get(i).getOriginalFilename();
                     String filePostFixName = fileName.substring(fileName.lastIndexOf("."), fileName.length());
                     String realName = UUID.randomUUID() + filePostFixName;
@@ -44,6 +44,7 @@ public class ImageService {
                     paths[i] = "/image/" + f.getName();
                 }
             }
+            System.out.println(ResultUtil.success(paths));
             return ResultUtil.success(paths);
         }
         return ResultUtil.fail();

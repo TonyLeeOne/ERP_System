@@ -1,17 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@include file="../common/header.jsp" %>
 <body>
-<div class="x-nav">
-      <span class="layui-breadcrumb">
-        <a href="">首页</a>
-        <a href="">演示</a>
-        <a>
-          <cite>导航元素</cite></a>
-      </span>
-    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
-       href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-</div>
+<%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
@@ -34,7 +24,7 @@
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit')"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：${orders.total} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据: ${orders.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -44,17 +34,16 @@
                         class="layui-icon">&#xe605;</i></div>
             </th>
             <th>订单编号</th>
-            <th>公司单号</th>
-            <th>业务员名称</th>
-            <th>订单数量</th>
             <th>客户名</th>
             <th>联系人</th>
             <th>联系人电话</th>
             <th>下单日期</th>
-            <th>产品单价</th>
             <th>产品名称</th>
-            <th>产品图片</th>
+            <th>订单数量</th>
+            <th>成交单价</th>
+            <th>产品单价</th>
             <th>订单状态</th>
+            <th>出货数量统计</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -63,33 +52,49 @@
             <c:forEach items="${orders.rows}" var="order">
                 <tr>
                     <td>
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i
+                        <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${order.ONo}'><i
                                 class="layui-icon">&#xe605;</i></div>
+                        </c:if>
                     </td>
                     <td>${order.ONo}</td>
-                    <td>${order.OComNo}</td>
-                    <td>${order.OSalesman}</td>
-                    <td>${order.OCount}</td>
                     <td>${order.OCustomName}</td>
                     <td>${order.OContacts}</td>
                     <td>${order.OTel}</td>
                     <td>${order.OCreateDate}</td>
-                    <td>${order.product.proPrice}</td>
                     <td>${order.product.proName}</td>
-                    <td><img src="${order.product.proImage}" alt="${order.product.proName}"></td>
+                    <td>${order.OCount}</td>
+                    <td>${order.OPay}</td>
+                    <td>${order.product.proPrice}</td>
                     <td>
                         <%@include file="../common/order_status.jsp" %>
                     </td>
+                    <td>
+                        <c:if test="${! empty order.OIndeedCount}">
+                            <div class="layui-progress" lay-showpercent="true">
+                                <div class="layui-progress-bar layui-bg-orange"
+                                     lay-percent="${order.OIndeedCount}/${order.OCount}"></div>
+                            </div>
+                        </c:if>
+                    </td>
                     <td class="td-manage">
-                        <a title="查看" onclick="x_admin_show('查看','/order/show?oId=${order.OId}')" href="javascript:;">
+                        <a title="查看"
+                           onclick="x_admin_show('查看订单信息，当前订单号【${order.ONo}】','/order/show?oId=${order.OId}')"
+                           href="javascript:;">
                             <i class="layui-icon">&#xe63c;</i>
                         </a>
-                        <a title="编辑" onclick="x_admin_show('编辑','/order/edit?oId=${order.OId}')" href="javascript:;">
-                            <i class="layui-icon">&#xe63c;</i>
+                        <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
+                        <a title="编辑" onclick="x_admin_show('编辑','/order/edit?oId=${order.OId}',730,550)"
+                           href="javascript:;">
+                            <i class="layui-icon">&#xe642;</i>
                         </a>
-                        <a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">
-                            <i class="layui-icon">&#xe640;</i>
+                        </c:if>
+                        <a title="出货记录" onclick="x_admin_show('出货记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)" href="javascript:;">
+                            <i class="layui-icon">&#xe60e;</i>
                         </a>
+                            <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
+                            <%--<i class="layui-icon">&#xe640;</i>--%>
+                            <%--</a>--%>
                     </td>
                 </tr>
             </c:forEach>
@@ -169,12 +174,20 @@
 
         var data = tableCheck.getData();
 
-        layer.confirm('确认要删除吗？' + data, function (index) {
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
-        });
+        if (data.length > 0) {
+            layer.confirm('确认要删除订单编号为【' + data + '】的记录吗？', function (index) {
+                //捉到所有被选中的，发异步进行删除
+                $.post('/order/batchDelete', {"orderNos": data.toString()}, function (res) {
+                    layer.msg(res, {icon: 1});
+                    $(".layui-form-checked").not('.header').parents('tr').remove();
+                });
+
+            });
+        }
+        else
+            layer.alert("请至少选择一行记录", {icon: 1});
     }
+
 </script>
 </body>
 

@@ -1,8 +1,12 @@
 package com.tony.erp.domain;
+
+import lombok.Data;
+
 /**
  * @author jli2
  * @date  2018/11/12
  */
+@Data
 public class Product {
     private String proId;
 

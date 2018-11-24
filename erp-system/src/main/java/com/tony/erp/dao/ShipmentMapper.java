@@ -1,6 +1,7 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Shipment;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

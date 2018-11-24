@@ -13,8 +13,6 @@
     </head>
     <body>
     <div class="x-body layui-anim layui-anim-up">
-        <blockquote class="layui-elem-quote">欢迎登录：
-            <span class="x-red">${sessionScope.user.uname}</span>  当前时间:  <span id="timer"></span></blockquote>
         <fieldset class="layui-elem-field">
             <legend>系统通知</legend>
             <div class="layui-field-box">
@@ -373,30 +371,6 @@
         productChart.setOption(optionProduct);
         planChart.setOption(optionPlan);
         materialChart.setOption(optionMaterial);
-
-        function time(){
-            var timer=new Date();
-            var date=timer.getDate();
-            var month=timer.getMonth();
-            var hour=timer.getHours();
-            var min=timer.getMinutes();
-            var sec=timer.getSeconds();
-            var year=timer.getFullYear();
-            if(sec<10)
-                sec="0"+sec;
-            if(hour<10)
-                hour="0"+hour;
-            if(month<10)
-                month="0"+month;
-            if(date<0)
-                date="0"+date;
-            if(min<10)
-                min="0"+min;
-
-            document.getElementById("timer").innerHTML=year+"年"+month+"月"+date+"日"+" "+hour+":"+min+":"+sec;
-        }
-
-        setInterval("time()",1000);
         </script>
     </body>
 </html>

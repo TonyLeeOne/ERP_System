@@ -1,6 +1,7 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Product;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface ProductMapper {
     List<Product> getAllProducts();
 
     int getTotal();
+
+    int batchDeleteByProCode(@Param("proCodes")String[] proCodes);
+
+    List<String> selectProCodes();
 }

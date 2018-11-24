@@ -8,5 +8,6 @@
     <c:set target='${map}' property='2' value='审核未通过'/>
     <c:set target='${map}' property='3' value='待出货'/>
     <c:set target='${map}' property='4' value='已安排出货'/>
+    <c:set target='${map}' property='5' value='待生产'/>
 </jsp:useBean>
 <c:out value="${map[order.OStatus]}"/>

@@ -37,7 +37,20 @@
 
     <select id="find" parameterType="map" resultMap="BaseResultMap">
         select
-        s.*,o.*,p.*
+        s.s_id,
+        s.s_order_no,
+        s.s_pro_code,
+        s.s_ship_count,
+        s.s_order_no,
+        s.s_status,
+        s.s_auditor,
+        s.s_audit_date,
+        s.s_surer,
+        s.s_ship_date,
+        s.s_ship_count,
+        o.o_count,
+        o.o_custom_name,
+        p.pro_name
         from shipment s
         inner join orders o on s.s_order_no=o.o_no
         left join product p on s.s_pro_code=p.pro_code

@@ -14,7 +14,7 @@ public class KeyGeneratorUtils {
 
     private final static SimpleDateFormat DATE=new SimpleDateFormat("yyyyMMdd",Locale.CHINA);
     private final static SimpleDateFormat TIME=new SimpleDateFormat("yyyyMMddhhmm",Locale.CHINA);
-    private final static SimpleDateFormat DATE_GENERATOR=new SimpleDateFormat("yyyy年MM月dd日 a hh时mm分",Locale.CHINA);
+    private final static SimpleDateFormat DATE_GENERATOR=new SimpleDateFormat("yy/MM/dd HH:mm",Locale.CHINA);
 
     public static  String keyUUID(){
         return UUID.randomUUID().toString().replaceAll("-","");

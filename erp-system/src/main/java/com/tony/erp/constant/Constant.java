@@ -48,14 +48,19 @@ public class Constant {
     public static final String PROD_CODE_EXISTS="当前设备编号已被占用";
     public static final String UNAME_NOT_EXISTS="用户名可用";
     public static final String NUMBER_BIG="表单数量不可大于仓库剩余数量";
+    public static final String CANNOT_CHANGE="已出货记录不可更改";
+    public static final String NEED_AUDIT="需要先审核通过";
+    public static final String PRO_SHORTAGE="库存数量不足";
 
     /**
      * 返回结果处理参数
      */
     public static final int ARG_NOT_MATCHED=-1;
     public static final int STATUS_CANNOT_CHANGED=-2;
+    public static final int STATUS_NEED_AUDIT=-3;
     public static final String STRING_ONE="1";
     public static final String STRING_TWO="2";
+    public static final String STRING_FIVE="5";
     public static final String STRING_THREE="3";
     public static final String STRING_FOUR="4";
 

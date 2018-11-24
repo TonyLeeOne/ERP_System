@@ -1,6 +1,7 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Order;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,5 +28,9 @@ public interface OrderMapper {
     <T, K, V> List<T> find(Map<K, V> params);
 
     int getTotal();
+
+    int batchDeleteByOno(@Param("orderNos")String[] orderNos);
+
+    List<String> getONos();
 
 }

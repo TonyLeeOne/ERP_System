@@ -5,10 +5,16 @@ import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.Order;
 import com.tony.erp.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author jli2
@@ -65,16 +71,43 @@ public class OrderController {
 
     @RequestMapping("/delete")
     @ResponseBody
-    public String upOrder(String oid) {
+    public String delOrder(String oid) {
         return orderService.delOrder(oid) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
 
-    @RequestMapping("/query/{oid}")
-    public String queryOrder(@PathVariable String oid,ModelMap modelMap){
-        modelMap.addAttribute("order",orderService.getByOid(oid)) ;
-        return "";
+    @RequestMapping("/batchDelete")
+    @ResponseBody
+    public String batchDelete(String orderNos) {
+        String[] pros = orderNos.split(",");
+        return orderService.batchDelete(pros) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
+
+    @ResponseBody
+    @RequestMapping("/confirm")
+    public String confirm(Order order) {
+        return orderService.confirmOrder(order.getOId(), order.getOStatus(), order.getONote()) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/getONos")
+    public List<String> getONos() {
+        return orderService.getONos();
+    }
+
+    @ResponseBody
+    @RequestMapping("/getOrderByONo")
+    public Order getOrderByONo(String oNo) {
+        System.out.println(oNo);
+        Map<String, String> params = new HashMap(1);
+        params.put("oNo", oNo);
+        List<Order> orders = orderService.getByCriteria(params);
+        if (CollectionUtils.isEmpty(orders)) {
+            return null;
+        }
+        return orders.get(0);
+    }
 
 }

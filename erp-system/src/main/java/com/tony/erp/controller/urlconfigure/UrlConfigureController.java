@@ -43,21 +43,21 @@ public class UrlConfigureController {
     @RequestMapping("/getAllUrls")
     public String getAllUrls(ModelMap modelMap) {
         modelMap.addAttribute("urls", caffeineService.getAllUrls());
-        return "";
+        return "permission/list";
     }
 
     /**
      * update urlConfigure权限
-     *
      * @return
      */
     @GetMapping("/update/{urlId}/{authority}")
-    @ResponseBody
     public String updateUrlConfigure(@PathVariable String urlId, @PathVariable String authority) {
+        System.out.println(urlId+authority);
         if (StringUtils.isEmpty(urlId) || StringUtils.isEmpty(authority)) {
             return Constant.ARG_EXCEPTION;
         }
-        return service.updateUrlConfigure(urlId, authority) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
+         service.updateUrlConfigure(urlId, authority);
+        return "redirect:/urlConfigure/getAllUrls";
     }
 
 
