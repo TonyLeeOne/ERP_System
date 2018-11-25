@@ -118,7 +118,7 @@ public class ShipmentService {
      */
     public int delShip(String sid) {
         Shipment shipment = shipmentMapper.selectByPrimaryKey(sid);
-        if (Constant.STRING_FOUR.equals(shipment.getSStatus())) {
+        if (Constant.STRING_FOUR.equals(shipment.getSStatus())||Constant.STRING_THREE.equals(shipment.getSStatus())) {
             return Constant.STATUS_CANNOT_CHANGED;
         }
         Product product = productService.getProduct(shipment.getSProCode());
@@ -191,7 +191,7 @@ public class ShipmentService {
             }
             log.info("订单信息：" + order.toString());
             log.info("确认出货人[{}],出货订单号为[{}]", shipment1.getSSurer(), shipment1.getSOrderNo());
-            return shipmentMapper.updateByPrimaryKeySelective(shipment1) + orderService.upOrder(order);
+            return shipmentMapper.updateByPrimaryKeySelective(shipment1) + orderService.upOrderByShip(order);
         }
         return Constant.STATUS_NEED_AUDIT;
 

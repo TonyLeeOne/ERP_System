@@ -6,8 +6,10 @@ import com.tony.erp.service.ManPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -43,12 +45,21 @@ public class ManPlanController {
     @RequestMapping("/getAll")
     public String delManPlan(ModelMap modelMap){
         modelMap.addAttribute("plans",manPlanService.getAll(1));
-        return "";
+        return "/mp/list";
     }
 
     @RequestMapping("/getAll/{pageNum}")
     public String delManPlan(@PathVariable int pageNum, ModelMap modelMap){
         modelMap.addAttribute("plans",manPlanService.getAll(pageNum));
         return "";
+    }
+
+
+    @RequestMapping("/edit")
+    public String edit(@RequestParam(value = "mpSn",required = false) String mpSn, ModelMap modelMap){
+        if(!StringUtils.isEmpty(mpSn)){
+            modelMap.addAttribute("plan",manPlanService.getManPlanByMpSn(mpSn));
+        }
+        return "/mp/edit";
     }
 }

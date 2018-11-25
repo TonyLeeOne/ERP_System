@@ -47,8 +47,8 @@ public class CustomService {
         return customMapper.deleteByPrimaryKey(cid);
     }
 
-    public Custom getCustom(String cid) {
-        return customMapper.selectByPrimaryKey(cid);
+    public Custom getCustom(String code) {
+        return customMapper.selectByPrimaryKey(code);
     }
 
     /**
@@ -58,6 +58,14 @@ public class CustomService {
      */
     public int getTotal() {
         return customMapper.getTotal();
+    }
+
+    /**
+     * 获取所有的客户名及编号
+     * @return
+     */
+    public List<String> getCustoms(){
+        return customMapper.getCustoms();
     }
 
 

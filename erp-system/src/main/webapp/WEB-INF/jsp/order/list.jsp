@@ -22,7 +22,7 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit',730,550)"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit',730,750)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据: ${orders.total} 条</span>
     </xblock>
@@ -84,7 +84,7 @@
                             <i class="layui-icon">&#xe63c;</i>
                         </a>
                         <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
-                        <a title="编辑" onclick="x_admin_show('编辑','/order/edit?oId=${order.OId}',730,550)"
+                        <a title="编辑" onclick="x_admin_show('编辑','/order/edit?oId=${order.OId}',730,750)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>

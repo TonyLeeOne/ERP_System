@@ -62,18 +62,16 @@ public class UserController {
      * Ajax用户登录
      *
      * @param user
-     * @param remember
      * @param session
      * @return
      */
     @PostMapping("/doLogin")
     @ResponseBody
-    public String login(@RequestBody User user, boolean remember, HttpSession session) {
+    public String login(@RequestBody User user,  HttpSession session) {
         Subject subject = org.apache.shiro.SecurityUtils.getSubject();
         cache = cacheManager.getCache("passwordRetryCache");
-        if (!subject.isAuthenticated()) {
+        if (!subject.isAuthenticated()||subject.getPrincipal()==null) {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUname(), user.getUpass());
-            token.setRememberMe(remember);
             try {
                 subject.login(token);
 //                设置session超时时间30 mins
@@ -92,7 +90,6 @@ public class UserController {
                 return new Gson().toJson("账号或密码错误,还有" + (4 - retry.get()) + "次就会被锁定");
             }
         }
-
         if (cache.get(user.getUname()) != null && (cache.get(user.getUname()).incrementAndGet() > 4)) {
             return new Gson().toJson(ACOUNT_LOCAKED);
         } else {

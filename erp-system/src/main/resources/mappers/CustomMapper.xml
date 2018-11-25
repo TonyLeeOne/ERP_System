@@ -19,7 +19,7 @@
         select
         <include refid="Base_Column_List"/>
         from custom
-        where custom_id = #{customId,jdbcType=VARCHAR}
+        where custom_code = #{custom_code,jdbcType=VARCHAR}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from custom
@@ -135,9 +135,15 @@
     where custom_id = #{customId,jdbcType=VARCHAR}
   </update>
 
-    <select id="getAllCustoms" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="getAllCustoms" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from custom order by custom_name LIMIT #{offset},#{limit}
+        from custom order by custom_name
     </select>
+
+
+    <select id="getCustoms" resultType="java.lang.String">
+        select concat(custom_name,'(',custom_code,')') from custom where custom_status = '1' order by custom_name
+    </select>
+
 </mapper>

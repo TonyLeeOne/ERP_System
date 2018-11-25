@@ -1,8 +1,11 @@
 package com.tony.erp.utils;
 
+import sun.jvmstat.perfdata.monitor.PerfStringVariableMonitor;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -13,8 +16,8 @@ import java.util.UUID;
 public class KeyGeneratorUtils {
 
     private final static SimpleDateFormat DATE=new SimpleDateFormat("yyyyMMdd",Locale.CHINA);
-    private final static SimpleDateFormat TIME=new SimpleDateFormat("yyyyMMddhhmm",Locale.CHINA);
-    private final static SimpleDateFormat DATE_GENERATOR=new SimpleDateFormat("yy/MM/dd HH:mm",Locale.CHINA);
+    private final static SimpleDateFormat TIME=new SimpleDateFormat("yyMMddhhmmss",Locale.ENGLISH);
+    private final static SimpleDateFormat DATE_GENERATOR=new SimpleDateFormat("yy-MM-dd HH:mm",Locale.CHINA);
 
     public static  String keyUUID(){
         return UUID.randomUUID().toString().replaceAll("-","");
@@ -30,6 +33,10 @@ public class KeyGeneratorUtils {
 
     public static synchronized String dateGenerator(){
         return DATE_GENERATOR.format(new Date());
+    }
+
+    public static synchronized String mpKey(){
+        return keyTime();
     }
 
 }

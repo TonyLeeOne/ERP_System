@@ -2,8 +2,8 @@
 <%@include file="../common/header.jsp" %>
 <body>
 <div class="layui-col-md6 layui-col-md-offset3">
-    <c:if test="${!empty ships}">
         <ul class="layui-timeline">
+            <c:if test="${!empty ships}">
             <c:forEach items="${ships}" var="ship">
             <li class="layui-timeline-item">
                 <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
@@ -26,6 +26,7 @@
                 </div>
             </li>
             </c:forEach>
+            </c:if>
             <li class="layui-timeline-item">
                 <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                 <div class="layui-timeline-content layui-text">
@@ -33,7 +34,6 @@
                 </div>
             </li>
         </ul>
-    </c:if>
 </div>
 </body>
 

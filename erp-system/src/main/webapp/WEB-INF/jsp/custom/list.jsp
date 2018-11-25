@@ -19,7 +19,7 @@
         </form>
     </div>
     <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit',700,350)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：${customs.total} 条</span>
@@ -35,7 +35,7 @@
             <th>客户名</th>
             <th>客户电话</th>
             <th>客户地址</th>
-            <th>客户法人</th>
+            <th>客户联系人</th>
             <th>客户全名</th>
             <th>客户状态</th>
             <th>操作</th>
@@ -62,7 +62,7 @@
                         <a title="查看" onclick="x_admin_show('查看','/custom/show?customId=${custom.customId}')" href="javascript:;">
                             <i class="layui-icon">&#xe63c;</i>
                         </a>
-                        <a title="编辑" onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customId}',700,350)" href="javascript:;">
+                        <a title="编辑" onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customCode}',700,350)" href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
                         <a title="删除" onclick="member_del(this,'${custom.customId}')" href="javascript:;">
