@@ -9,6 +9,8 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
 /**
+ * @author jli2
+ * @date  2018/11/12
  * 自定义shiro密码比较器
  */
 public class CredentialMatcher extends SimpleCredentialsMatcher {
@@ -22,7 +24,7 @@ public class CredentialMatcher extends SimpleCredentialsMatcher {
         //获得用户输入的密码:(对usernmae加盐，加密密码)
         ByteSource source = ByteSource.Util.bytes(username);
         //返回加盐后的结果
-        Object result = new SimpleHash(Constant.HasAlgorithmName, pwd, source, Constant.HasIterations);
+        Object result = new SimpleHash(Constant.ALGORITHM, pwd, source, Constant.ITERATORS);
         //获取info中获取user在数据库中的加密密码
         String credential = (String) info.getCredentials();
         return this.equals(result.toString(), credential);

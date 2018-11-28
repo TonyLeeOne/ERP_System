@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.tony.erp.domain.Order">
+        <id column="o_id" jdbcType="VARCHAR" property="oId"/>
+        <result column="o_modifier" jdbcType="VARCHAR" property="oModifier"/>
+        <result column="o_creator" jdbcType="VARCHAR" property="oCreator"/>
+        <result column="o_no" jdbcType="VARCHAR" property="oNo"/>
+        <result column="o_com_no" jdbcType="VARCHAR" property="oComNo"/>
+        <result column="o_product_code" jdbcType="VARCHAR" property="oProductCode"/>
+        <result column="o_count" jdbcType="INTEGER" property="oCount"/>
+        <result column="o_indeed_count" jdbcType="INTEGER" property="oIndeedCount"/>
+        <result column="o_create_date" jdbcType="VARCHAR" property="oCreateDate"/>
+        <result column="o_shipment_date" jdbcType="VARCHAR" property="oShipmentDate"/>
+        <result column="o_custom_name" jdbcType="VARCHAR" property="oCustomName"/>
+        <result column="o_pay" jdbcType="VARCHAR" property="oPay"/>
+        <result column="o_pay_category" jdbcType="VARCHAR" property="oPayCategory"/>
+        <result column="o_exchange_rate" jdbcType="VARCHAR" property="oExchangeRate"/>
+        <result column="o_shipment_method" jdbcType="VARCHAR" property="oShipmentMethod"/>
+        <result column="o_contacts" jdbcType="VARCHAR" property="oContacts"/>
+        <result column="o_tel" jdbcType="VARCHAR" property="oTel"/>
+        <result column="o_address" jdbcType="VARCHAR" property="oAddress"/>
+        <result column="o_salesman" jdbcType="VARCHAR" property="oSalesman"/>
+        <result column="o_salesman_depart" jdbcType="VARCHAR" property="oSalesmanDepart"/>
+        <result column="o_salesman_contact" jdbcType="VARCHAR" property="oSalesmanContact"/>
+        <result column="o_auditor" jdbcType="VARCHAR" property="oAuditor"/>
+        <result column="o_audit_date" jdbcType="VARCHAR" property="oAuditDate"/>
+        <result column="o_note" jdbcType="VARCHAR" property="oNote"/>
+        <result column="o_status" jdbcType="CHAR" property="oStatus"/>
+        <association property="product" javaType="com.tony.erp.domain.Product">
+            <id column="pro_id" jdbcType="VARCHAR" property="proId"/>
+            <result column="pro_code" jdbcType="VARCHAR" property="proCode"/>
+            <result column="pro_name" jdbcType="VARCHAR" property="proName"/>
+            <result column="pro_count" jdbcType="INTEGER" property="proCount"/>
+            <result column="pro_price" jdbcType="REAL" property="proPrice"/>
+            <result column="pro_image" jdbcType="VARCHAR" property="proImage"/>
+            <result column="pro_note" jdbcType="VARCHAR" property="proNote"/>
+            <result column="pro_status" jdbcType="CHAR" property="proStatus"/>
+        </association>
+        <collection property="plans" ofType="com.tony.erp.domain.ManPlan">
+            <id column="mp_id" jdbcType="VARCHAR" property="mpId"/>
+            <result column="mp_sn" jdbcType="VARCHAR" property="mpSn"/>
+            <result column="mp_pro_code" jdbcType="VARCHAR" property="mpProCode"/>
+            <result column="mp_start_date" jdbcType="VARCHAR" property="mpStartDate"/>
+            <result column="mp_end_date" jdbcType="VARCHAR" property="mpEndDate"/>
+            <result column="mp_count" jdbcType="INTEGER" property="mpCount"/>
+            <result column="mp_order_id" jdbcType="VARCHAR" property="mpOrderId"/>
+            <result column="mp_status" jdbcType="CHAR" property="mpStatus"/>
+            <collection property="manOrders" ofType="com.tony.erp.domain.ManOrder">
+                <id column="mo_id" jdbcType="VARCHAR" property="moId"/>
+                <result column="mo_sn" jdbcType="VARCHAR" property="moSn"/>
+                <result column="mo_mp_sn" jdbcType="VARCHAR" property="moMpSn"/>
+                <result column="mo_start_date" jdbcType="VARCHAR" property="moStartDate"/>
+                <result column="mo_end_date" jdbcType="VARCHAR" property="moEndDate"/>
+                <result column="mo_count" jdbcType="INTEGER" property="moCount"/>
+                <result column="mo_wait_count" jdbcType="INTEGER" property="moWaitCount"/>
+                <result column="mo_status" jdbcType="CHAR" property="moStatus"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    o_id, o_modifier, o_creator, o_no, o_com_no, o_product_code, o_count, o_indeed_count, 
+    o_create_date, o_shipment_date, o_custom_name, o_pay, o_pay_category, o_exchange_rate, 
+    o_shipment_method, o_contacts, o_tel, o_address, o_salesman, o_salesman_depart, o_salesman_contact, 
+    o_auditor, o_audit_date, o_note, o_status
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        o.*,p.*,mp.*,mo.*
+        from orders o
+        left join product p on o.o_product_code=p.pro_code
+        left join manufacture_plan mp on o.o_no=mp.mp_order_id
+        left join manufacture_order mo on mo.mo_mp_sn=mp_sn
+        where o.o_id = #{oId,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="find" parameterType="map" resultMap="BaseResultMap">
+        select
+        o.o_id,
+        o.o_no,
+        o.o_com_no,
+        o.o_count,
+        o.o_custom_name,
+        o.o_contacts,
+        o.o_tel,
+        o.o_create_date,
+        o.o_status,
+        o.o_pay,
+        o.o_note,
+        o.o_product_code,
+        o.o_indeed_count,
+        p.pro_price,
+        p.pro_name
+        from orders o
+        left join product p
+        on o.o_product_code=p.pro_code
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="custom_name != null">
+                 o.o_custom_name=#{custom_name}
+            </if>
+            <if test="salesman != null">
+                 o.o_salesman=#{salesman}
+            </if>
+            <if test="oNo != null">
+                o.o_no=#{oNo}
+            </if>
+        </trim>
+        order by o.o_create_date DESC
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from orders
+    where o_id = #{oId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.tony.erp.domain.Order">
+    insert into orders (o_id, o_modifier, o_creator, 
+      o_no, o_com_no, o_product_code, 
+      o_count, o_indeed_count, o_create_date, 
+      o_shipment_date, o_custom_name, o_pay, 
+      o_pay_category, o_exchange_rate, o_shipment_method, 
+      o_contacts, o_tel, o_address, 
+      o_salesman, o_salesman_depart, o_salesman_contact, 
+      o_auditor, o_audit_date, o_note, 
+      o_status)
+    values (#{oId,jdbcType=VARCHAR}, #{oModifier,jdbcType=VARCHAR}, #{oCreator,jdbcType=VARCHAR}, 
+      #{oNo,jdbcType=VARCHAR}, #{oComNo,jdbcType=VARCHAR}, #{oProductCode,jdbcType=VARCHAR}, 
+      #{oCount,jdbcType=INTEGER}, #{oIndeedCount,jdbcType=INTEGER}, #{oCreateDate,jdbcType=VARCHAR}, 
+      #{oShipmentDate,jdbcType=VARCHAR}, #{oCustomName,jdbcType=VARCHAR}, #{oPay,jdbcType=VARCHAR}, 
+      #{oPayCategory,jdbcType=VARCHAR}, #{oExchangeRate,jdbcType=VARCHAR}, #{oShipmentMethod,jdbcType=VARCHAR}, 
+      #{oContacts,jdbcType=VARCHAR}, #{oTel,jdbcType=VARCHAR}, #{oAddress,jdbcType=VARCHAR}, 
+      #{oSalesman,jdbcType=VARCHAR}, #{oSalesmanDepart,jdbcType=VARCHAR}, #{oSalesmanContact,jdbcType=VARCHAR}, 
+      #{oAuditor,jdbcType=VARCHAR}, #{oAuditDate,jdbcType=VARCHAR}, #{oNote,jdbcType=VARCHAR}, 
+      #{oStatus,jdbcType=CHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.tony.erp.domain.Order">
+        insert into orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="oId != null">
+                o_id,
+            </if>
+            <if test="oModifier != null">
+                o_modifier,
+            </if>
+            <if test="oCreator != null">
+                o_creator,
+            </if>
+            <if test="oNo != null">
+                o_no,
+            </if>
+            <if test="oComNo != null">
+                o_com_no,
+            </if>
+            <if test="oProductCode != null">
+                o_product_code,
+            </if>
+            <if test="oCount != null">
+                o_count,
+            </if>
+            <if test="oIndeedCount != null">
+                o_indeed_count,
+            </if>
+            <if test="oCreateDate != null">
+                o_create_date,
+            </if>
+            <if test="oShipmentDate != null">
+                o_shipment_date,
+            </if>
+            <if test="oCustomName != null">
+                o_custom_name,
+            </if>
+            <if test="oPay != null">
+                o_pay,
+            </if>
+            <if test="oPayCategory != null">
+                o_pay_category,
+            </if>
+            <if test="oExchangeRate != null">
+                o_exchange_rate,
+            </if>
+            <if test="oShipmentMethod != null">
+                o_shipment_method,
+            </if>
+            <if test="oContacts != null">
+                o_contacts,
+            </if>
+            <if test="oTel != null">
+                o_tel,
+            </if>
+            <if test="oAddress != null">
+                o_address,
+            </if>
+            <if test="oSalesman != null">
+                o_salesman,
+            </if>
+            <if test="oSalesmanDepart != null">
+                o_salesman_depart,
+            </if>
+            <if test="oSalesmanContact != null">
+                o_salesman_contact,
+            </if>
+            <if test="oAuditor != null">
+                o_auditor,
+            </if>
+            <if test="oAuditDate != null">
+                o_audit_date,
+            </if>
+            <if test="oNote != null">
+                o_note,
+            </if>
+            <if test="oStatus != null">
+                o_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="oId != null">
+                #{oId,jdbcType=VARCHAR},
+            </if>
+            <if test="oModifier != null">
+                #{oModifier,jdbcType=VARCHAR},
+            </if>
+            <if test="oCreator != null">
+                #{oCreator,jdbcType=VARCHAR},
+            </if>
+            <if test="oNo != null">
+                #{oNo,jdbcType=VARCHAR},
+            </if>
+            <if test="oComNo != null">
+                #{oComNo,jdbcType=VARCHAR},
+            </if>
+            <if test="oProductCode != null">
+                #{oProductCode,jdbcType=VARCHAR},
+            </if>
+            <if test="oCount != null">
+                #{oCount,jdbcType=INTEGER},
+            </if>
+            <if test="oIndeedCount != null">
+                #{oIndeedCount,jdbcType=INTEGER},
+            </if>
+            <if test="oCreateDate != null">
+                #{oCreateDate,jdbcType=VARCHAR},
+            </if>
+            <if test="oShipmentDate != null">
+                #{oShipmentDate,jdbcType=VARCHAR},
+            </if>
+            <if test="oCustomName != null">
+                #{oCustomName,jdbcType=VARCHAR},
+            </if>
+            <if test="oPay != null">
+                #{oPay,jdbcType=VARCHAR},
+            </if>
+            <if test="oPayCategory != null">
+                #{oPayCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="oExchangeRate != null">
+                #{oExchangeRate,jdbcType=VARCHAR},
+            </if>
+            <if test="oShipmentMethod != null">
+                #{oShipmentMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="oContacts != null">
+                #{oContacts,jdbcType=VARCHAR},
+            </if>
+            <if test="oTel != null">
+                #{oTel,jdbcType=VARCHAR},
+            </if>
+            <if test="oAddress != null">
+                #{oAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="oSalesman != null">
+                #{oSalesman,jdbcType=VARCHAR},
+            </if>
+            <if test="oSalesmanDepart != null">
+                #{oSalesmanDepart,jdbcType=VARCHAR},
+            </if>
+            <if test="oSalesmanContact != null">
+                #{oSalesmanContact,jdbcType=VARCHAR},
+            </if>
+            <if test="oAuditor != null">
+                #{oAuditor,jdbcType=VARCHAR},
+            </if>
+            <if test="oAuditDate != null">
+                #{oAuditDate,jdbcType=VARCHAR},
+            </if>
+            <if test="oNote != null">
+                #{oNote,jdbcType=VARCHAR},
+            </if>
+            <if test="oStatus != null">
+                #{oStatus,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Order">
+        update orders
+        <set>
+            <if test="oModifier != null">
+                o_modifier = #{oModifier,jdbcType=VARCHAR},
+            </if>
+            <if test="oCreator != null">
+                o_creator = #{oCreator,jdbcType=VARCHAR},
+            </if>
+            <if test="oNo != null">
+                o_no = #{oNo,jdbcType=VARCHAR},
+            </if>
+            <if test="oComNo != null">
+                o_com_no = #{oComNo,jdbcType=VARCHAR},
+            </if>
+            <if test="oProductCode != null">
+                o_product_code = #{oProductCode,jdbcType=VARCHAR},
+            </if>
+            <if test="oCount != null">
+                o_count = #{oCount,jdbcType=INTEGER},
+            </if>
+            <if test="oIndeedCount != null">
+                o_indeed_count = #{oIndeedCount,jdbcType=INTEGER},
+            </if>
+            <if test="oCreateDate != null">
+                o_create_date = #{oCreateDate,jdbcType=VARCHAR},
+            </if>
+            <if test="oShipmentDate != null">
+                o_shipment_date = #{oShipmentDate,jdbcType=VARCHAR},
+            </if>
+            <if test="oCustomName != null">
+                o_custom_name = #{oCustomName,jdbcType=VARCHAR},
+            </if>
+            <if test="oPay != null">
+                o_pay = #{oPay,jdbcType=VARCHAR},
+            </if>
+            <if test="oPayCategory != null">
+                o_pay_category = #{oPayCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="oExchangeRate != null">
+                o_exchange_rate = #{oExchangeRate,jdbcType=VARCHAR},
+            </if>
+            <if test="oShipmentMethod != null">
+                o_shipment_method = #{oShipmentMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="oContacts != null">
+                o_contacts = #{oContacts,jdbcType=VARCHAR},
+            </if>
+            <if test="oTel != null">
+                o_tel = #{oTel,jdbcType=VARCHAR},
+            </if>
+            <if test="oAddress != null">
+                o_address = #{oAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="oSalesman != null">
+                o_salesman = #{oSalesman,jdbcType=VARCHAR},
+            </if>
+            <if test="oSalesmanDepart != null">
+                o_salesman_depart = #{oSalesmanDepart,jdbcType=VARCHAR},
+            </if>
+            <if test="oSalesmanContact != null">
+                o_salesman_contact = #{oSalesmanContact,jdbcType=VARCHAR},
+            </if>
+            <if test="oAuditor != null">
+                o_auditor = #{oAuditor,jdbcType=VARCHAR},
+            </if>
+            <if test="oAuditDate != null">
+                o_audit_date = #{oAuditDate,jdbcType=VARCHAR},
+            </if>
+            <if test="oNote != null">
+                o_note = #{oNote,jdbcType=VARCHAR},
+            </if>
+            <if test="oStatus != null">
+                o_status = #{oStatus,jdbcType=CHAR},
+            </if>
+        </set>
+        where o_id = #{oId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Order">
+    update orders
+    set o_modifier = #{oModifier,jdbcType=VARCHAR},
+      o_creator = #{oCreator,jdbcType=VARCHAR},
+      o_no = #{oNo,jdbcType=VARCHAR},
+      o_com_no = #{oComNo,jdbcType=VARCHAR},
+      o_product_code = #{oProductCode,jdbcType=VARCHAR},
+      o_count = #{oCount,jdbcType=INTEGER},
+      o_indeed_count = #{oIndeedCount,jdbcType=INTEGER},
+      o_create_date = #{oCreateDate,jdbcType=VARCHAR},
+      o_shipment_date = #{oShipmentDate,jdbcType=VARCHAR},
+      o_custom_name = #{oCustomName,jdbcType=VARCHAR},
+      o_pay = #{oPay,jdbcType=VARCHAR},
+      o_pay_category = #{oPayCategory,jdbcType=VARCHAR},
+      o_exchange_rate = #{oExchangeRate,jdbcType=VARCHAR},
+      o_shipment_method = #{oShipmentMethod,jdbcType=VARCHAR},
+      o_contacts = #{oContacts,jdbcType=VARCHAR},
+      o_tel = #{oTel,jdbcType=VARCHAR},
+      o_address = #{oAddress,jdbcType=VARCHAR},
+      o_salesman = #{oSalesman,jdbcType=VARCHAR},
+      o_salesman_depart = #{oSalesmanDepart,jdbcType=VARCHAR},
+      o_salesman_contact = #{oSalesmanContact,jdbcType=VARCHAR},
+      o_auditor = #{oAuditor,jdbcType=VARCHAR},
+      o_audit_date = #{oAuditDate,jdbcType=VARCHAR},
+      o_note = #{oNote,jdbcType=VARCHAR},
+      o_status = #{oStatus,jdbcType=CHAR}
+    where o_id = #{oId,jdbcType=VARCHAR}
+  </update>
+
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(1) from orders where o_status != '4'
+    </select>
+
+
+    <delete id="batchDeleteByOno" parameterType="java.lang.String">
+        delete from orders where o_no in
+        <foreach collection="orderNos" item="orderNo" index="index" open="(" close=")" separator=",">
+            #{orderNo}
+        </foreach>
+    </delete>
+
+    <select id="getONos" parameterType="java.lang.String" resultType="java.lang.String">
+        select concat(o_custom_name,'(',o_no,')') from orders where o_status =#{oStatus} order by o_no
+    </select>
+</mapper>

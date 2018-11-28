@@ -18,8 +18,9 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 /**
+ * @author jli2
+ * @date  2018/11/12
  * 自定义authRealm
  */
 @Slf4j
@@ -37,7 +38,8 @@ public class AuthRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        User user = (User) principalCollection.fromRealm(this.getClass().getName()).iterator().next();
+        User user;
+        user = (User) principalCollection.fromRealm(this.getClass().getName()).iterator().next();
         List<String> perms = new ArrayList<>();
         List<String> rooles = new ArrayList<>();
         Set<Role> roles = user.getRoles();
@@ -75,7 +77,7 @@ public class AuthRealm extends AuthorizingRealm {
         String username = passwordToken.getUsername();
         User u = userService.getUserPropertiesByUsername(username);
         if (ObjectUtils.isEmpty(u)) {
-            log.error("当前用户没找到:[{}]" + username);
+            log.error("当前用户没找到:[{}]", username);
             throw new UnknownAccountException();
         }
 //        使用用户名加盐

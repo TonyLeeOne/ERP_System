@@ -4,9 +4,10 @@
   <resultMap id="BaseResultMap" type="com.tony.erp.domain.Module">
     <id column="mid" jdbcType="VARCHAR" property="mid" />
     <result column="mname" jdbcType="VARCHAR" property="mname" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Base_Column_List">
-    mid, mname
+    mid, mname, remark
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -19,8 +20,10 @@
     where mid = #{mid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.tony.erp.domain.Module">
-    insert into module (mid, mname)
-    values (#{mid,jdbcType=VARCHAR}, #{mname,jdbcType=VARCHAR})
+    insert into module (mid, mname, remark
+      )
+    values (#{mid,jdbcType=VARCHAR}, #{mname,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.tony.erp.domain.Module">
     insert into module
@@ -31,6 +34,9 @@
       <if test="mname != null">
         mname,
       </if>
+      <if test="remark != null">
+        remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="mid != null">
@@ -38,6 +44,9 @@
       </if>
       <if test="mname != null">
         #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -47,12 +56,21 @@
       <if test="mname != null">
         mname = #{mname,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where mid = #{mid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Module">
     update module
-    set mname = #{mname,jdbcType=VARCHAR}
+    set mname = #{mname,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
     where mid = #{mid,jdbcType=VARCHAR}
   </update>
+  <select id="getAllModules" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from module
+  </select>
 </mapper>

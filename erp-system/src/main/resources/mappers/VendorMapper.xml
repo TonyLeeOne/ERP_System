@@ -20,6 +20,13 @@
     from vendor
     where v_id = #{vId,jdbcType=VARCHAR}
   </select>
+
+  <select id="getAllVendors" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from vendor
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from vendor
     where v_id = #{vId,jdbcType=VARCHAR}

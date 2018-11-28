@@ -2,6 +2,8 @@ package com.tony.erp.dao;
 
 import com.tony.erp.domain.Module;
 
+import java.util.List;
+
 public interface ModuleMapper {
     int deleteByPrimaryKey(String mid);
 
@@ -14,4 +16,6 @@ public interface ModuleMapper {
     int updateByPrimaryKeySelective(Module record);
 
     int updateByPrimaryKey(Module record);
+
+    List<Module> getAllModules();
 }

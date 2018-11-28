@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.RoleModuleMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.RoleModule">
+    <result column="rid" jdbcType="VARCHAR" property="rid" />
+    <result column="mid" jdbcType="VARCHAR" property="mid" />
+  </resultMap>
+
+  <insert id="insert" parameterType="java.util.List">
+    insert into role_module (rid, mid)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.rid,jdbcType=VARCHAR},#{item.mid,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <delete id="delete" parameterType="com.tony.erp.domain.RoleModule">
+    delete from role_module where rid=#{rid,jdbcType=VARCHAR} and mid=#{mid,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="selectMidByRid" parameterType="java.lang.String" resultType="java.lang.String">
+    select mid from role_module where rid=#{rid,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByRid" parameterType="java.lang.String">
+    delete from role_module where rid=#{rid,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.RoleModule">
+    insert into role_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
+      <if test="mid != null">
+        mid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        #{rid,jdbcType=VARCHAR},
+      </if>
+      <if test="mid != null">
+        #{mid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

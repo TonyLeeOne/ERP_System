@@ -5,8 +5,9 @@ import com.google.code.kaptcha.servlet.KaptchaServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-
 /**
+ * @author jli2
+ * @date  2018/11/12
  * 初始化随机验证码生成器
  */
 @Component

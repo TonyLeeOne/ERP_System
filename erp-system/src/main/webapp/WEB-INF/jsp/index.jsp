@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,7 +22,7 @@
 <body>
 <!-- 顶部开始 -->
 <div class="container">
-    <div class="logo"><a href="./index.html">ERP管理系统 v1.0</a></div>
+    <div class="logo"><a href="/index">ERP管理系统 v1.0</a></div>
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
@@ -37,13 +38,13 @@
     </ul>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
-            <a href="javascript:;">admin</a>
+            <a href="javascript:;">${sessionScope.user.uname}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onclick="x_admin_show('个人信息','admin-edit.html',600)">个人信息</a></dd>
-                <dd><a href="/login">退出</a></dd>
+                <dd><a href="/user/logout">退出</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
+        <li class="layui-nav-item to-index"><a href="/">前台页面</a></li>
     </ul>
 
 </div>
@@ -61,7 +62,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/order/getAllOrders">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有订单</cite>
                         </a>
@@ -76,10 +77,9 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="member-list.html">
+                        <a _href="/custom/getAllCustoms">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有客户</cite>
-
                         </a>
                     </li>
                 </ul>
@@ -92,7 +92,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="member-list.html">
+                        <a _href="/vendor/getAllVendors">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有供应商</cite>
                         </a>
@@ -107,7 +107,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/manPlan/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>生产计划</cite>
                         </a>
@@ -130,7 +130,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/product/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有产品</cite>
                         </a>
@@ -138,7 +138,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/ship/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>出货记录</cite>
                         </a>
@@ -184,7 +184,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/device/getAllDevices">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有设备</cite>
                         </a>
@@ -218,47 +218,80 @@
             <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe70b;</i>
+                    <cite>部门管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/department/getAllDepartments">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>部门列表</cite>
+                        </a>
+                    </li>
+                    <%--<li>--%>
+                    <%--<a _href="admin-cate.html">--%>
+                    <%--<i class="iconfont">&#xe6a7;</i>--%>
+                    <%--<cite>权限分类</cite>--%>
+                    <%--</a>--%>
+                    <%--</li>--%>
+                    <%--<li>--%>
+                    <%--<a _href="/module/getAllModules">--%>
+                    <%--<i class="iconfont">&#xe6a7;</i>--%>
+                    <%--<cite>权限管理</cite>--%>
+                    <%--</a>--%>
+                    <%--</li>--%>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe70b;</i>
                     <cite>人员管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="admin-list.html">
+                        <a _href="/user/getAllUsers">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>管理员列表</cite>
                         </a>
                     </li>
                     <li>
-                        <a _href="admin-role.html">
+                        <a _href="/role/getAllRoles">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>角色管理</cite>
                         </a>
                     </li>
-                    <li>
-                        <a _href="admin-cate.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限分类</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="admin-rule.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限管理</cite>
-                        </a>
-                    </li>
+                    <%--<li>--%>
+                        <%--<a _href="admin-cate.html">--%>
+                            <%--<i class="iconfont">&#xe6a7;</i>--%>
+                            <%--<cite>权限分类</cite>--%>
+                        <%--</a>--%>
+                    <%--</li>--%>
+                    <%--<li>--%>
+                        <%--<a _href="/module/getAllModules">--%>
+                            <%--<i class="iconfont">&#xe6a7;</i>--%>
+                            <%--<cite>权限管理</cite>--%>
+                        <%--</a>--%>
+                    <%--</li>--%>
                 </ul>
             </li>
             <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe6ae;</i>
-                    <cite>系统性能监控</cite>
+                    <cite>系统权限配置</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
                 <ul class="sub-menu">
                     <li>
+                        <a _href="/urlConfigure/getAllUrls">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>URL权限配置</cite>
+                        </a>
+                    </li>
+                    <li>
                         <a _href="admin-list.html">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>系统性能监控</cite>
+                            <cite>角色配置</cite>
                         </a>
                     </li>
                 </ul>
@@ -276,7 +309,8 @@
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <iframe src='welcome.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                <iframe src="/welcome" frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                <%--<%@include file="welcome.jsp"%>--%>
             </div>
         </div>
     </div>
@@ -286,8 +320,36 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">Copyright ©2018 ERP管理系统 v1.0 All Rights Reserved</div>
+    <div class="copyright">Copyright ©2018 ERP管理系统 v1.0 All Rights Reserved　
+          当前用户：
+            <span class="x-red">${sessionScope.user.uname}</span> 　当前时间： <span id="timer"></span>
+    </div>
 </div>
+<script>
+    function time(){
+        var timer=new Date();
+        var date=timer.getDate();
+        var month=timer.getMonth();
+        var hour=timer.getHours();
+        var min=timer.getMinutes();
+        var sec=timer.getSeconds();
+        var year=timer.getFullYear();
+        if(sec<10)
+            sec="0"+sec;
+        if(hour<10)
+            hour="0"+hour;
+        if(month<10)
+            month="0"+month;
+        if(date<0)
+            date="0"+date;
+        if(min<10)
+            min="0"+min;
+
+        document.getElementById("timer").innerHTML=year+"年"+(month+1)+"月"+date+"日"+" "+hour+":"+min+":"+sec;
+    }
+
+    setInterval("time()",1000);
+</script>
 <!-- 底部结束 -->
 </body>
 </html>

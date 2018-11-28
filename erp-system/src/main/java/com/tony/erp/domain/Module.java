@@ -1,17 +1,15 @@
 package com.tony.erp.domain;
 
 import lombok.Data;
-
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class Module implements Serializable {
-
+@EqualsAndHashCode
+public class Module {
     private String mid;
 
     private String mname;
 
-    public String getMid() {
-        return mid;
-    }
+    private String remark;
+
 }

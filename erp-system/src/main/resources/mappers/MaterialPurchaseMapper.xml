@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.MaterialPurchaseMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.MaterialPurchase">
+    <id column="mph_id" jdbcType="VARCHAR" property="mphId" />
+    <result column="mph_name" jdbcType="VARCHAR" property="mphName" />
+    <result column="mph_sn" jdbcType="VARCHAR" property="mphSn" />
+    <result column="mph_price" jdbcType="REAL" property="mphPrice" />
+    <result column="mph_count" jdbcType="INTEGER" property="mphCount" />
+    <result column="mph_vendor_id" jdbcType="VARCHAR" property="mphVendorId" />
+    <result column="mph_vendor_code" jdbcType="VARCHAR" property="mphVendorCode" />
+    <result column="mph_sender" jdbcType="VARCHAR" property="mphSender" />
+    <result column="mph_operator" jdbcType="VARCHAR" property="mphOperator" />
+    <result column="mph_date" jdbcType="VARCHAR" property="mphDate" />
+    <result column="mph_note" jdbcType="VARCHAR" property="mphNote" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mph_id, mph_name, mph_sn, mph_price, mph_count, mph_vendor_id, mph_vendor_code, mph_sender, 
+    mph_operator, mph_date, mph_note
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from material_purchase
+    where mph_id = #{mphId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByMphsn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from material_purchase
+    where mph_sn = #{mphSn,jdbcType=VARCHAR} order by mph_date DESC
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from material_purchase
+    order by mph_date DESC
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from material_purchase
+    where mph_id = #{mphId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.MaterialPurchase">
+    insert into material_purchase (mph_id, mph_name, mph_sn, 
+      mph_price, mph_count, mph_vendor_id, 
+      mph_vendor_code, mph_sender, mph_operator, 
+      mph_date, mph_note)
+    values (#{mphId,jdbcType=VARCHAR}, #{mphName,jdbcType=VARCHAR}, #{mphSn,jdbcType=VARCHAR}, 
+      #{mphPrice,jdbcType=REAL}, #{mphCount,jdbcType=INTEGER}, #{mphVendorId,jdbcType=VARCHAR}, 
+      #{mphVendorCode,jdbcType=VARCHAR}, #{mphSender,jdbcType=VARCHAR}, #{mphOperator,jdbcType=VARCHAR}, 
+      #{mphDate,jdbcType=VARCHAR}, #{mphNote,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.MaterialPurchase">
+    insert into material_purchase
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mphId != null">
+        mph_id,
+      </if>
+      <if test="mphName != null">
+        mph_name,
+      </if>
+      <if test="mphSn != null">
+        mph_sn,
+      </if>
+      <if test="mphPrice != null">
+        mph_price,
+      </if>
+      <if test="mphCount != null">
+        mph_count,
+      </if>
+      <if test="mphVendorId != null">
+        mph_vendor_id,
+      </if>
+      <if test="mphVendorCode != null">
+        mph_vendor_code,
+      </if>
+      <if test="mphSender != null">
+        mph_sender,
+      </if>
+      <if test="mphOperator != null">
+        mph_operator,
+      </if>
+      <if test="mphDate != null">
+        mph_date,
+      </if>
+      <if test="mphNote != null">
+        mph_note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mphId != null">
+        #{mphId,jdbcType=VARCHAR},
+      </if>
+      <if test="mphName != null">
+        #{mphName,jdbcType=VARCHAR},
+      </if>
+      <if test="mphSn != null">
+        #{mphSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mphPrice != null">
+        #{mphPrice,jdbcType=REAL},
+      </if>
+      <if test="mphCount != null">
+        #{mphCount,jdbcType=INTEGER},
+      </if>
+      <if test="mphVendorId != null">
+        #{mphVendorId,jdbcType=VARCHAR},
+      </if>
+      <if test="mphVendorCode != null">
+        #{mphVendorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mphSender != null">
+        #{mphSender,jdbcType=VARCHAR},
+      </if>
+      <if test="mphOperator != null">
+        #{mphOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="mphDate != null">
+        #{mphDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mphNote != null">
+        #{mphNote,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.MaterialPurchase">
+    update material_purchase
+    <set>
+      <if test="mphName != null">
+        mph_name = #{mphName,jdbcType=VARCHAR},
+      </if>
+      <if test="mphSn != null">
+        mph_sn = #{mphSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mphPrice != null">
+        mph_price = #{mphPrice,jdbcType=REAL},
+      </if>
+      <if test="mphCount != null">
+        mph_count = #{mphCount,jdbcType=INTEGER},
+      </if>
+      <if test="mphVendorId != null">
+        mph_vendor_id = #{mphVendorId,jdbcType=VARCHAR},
+      </if>
+      <if test="mphVendorCode != null">
+        mph_vendor_code = #{mphVendorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mphSender != null">
+        mph_sender = #{mphSender,jdbcType=VARCHAR},
+      </if>
+      <if test="mphOperator != null">
+        mph_operator = #{mphOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="mphDate != null">
+        mph_date = #{mphDate,jdbcType=VARCHAR},
+      </if>
+      <if test="mphNote != null">
+        mph_note = #{mphNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where mph_id = #{mphId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.MaterialPurchase">
+    update material_purchase
+    set mph_name = #{mphName,jdbcType=VARCHAR},
+      mph_sn = #{mphSn,jdbcType=VARCHAR},
+      mph_price = #{mphPrice,jdbcType=REAL},
+      mph_count = #{mphCount,jdbcType=INTEGER},
+      mph_vendor_id = #{mphVendorId,jdbcType=VARCHAR},
+      mph_vendor_code = #{mphVendorCode,jdbcType=VARCHAR},
+      mph_sender = #{mphSender,jdbcType=VARCHAR},
+      mph_operator = #{mphOperator,jdbcType=VARCHAR},
+      mph_date = #{mphDate,jdbcType=VARCHAR},
+      mph_note = #{mphNote,jdbcType=VARCHAR}
+    where mph_id = #{mphId,jdbcType=VARCHAR}
+  </update>
+</mapper>

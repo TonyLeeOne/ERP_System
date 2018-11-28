@@ -3,40 +3,41 @@
 <mapper namespace="com.tony.erp.dao.ProductMapper">
   <resultMap id="BaseResultMap" type="com.tony.erp.domain.Product">
     <id column="pro_id" jdbcType="VARCHAR" property="proId" />
-    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
     <result column="pro_code" jdbcType="VARCHAR" property="proCode" />
-    <result column="pro_status" jdbcType="CHAR" property="proStatus" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="pro_count" jdbcType="INTEGER" property="proCount" />
+    <result column="pro_price" jdbcType="REAL" property="proPrice" />
     <result column="pro_image" jdbcType="VARCHAR" property="proImage" />
     <result column="pro_note" jdbcType="VARCHAR" property="proNote" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.tony.erp.domain.Product">
-    <result column="pro_count" jdbcType="LONGVARCHAR" property="proCount" />
+    <result column="pro_status" jdbcType="CHAR" property="proStatus" />
   </resultMap>
   <sql id="Base_Column_List">
-    pro_id, pro_name, pro_code, pro_status, pro_image, pro_note
+    pro_id, pro_code, pro_name, pro_count, pro_price, pro_image, pro_note, pro_status
   </sql>
-  <sql id="Blob_Column_List">
-    pro_count
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="selectByProCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from product
-    where pro_id = #{proId,jdbcType=VARCHAR}
+    where pro_code = #{proCode,jdbcType=VARCHAR}
   </select>
+
+  <select id="getAllProducts" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from product
     where pro_id = #{proId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.tony.erp.domain.Product">
-    insert into product (pro_id, pro_name, pro_code, 
-      pro_status, pro_image, pro_note, 
-      pro_count)
-    values (#{proId,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, #{proCode,jdbcType=VARCHAR}, 
-      #{proStatus,jdbcType=CHAR}, #{proImage,jdbcType=VARCHAR}, #{proNote,jdbcType=VARCHAR}, 
-      #{proCount,jdbcType=LONGVARCHAR})
+    insert into product (pro_id, pro_code, pro_name, 
+      pro_count, pro_price, pro_image, 
+      pro_note, pro_status)
+    values (#{proId,jdbcType=VARCHAR}, #{proCode,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, 
+      #{proCount,jdbcType=INTEGER}, #{proPrice,jdbcType=REAL}, #{proImage,jdbcType=VARCHAR}, 
+      #{proNote,jdbcType=VARCHAR}, #{proStatus,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.tony.erp.domain.Product">
     insert into product
@@ -44,14 +45,17 @@
       <if test="proId != null">
         pro_id,
       </if>
-      <if test="proName != null">
-        pro_name,
-      </if>
       <if test="proCode != null">
         pro_code,
       </if>
-      <if test="proStatus != null">
-        pro_status,
+      <if test="proName != null">
+        pro_name,
+      </if>
+      <if test="proCount != null">
+        pro_count,
+      </if>
+      <if test="proPrice != null">
+        pro_price,
       </if>
       <if test="proImage != null">
         pro_image,
@@ -59,22 +63,25 @@
       <if test="proNote != null">
         pro_note,
       </if>
-      <if test="proCount != null">
-        pro_count,
+      <if test="proStatus != null">
+        pro_status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="proId != null">
         #{proId,jdbcType=VARCHAR},
       </if>
-      <if test="proName != null">
-        #{proName,jdbcType=VARCHAR},
-      </if>
       <if test="proCode != null">
         #{proCode,jdbcType=VARCHAR},
       </if>
-      <if test="proStatus != null">
-        #{proStatus,jdbcType=CHAR},
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proCount != null">
+        #{proCount,jdbcType=INTEGER},
+      </if>
+      <if test="proPrice != null">
+        #{proPrice,jdbcType=REAL},
       </if>
       <if test="proImage != null">
         #{proImage,jdbcType=VARCHAR},
@@ -82,22 +89,25 @@
       <if test="proNote != null">
         #{proNote,jdbcType=VARCHAR},
       </if>
-      <if test="proCount != null">
-        #{proCount,jdbcType=LONGVARCHAR},
+      <if test="proStatus != null">
+        #{proStatus,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Product">
     update product
     <set>
-      <if test="proName != null">
-        pro_name = #{proName,jdbcType=VARCHAR},
-      </if>
       <if test="proCode != null">
         pro_code = #{proCode,jdbcType=VARCHAR},
       </if>
-      <if test="proStatus != null">
-        pro_status = #{proStatus,jdbcType=CHAR},
+      <if test="proName != null">
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proCount != null">
+        pro_count = #{proCount,jdbcType=INTEGER},
+      </if>
+      <if test="proPrice != null">
+        pro_price = #{proPrice,jdbcType=REAL},
       </if>
       <if test="proImage != null">
         pro_image = #{proImage,jdbcType=VARCHAR},
@@ -105,29 +115,35 @@
       <if test="proNote != null">
         pro_note = #{proNote,jdbcType=VARCHAR},
       </if>
-      <if test="proCount != null">
-        pro_count = #{proCount,jdbcType=LONGVARCHAR},
+      <if test="proStatus != null">
+        pro_status = #{proStatus,jdbcType=CHAR},
       </if>
     </set>
     where pro_id = #{proId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tony.erp.domain.Product">
-    update product
-    set pro_name = #{proName,jdbcType=VARCHAR},
-      pro_code = #{proCode,jdbcType=VARCHAR},
-      pro_status = #{proStatus,jdbcType=CHAR},
-      pro_image = #{proImage,jdbcType=VARCHAR},
-      pro_note = #{proNote,jdbcType=VARCHAR},
-      pro_count = #{proCount,jdbcType=LONGVARCHAR}
-    where pro_id = #{proId,jdbcType=VARCHAR}
-  </update>
   <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Product">
     update product
-    set pro_name = #{proName,jdbcType=VARCHAR},
-      pro_code = #{proCode,jdbcType=VARCHAR},
-      pro_status = #{proStatus,jdbcType=CHAR},
+    set pro_code = #{proCode,jdbcType=VARCHAR},
+      pro_name = #{proName,jdbcType=VARCHAR},
+      pro_count = #{proCount,jdbcType=INTEGER},
+      pro_price = #{proPrice,jdbcType=REAL},
       pro_image = #{proImage,jdbcType=VARCHAR},
-      pro_note = #{proNote,jdbcType=VARCHAR}
+      pro_note = #{proNote,jdbcType=VARCHAR},
+      pro_status = #{proStatus,jdbcType=CHAR}
     where pro_id = #{proId,jdbcType=VARCHAR}
   </update>
+  <select id="getTotal" resultType="java.lang.Integer">
+    select IFNULL(sum(pro_count),0) from product where pro_status ='1'
+  </select>
+  
+  <delete id="batchDeleteByProCode" parameterType="java.lang.String">
+     delete from product where pro_code in
+    <foreach collection="proCodes" item="proCode" index="index" open="(" close=")" separator=",">
+      #{proCode}
+    </foreach>
+  </delete>
+
+  <select id="selectProCodes" resultType="java.lang.String">
+    select concat(pro_name,'(',pro_code,')') from product where pro_status='1' order by pro_name
+  </select>
 </mapper>
