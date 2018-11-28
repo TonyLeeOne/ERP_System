@@ -11,6 +11,7 @@
     <result column="mo_wait_count" jdbcType="INTEGER" property="moWaitCount" />
     <result column="mo_status" jdbcType="CHAR" property="moStatus" />
   </resultMap>
+
   <sql id="Base_Column_List">
     mo_id, mo_sn, mo_mp_sn, mo_start_date, mo_end_date, mo_count, mo_wait_count, mo_status
   </sql>
@@ -19,6 +20,12 @@
     <include refid="Base_Column_List" />
     from manufacture_order
     where mo_id = #{moId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAllManOrders" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from manufacture_order order by mo_status,mo_start_date ASC
   </select>
 
 
@@ -141,4 +148,28 @@
       mo_status = #{moStatus,jdbcType=CHAR}
     where mo_id = #{moId,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectByMpSn" resultMap="BaseResultMap" parameterType="java.lang.String">
+     select
+    <include refid="Base_Column_List" />
+    from manufacture_order
+    where  mo_mp_sn = #{moMpSn,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByMoSn" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from manufacture_order
+    where  mo_sn = #{moSn,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <select id="selectAllMoSn" resultType="java.lang.String">
+    select
+    distinct (mo_sn)
+    from manufacture_order
+    where mo_status='1'
+  </select>
+
 </mapper>

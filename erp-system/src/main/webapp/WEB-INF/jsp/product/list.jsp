@@ -68,9 +68,6 @@
                         <a title="编辑" onclick="x_admin_show('编辑产品','/product/edit?proCode=${product.proCode}',730,550)" href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
-                        <a title="入库记录" onclick="x_admin_show('入库记录','/product/edit?proCode=${product.proCode}',730,550)" href="javascript:;">
-                            <i class="layui-icon">&#xe63c;</i>
-                        </a>
                         <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
                             <%--<i class="layui-icon">&#xe640;</i>--%>
                         <%--</a>--%>

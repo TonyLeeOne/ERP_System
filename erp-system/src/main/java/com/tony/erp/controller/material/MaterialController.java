@@ -9,9 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 /**
@@ -25,7 +24,6 @@ public class MaterialController {
     @Autowired
     private MaterialService materialService;
 
-
     /**
      * 首页
      * @param modelMap
@@ -34,8 +32,7 @@ public class MaterialController {
     @RequestMapping("/getAll")
     public String getAll(ModelMap modelMap){
         modelMap.addAttribute("materials",materialService.getAllMaterials(1));
-
-        return "";
+        return "/material/list";
     }
 
     /**
@@ -71,7 +68,35 @@ public class MaterialController {
         return materialService.upMaterial(material)>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
     }
 
+    @GetMapping("/edit")
+    public String editMaterial(@RequestParam(defaultValue = "mSn", required = false) String mSn, ModelMap modelMap) {
+        if (!StringUtils.isEmpty(mSn)) {
+            modelMap.addAttribute("material",materialService.checkSnExist(mSn));
+        }
+        return "/material/edit";
+    }
 
+    @PostMapping("/delete")
+    @ResponseBody
+    public String delMaterial(String mId) {
+       String[] mids=mId.split(",");
+        for (String mid:mids
+             ) {
+            if(materialService.delMaterial(mid)<1){
+                return Constant.DATA_DELETE_FAILED;
+            }
+        }
+        return Constant.DATA_UDELETE_SUCCESS;
+    }
 
+    /**
+     * 获取所有状态为1的物料编号信息
+     * @return
+     */
+    @GetMapping("/getAvailableMaterials")
+    @ResponseBody
+    public List<String> getAvailableMaterials(){
+        return materialService.getAvailableMaterials();
+    }
 
 }

@@ -209,7 +209,7 @@
                     type: "POST",
                     async: false,
                     success: function (res) {
-                        if (res == '数据新增成功' || res == '数据更新成功') {
+                        if (res == '数据新增成功') {
                             //发异步，把数据提交给php
                             layer.alert("增加成功", {icon: 6}, function () {
                                 // 获得frame索引

@@ -3,6 +3,7 @@ package com.tony.erp.service.material;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tony.erp.constant.Constant;
 import com.tony.erp.dao.MaterialMapper;
 import com.tony.erp.domain.Material;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
@@ -45,7 +46,20 @@ public class MaterialService {
 
     public int addMaterial(Material material){
         material.setmId(KeyGeneratorUtils.keyUUID());
+        material.setmStatus(Constant.STRING_ONE);
         return materialMapper.insert(material);
+    }
+
+    public int delMaterial(String mid){
+        return materialMapper.deleteByPrimaryKey(mid);
+    }
+
+    /**
+     * 获取所有状态为1的物料编号
+     * @return
+     */
+    public List<String> getAvailableMaterials(){
+        return materialMapper.getAvailableMaterials();
     }
 
 }

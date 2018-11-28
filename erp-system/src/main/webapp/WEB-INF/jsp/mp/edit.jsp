@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@include file="../common/header.jsp" %>
-
+<style>
+    span {
+        color: red;
+    }
+</style>
 <body>
 <div class="x-body">
     <form class="layui-form">
@@ -18,10 +22,10 @@
             <div class="layui-row">
                 <div class="layui-col-md6">
                     <label for="mpSn" class="layui-form-label">
-                        计划编号
+                        计划编号<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="mpSn" name="mpSn" value="${plan.mpSn}"
+                        <input type="text" id="mpSn" name="mpSn" value="${plan.mpSn}" lay-verify="required"
                                autocomplete="off"
                                class="layui-input">
                     </div>
@@ -30,10 +34,10 @@
                 <div class="layui-col-md6">
 
                     <label for="mpCount" class="layui-form-label">
-                        计划数量
+                        待生产数量<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="number" id="mpCount" name="mpCount"
+                        <input type="number" id="mpCount" name="mpCount" lay-verify="required"
                                value="${plan.mpCount}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -42,7 +46,7 @@
             <div class="layui-row">
                 <div class="layui-col-md6">
                     <label for="mpOrderId" class="layui-form-label">
-                        订单号
+                        订单号<span>*</span>
                     </label>
                     <div class="layui-input-inline">
                         <select name="mpOrderId" lay-verify="required" lay-search id="mpOrderId" lay-filter="orders"
@@ -52,7 +56,7 @@
                 </div>
                 <div class="layui-col-md6">
                     <label for="mpProCode" class="layui-form-label">
-                        产品编号
+                        产品编号<span>*</span>
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="mpProCode" name="mpProCode" value="${plan.mpProCode}" readonly="readonly" lay-verify="required"
@@ -65,20 +69,20 @@
                 <div class="layui-col-md6">
 
                     <label for="mpStartDate" class="layui-form-label">
-                        开始日期
+                        开始日期<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" placeholder="计划开始日期" name="mpStartDate" id="mpStartDate" value="${plan.mpStartDate}">
+                        <input class="layui-input" placeholder="计划开始日期" name="mpStartDate" id="mpStartDate" value="${plan.mpStartDate}" lay-verify="required">
                     </div>
                 </div>
 
                 <div class="layui-col-md6">
 
                     <label for="mpEndDate" class="layui-form-label">
-                        结束日期
+                        结束日期<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" placeholder="计划结束日期" name="mpEndDate" id="mpEndDate" value="${plan.mpEndDate}">
+                        <input class="layui-input" placeholder="计划结束日期" name="mpEndDate" id="mpEndDate" value="${plan.mpEndDate}" lay-verify="required">
                     </div>
                 </div>
             </div>
@@ -90,7 +94,7 @@
                             <label class="layui-form-label"> 当前状态</label>
                             <div class="layui-input-block" id="single" value="${plan.mpStatus}">
                                 <input type="radio" name="mpStatus" value="1" title="生产中" id="pro">
-                                <input type="radio" name="mpStatus" value="2" title="生产完成" id="stop">
+                                <input type="radio" name="mpStatus" value="2" title="已完工" id="stop">
                             </div>
                         </div>
                 </div>

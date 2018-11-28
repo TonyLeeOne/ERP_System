@@ -2,6 +2,7 @@ package com.tony.erp.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tony.erp.constant.Constant;
 import com.tony.erp.dao.CustomMapper;
 import com.tony.erp.domain.Custom;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
@@ -12,10 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 /**
  * @author jli2
- * @date 2018/11/12
+ * @date  2018/11/12
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -24,20 +24,20 @@ public class CustomService {
     @Autowired
     private CustomMapper customMapper;
 
-    public PageHelperEntity getAllCustoms(int pageNum, int pageSize) {
-        List<Custom> customs = customMapper.getAllCustoms(pageNum, pageSize);
-        PageHelper.startPage(pageNum, pageSize);
+    public PageHelperEntity getAllCustoms(int pageNum) {
+        PageHelper.startPage(pageNum, 10);
+        List<Custom> customs = customMapper.getAllCustoms();
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(customs);
         PageInfo<Custom> pageInfo = new PageInfo<>(customs);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
+        pageHelperEntity.setPageNum(pageInfo.getPageNum());
         return pageHelperEntity;
     }
 
     public int addCustom(Custom custom) {
         custom.setCustomId(KeyGeneratorUtils.keyUUID());
-        custom.setCustomStatus("1");
+        custom.setCustomStatus(Constant.STRING_ONE);
         return customMapper.insert(custom);
     }
 
@@ -64,19 +64,11 @@ public class CustomService {
 
     /**
      * 获取所有的客户名及编号
-     *
      * @return
      */
-    public List<String> getCustoms() {
+    public List<String> getCustoms(){
         return customMapper.getCustoms();
     }
 
-    /**
-     * 批量删除
-     * @param ids
-     * @return
-     */
-    public int batchDeleteByIds(String[] ids) {
-        return customMapper.batchDeleteByIds(ids);
-    }
+
 }

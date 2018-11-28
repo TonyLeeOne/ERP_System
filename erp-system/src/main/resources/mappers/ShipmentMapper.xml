@@ -71,7 +71,7 @@
                 s.s_status=#{sStatus}
             </if>
         </trim>
-        order by s.s_ship_date DESC
+        order by s.s_status ASC
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">

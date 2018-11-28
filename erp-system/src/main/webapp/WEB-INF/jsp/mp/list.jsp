@@ -22,7 +22,7 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加新生产计划','/manPlan/edit',730,550)"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="x_admin_show('添加新生产计划','/manPlan/edit',730,500)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据: ${plans.total} 条</span>
     </xblock>
@@ -38,7 +38,7 @@
             <th>产品编号</th>
             <th>计划开始日期</th>
             <th>计划结束日期</th>
-            <th>计划生产数量</th>
+            <th>待生产数量</th>
             <th>当前状态</th>
             <th>操作</th>
         </tr>
@@ -49,7 +49,7 @@
                 <tr>
                     <td>
                         <c:if test="${plan.mpStatus!='2'}">
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${plan.mpId}'><i
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${plan.mpSn}'><i
                                 class="layui-icon">&#xe605;</i></div>
                         </c:if>
                     </td>
@@ -63,19 +63,14 @@
                         <%@include file="../common/mp_status.jsp" %>
                     </td>
                     <td class="td-manage">
-                        <a title="查看"
-                           onclick="x_admin_show('查看订单信息，当前订单号【${order.ONo}】','/order/show?oId=${order.OId}')"
-                           href="javascript:;">
-                            <i class="layui-icon">&#xe63c;</i>
-                        </a>
-                        <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
-                        <a title="编辑" onclick="x_admin_show('编辑','/manPlan/edit?mpSn=${plan.mpSn}',730,750)"
+                        <c:if test="${plan.mpStatus =='1'}">
+                        <a title="编辑生产计划" onclick="x_admin_show('编辑生产计划','/manPlan/edit?mpSn=${plan.mpSn}',730,500)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
                         </c:if>
-                        <a title="出货记录" onclick="x_admin_show('出货记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)" href="javascript:;">
-                            <i class="layui-icon">&#xe60e;</i>
+                        <a title="查看生产工单记录" onclick="x_admin_show('当前生产计划【${plan.mpSn}】','/manOrder/getManOrdersByMpsn?mpsn=${plan.mpSn}',730)" href="javascript:;">
+                            <i class="layui-icon">&#xe60a;</i>
                         </a>
                             <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
                             <%--<i class="layui-icon">&#xe640;</i>--%>
@@ -160,9 +155,9 @@
         var data = tableCheck.getData();
 
         if (data.length > 0) {
-            layer.confirm('确认要删除订单编号为【' + data + '】的记录吗？', function (index) {
+            layer.confirm('确认要删除生产计划编号为【' + data + '】的记录吗？', function (index) {
                 //捉到所有被选中的，发异步进行删除
-                $.post('/order/batchDelete', {"orderNos": data.toString()}, function (res) {
+                $.post('/manPlan/batchDeleteByMpSn', {"mpSn": data.toString()}, function (res) {
                     layer.msg(res, {icon: 1});
                     $(".layui-form-checked").not('.header').parents('tr').remove();
                 });

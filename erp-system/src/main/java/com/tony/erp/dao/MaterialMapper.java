@@ -25,4 +25,6 @@ public interface MaterialMapper {
 
     List<Material> getAllMaterials();
 
+    List<String> getAvailableMaterials();
+
 }

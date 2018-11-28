@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,7 +40,7 @@
         <li class="layui-nav-item">
             <a href="javascript:;">${sessionScope.user.uname}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                <dd><a onclick="x_admin_show('个人信息','/',600)">个人信息</a></dd>
+                <dd><a onclick="x_admin_show('个人信息','admin-edit.html',600)">个人信息</a></dd>
                 <dd><a href="/user/logout">退出</a></dd>
             </dl>
         </li>
@@ -77,7 +77,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/custom/getAllCustoms/1">
+                        <a _href="/custom/getAllCustoms">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有客户</cite>
                         </a>
@@ -86,13 +86,13 @@
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont">&#xe6f5;</i>
+                    <i class="iconfont">&#xe6b8;</i>
                     <cite>供应商管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/vendor/getAllVendors/1">
+                        <a _href="/vendor/getAllVendors">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有供应商</cite>
                         </a>
@@ -109,15 +109,23 @@
                     <li>
                         <a _href="/manPlan/getAll">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>生产计划</cite>
+                            <cite>生产计划管理</cite>
                         </a>
                     </li>
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/manOrder/getAll">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>生产进度监控</cite>
+                            <cite>生产工单管理</cite>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/materialConsume/getAll">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>领料单管理</cite>
                         </a>
                     </li>
                 </ul>
@@ -153,7 +161,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/material/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>物料信息</cite>
                         </a>
@@ -171,7 +179,7 @@
                     <li>
                         <a _href="order-list.html">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>消耗记录</cite>
+                            <cite>领料记录</cite>
                         </a>
                     </li>
                 </ul>
@@ -184,48 +192,33 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/device/getAllDevices/1">
+                        <a _href="order-list.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有设备</cite>
                         </a>
                     </li>
                 </ul>
-                <%--<ul class="sub-menu">--%>
-                    <%--<li>--%>
-                        <%--<a _href="#">--%>
-                            <%--<i class="iconfont">&#xe6a7;</i>--%>
-                            <%--<cite>设备维修记录</cite>--%>
-                        <%--</a>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/deviceHis/getAllDeviceHis/1">
+                        <a _href="order-list.html">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>设备维修记录</cite>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="order-list.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>设备保养记录</cite>
                         </a>
                     </li>
                 </ul>
-                <%--<ul class="sub-menu">--%>
-                    <%--<li>--%>
-                        <%--<a _href="#">--%>
-                            <%--<i class="iconfont">&#xe6a7;</i>--%>
-                            <%--<cite>设备采购记录</cite>--%>
-                        <%--</a>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe753;</i>
-                    <cite>部门管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/department/getAllDepartments">
+                        <a _href="order-list.html">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>部门列表</cite>
+                            <cite>设备采购记录</cite>
                         </a>
                     </li>
                 </ul>
@@ -238,15 +231,27 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/user/getAllUsers/1">
+                        <a _href="admin-list.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>管理员列表</cite>
                         </a>
                     </li>
                     <li>
-                        <a _href="/role/getAllRoles">
+                        <a _href="admin-role.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>角色管理</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="admin-cate.html">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>权限分类</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="admin-rule.html">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>权限管理</cite>
                         </a>
                     </li>
                 </ul>

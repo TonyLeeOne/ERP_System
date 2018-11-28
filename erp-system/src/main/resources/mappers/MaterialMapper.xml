@@ -111,4 +111,8 @@
       m_status = #{mStatus,jdbcType=CHAR}
     where m_id = #{mId,jdbcType=VARCHAR}
   </update>
+
+  <select id="getAvailableMaterials" resultType="java.lang.String">
+    select concat(m_name,'(',m_sn,')') from material where m_status='1' order by m_name
+  </select>
 </mapper>

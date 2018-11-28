@@ -47,13 +47,13 @@ public class OrderService {
      * @return
      */
     public PageHelperEntity getAllOrders(int pageNum) {
-        List<Order> orders = orderMapper.find(null);
         PageHelper.startPage(pageNum, 10);
+        List<Order> orders = orderMapper.find(null);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(orders);
         PageInfo<Order> pageInfo = new PageInfo<>(orders);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), 10));
+        pageHelperEntity.setPageNum(pageInfo.getPageNum());
         return pageHelperEntity;
     }
 
@@ -109,9 +109,6 @@ public class OrderService {
                 order.setOStatus(Constant.STRING_FIVE);
                 order.setOAuditDate(KeyGeneratorUtils.dateGenerator());
                 order.setONote(Constant.PRO_SHORTAGE);
-
-                ManPlan manPlan=new ManPlan();
-//                manPlan.setMpSn();
                 return orderMapper.updateByPrimaryKeySelective(order);
             }
             order.setOAuditor(CurrentUser.getCurrentUser().getUname());

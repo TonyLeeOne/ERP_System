@@ -29,10 +29,9 @@ public class CustomController {
      * @param modelMap
      * @return
      */
-    @RequestMapping("/getAllCustoms/{pageNum}")
-    public String getAllCustoms(@PathVariable int pageNum, ModelMap modelMap) {
-        PageHelperEntity custom = customService.getAllCustoms(pageNum, 10);
-        modelMap.addAttribute("page", custom);
+    @RequestMapping("/getAllCustoms")
+    public String getAllCustoms(ModelMap modelMap) {
+        modelMap.addAttribute("customs", customService.getAllCustoms(1));
         return "/custom/list";
     }
 
@@ -43,16 +42,15 @@ public class CustomController {
      * @param modelMap
      * @return
      */
-//    @RequestMapping("/getAllCustoms/{pageSize}")
-//    public String getAllCustom(@PathVariable int pageSize, ModelMap modelMap) {
-//        modelMap.addAttribute("customs", customService.getAllCustoms(pageSize));
-//        return "";
-//    }
+    @RequestMapping("/getAllCustoms/{pageSize}")
+    public String getAllCustom(@PathVariable int pageSize, ModelMap modelMap) {
+        modelMap.addAttribute("customs", customService.getAllCustoms(pageSize));
+        return "";
+    }
 
 
     /**
      * 新增客户信息
-     *
      * @param
      * @return
      */
@@ -67,7 +65,6 @@ public class CustomController {
 
     /**
      * 新增/编辑客户信息页面
-     *
      * @param customId
      * @param modelMap
      * @return
@@ -99,16 +96,16 @@ public class CustomController {
     /**
      * 删除客户信息
      *
-     * @param customId
+     * @param cid
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String delCus(String customId) {
-        if (ObjectUtils.isEmpty(customId)) {
+    public String delCus(String cid) {
+        if (ObjectUtils.isEmpty(cid)) {
             return Constant.ARG_EXCEPTION;
         }
-        return customService.delCustom(customId) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
+        return customService.delCustom(cid) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
     /**
@@ -129,7 +126,6 @@ public class CustomController {
 
     /**
      * 获取所有客户名和编号
-     *
      * @return
      */
     @RequestMapping("/getAllCusNames")
@@ -141,27 +137,11 @@ public class CustomController {
 
     /**
      * 根据客户编号获取客户信息
-     *
      * @return
      */
     @RequestMapping("/getCustomByCode")
     @ResponseBody
     public Custom getCustomByCode(String customCode) {
         return customService.getCustom(customCode);
-    }
-
-    /**
-     * 批量删除客户
-     *
-     * @param ids
-     * @return
-     */
-    @RequestMapping("/batchDelete")
-    @ResponseBody
-    public String batchDelete(@RequestBody String[] ids) {
-        if (ids.length < 1) {
-            return Constant.ARG_EXCEPTION;
-        }
-        return customService.batchDeleteByIds(ids) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 }

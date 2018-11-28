@@ -78,23 +78,20 @@
                         </c:if>
                     </td>
                     <td class="td-manage">
-                        <a title="查看"
+                        <a title="查看订单详情"
                            onclick="x_admin_show('查看订单信息，当前订单号【${order.ONo}】','/order/show?oId=${order.OId}')"
                            href="javascript:;">
                             <i class="layui-icon">&#xe63c;</i>
                         </a>
                         <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
-                        <a title="编辑" onclick="x_admin_show('编辑','/order/edit?oId=${order.OId}',730,750)"
+                        <a title="编辑订单信息" onclick="x_admin_show('编辑订单信息','/order/edit?oId=${order.OId}',730,750)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
                         </c:if>
-                        <a title="出货记录" onclick="x_admin_show('出货记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)" href="javascript:;">
+                        <a title="查看出货记录" onclick="x_admin_show('查看出货记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)" href="javascript:;">
                             <i class="layui-icon">&#xe60e;</i>
                         </a>
-                            <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
-                            <%--<i class="layui-icon">&#xe640;</i>--%>
-                            <%--</a>--%>
                     </td>
                 </tr>
             </c:forEach>

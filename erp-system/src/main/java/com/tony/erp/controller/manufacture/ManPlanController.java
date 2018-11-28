@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * @author jli2
  * @date 11/12/2018 10:34 AM
@@ -42,6 +44,15 @@ public class ManPlanController {
     }
 
 
+
+    @RequestMapping("/batchDeleteByMpSn")
+    @ResponseBody
+    public String batchDelManPlan(String mpSn){
+        String[] mpSns=mpSn.split(",");
+        return manPlanService.batchDeleteByMpSn(mpSns)>0?Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
+    }
+
+
     @RequestMapping("/getAll")
     public String delManPlan(ModelMap modelMap){
         modelMap.addAttribute("plans",manPlanService.getAll(1));
@@ -62,4 +73,11 @@ public class ManPlanController {
         }
         return "/mp/edit";
     }
+
+    @RequestMapping("/getAllMpsns")
+    @ResponseBody
+    public List<String> getAllMpSns(){
+        return manPlanService.selectMpSns();
+    }
+
 }

@@ -2,6 +2,7 @@ package com.tony.erp.service.material;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.regexp.internal.RE;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.dao.MaterialConsumeMapper;
 import com.tony.erp.dao.MaterialMapper;
@@ -10,6 +11,7 @@ import com.tony.erp.domain.MaterialConsume;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.utils.CurrentUser;
 import com.tony.erp.utils.KeyGeneratorUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
+@Slf4j
 public class MaterialConsumService {
 
     @Autowired
@@ -32,6 +35,12 @@ public class MaterialConsumService {
     @Autowired
     private MaterialService materialService;
 
+    /**
+     * 分页查询所有领料记录
+     *
+     * @param pageNum
+     * @return
+     */
     public PageHelperEntity getAll(int pageNum) {
         PageHelper.startPage(pageNum, 10);
         List<MaterialConsume> consumes = materialConsumeMapper.selectAll();
@@ -50,8 +59,7 @@ public class MaterialConsumService {
      */
     public int addMConsume(MaterialConsume consume) {
         consume.setMcId(KeyGeneratorUtils.keyUUID());
-        consume.setMcDate(KeyGeneratorUtils.dateGenerator());
-        consume.setMcOperator(CurrentUser.getCurrentUser().getUname());
+        log.info("领料单创建人[{}],时间[{}]", CurrentUser.getCurrentUser().getUname(), KeyGeneratorUtils.dateGenerator());
         consume.setMcStatus(Constant.STRING_ONE);
 //        参数异常-1
         if (StringUtils.isEmpty(consume.getMcMSn())) {
@@ -61,15 +69,11 @@ public class MaterialConsumService {
         if (ObjectUtils.isEmpty(material)) {
             return Constant.ARG_NOT_MATCHED;
         }
-//        数量不足，更改物料表状态和领料表状态
-        int delta = material.getmCount() - consume.getMcCountIndeed();
+//        数量不足，不可以创建领料单
+        int delta = material.getmCount() - consume.getMcCountNeeded();
         if (delta < 0) {
-            material.setmStatus(Constant.STRING_TWO);
-            materialService.upMaterial(material);
             return Constant.STATUS_CANNOT_CHANGED;
-
         }
-        material.setmCount(delta);
         return materialConsumeMapper.insert(consume) + materialService.upMaterial(material);
     }
 
@@ -85,14 +89,22 @@ public class MaterialConsumService {
             return Constant.ARG_NOT_MATCHED;
         }
         Material material = materialService.checkSnExist(consume.getMcMSn());
-        int delta = material.getmCount() - consume.getMcCountIndeed() + mc.getMcCountIndeed();
+        int delta = material.getmCount() - consume.getMcCountNeeded();
         if (delta < 0) {
-            material.setmStatus(Constant.STRING_TWO);
-            materialService.upMaterial(material);
             return Constant.STATUS_CANNOT_CHANGED;
         }
-        material.setmCount(delta);
         return materialConsumeMapper.updateByPrimaryKeySelective(consume) + materialService.upMaterial(material);
+    }
+
+
+    /**
+     * 审核领料记录
+     * @param consume
+     * @return
+     */
+    public int verifyConsume(MaterialConsume consume) {
+        consume.setMcRequestor(CurrentUser.getCurrentUser().getUname());
+        return materialConsumeMapper.updateByPrimaryKeySelective(consume);
     }
 
     /**
@@ -133,18 +145,31 @@ public class MaterialConsumService {
 
     /**
      * 确认领料记录
-     *
-     * @param mcId   主键
-     * @param indeed 实际领料数量
+
      * @return
      */
-    public int sureConsume(String mcId, int indeed) {
-        MaterialConsume consume = materialConsumeMapper.selectByPrimaryKey(mcId);
-        consume.setMcStatus(Constant.STRING_TWO);
-        consume.setMcDate(KeyGeneratorUtils.dateGenerator());
-        consume.setMcOperator(CurrentUser.getCurrentUser().getUname());
-        consume.setMcCountIndeed(indeed);
-        return materialConsumeMapper.updateByPrimaryKeySelective(consume);
+    public int sureConsume(MaterialConsume consume) {
+        MaterialConsume con = materialConsumeMapper.selectByPrimaryKey(consume.getMcId());
+        if(Constant.STRING_THREE.equals(con.getMcStatus())) {
+            Material material = materialService.checkSnExist(con.getMcMSn());
+            material.setmCount(material.getmCount() - con.getMcCountNeeded());
+            consume.setMcStatus(Constant.STRING_TWO);
+            consume.setMcDate(KeyGeneratorUtils.dateGenerator());
+            consume.setMcOperator(CurrentUser.getCurrentUser().getUname());
+            consume.setMcCountIndeed(consume.getMcCountIndeed());
+            return materialConsumeMapper.updateByPrimaryKeySelective(consume);
+        }
+        return Constant.STATUS_NEED_AUDIT;
+    }
+
+    /**
+     * 根据主键查找领料单
+     *
+     * @param mcId
+     * @return
+     */
+    public MaterialConsume getConsume(String mcId) {
+        return materialConsumeMapper.selectByPrimaryKey(mcId);
     }
 
 }

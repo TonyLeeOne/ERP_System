@@ -24,12 +24,9 @@ public interface CustomMapper {
 
     int updateByPrimaryKey(Custom record);
 
-    List<Custom> getAllCustoms(@Param("offset") int offset,@Param("limit") int limit);
+    List<Custom> getAllCustoms();
 
     int getTotal();
 
     List<String> getCustoms();
-
-    int batchDeleteByIds(@Param("ids") String[] ids);
-
 }

@@ -64,4 +64,16 @@ public class Material {
     public void setmStatus(String mStatus) {
         this.mStatus = mStatus == null ? null : mStatus.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Material{" +
+                "mId='" + mId + '\'' +
+                ", mName='" + mName + '\'' +
+                ", mSn='" + mSn + '\'' +
+                ", mCount=" + mCount +
+                ", mNote='" + mNote + '\'' +
+                ", mStatus='" + mStatus + '\'' +
+                '}';
+    }
 }

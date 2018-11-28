@@ -1,57 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tony.erp.dao.MaterialConsumeMapper">
-  <resultMap id="BaseResultMap" type="com.tony.erp.domain.MaterialConsume">
-    <id column="mc_id" jdbcType="VARCHAR" property="mcId" />
-    <result column="mc_mp_sn" jdbcType="VARCHAR" property="mcMpSn" />
-    <result column="mc_mo_sn" jdbcType="VARCHAR" property="mcMoSn" />
-    <result column="mc_m_sn" jdbcType="VARCHAR" property="mcMSn" />
-    <result column="mc_count_needed" jdbcType="INTEGER" property="mcCountNeeded" />
-    <result column="mc_count_indeed" jdbcType="INTEGER" property="mcCountIndeed" />
-    <result column="mc_requestor" jdbcType="VARCHAR" property="mcRequestor" />
-    <result column="mc_operator" jdbcType="VARCHAR" property="mcOperator" />
-    <result column="mc_date" jdbcType="VARCHAR" property="mcDate" />
-    <result column="mc_status" jdbcType="CHAR" property="mcStatus" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.tony.erp.domain.MaterialConsume">
+        <id column="mc_id" jdbcType="VARCHAR" property="mcId"/>
+        <result column="mc_mp_sn" jdbcType="VARCHAR" property="mcMpSn"/>
+        <result column="mc_mo_sn" jdbcType="VARCHAR" property="mcMoSn"/>
+        <result column="mc_m_sn" jdbcType="VARCHAR" property="mcMSn"/>
+        <result column="mc_count_needed" jdbcType="INTEGER" property="mcCountNeeded"/>
+        <result column="mc_count_indeed" jdbcType="INTEGER" property="mcCountIndeed"/>
+        <result column="mc_requestor" jdbcType="VARCHAR" property="mcRequestor"/>
+        <result column="mc_operator" jdbcType="VARCHAR" property="mcOperator"/>
+        <result column="mc_date" jdbcType="VARCHAR" property="mcDate"/>
+        <result column="mc_status" jdbcType="CHAR" property="mcStatus"/>
+        <association property="manOrder" javaType="com.tony.erp.domain.ManOrder">
+            <result column="mo_sn" jdbcType="VARCHAR" property="moSn"/>
+            <result column="mo_mp_sn" jdbcType="VARCHAR" property="moMpSn"/>
+            <result column="mo_start_date" jdbcType="VARCHAR" property="moStartDate"/>
+            <result column="mo_end_date" jdbcType="VARCHAR" property="moEndDate"/>
+            <result column="mo_count" jdbcType="INTEGER" property="moCount"/>
+        </association>
+        <association property="manPlan" javaType="com.tony.erp.domain.ManPlan">
+            <result column="mp_sn" jdbcType="VARCHAR" property="mpSn"/>
+            <result column="mp_pro_code" jdbcType="VARCHAR" property="mpProCode"/>
+            <result column="mp_start_date" jdbcType="VARCHAR" property="mpStartDate"/>
+            <result column="mp_end_date" jdbcType="VARCHAR" property="mpEndDate"/>
+            <result column="mp_count" jdbcType="INTEGER" property="mpCount"/>
+            <result column="mp_order_id" jdbcType="VARCHAR" property="mpOrderId"/>
+        </association>
+        <association property="product" javaType="com.tony.erp.domain.Product">
+            <result column="pro_code" jdbcType="VARCHAR" property="proCode"/>
+            <result column="pro_name" jdbcType="VARCHAR" property="proName"/>
+        </association>
+        <association property="material" javaType="com.tony.erp.domain.Material">
+            <result column="m_name" jdbcType="VARCHAR" property="mName"/>
+            <result column="m_sn" jdbcType="VARCHAR" property="mSn"/>
+            <result column="m_count" jdbcType="INTEGER" property="mCount"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
     mc_id, mc_mp_sn, mc_mo_sn, mc_m_sn, mc_count_needed, mc_count_indeed, mc_requestor, 
     mc_operator, mc_date, mc_status
   </sql>
 
-  <select id="selectByMcMSn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
-    from material_consume
-    where mc_m_sn = #{mcMSn,jdbcType=VARCHAR} order by mc_date DESC
+    mc.*,mo.*,mp.*,p.pro_code,p.pro_name,m.m_count,m.m_name
+    from material_consume mc
+    left join manufacture_order mo on mc.mc_mo_sn=mo.mo_sn
+    left join manufacture_plan mp on mp.mp_sn=mc.mc_mp_sn
+    left join product p on mp.mp_pro_code=p.pro_code
+    left join material m on mc.mc_m_sn=m.m_sn
+    where mc.mc_id = #{mcId,jdbcType=VARCHAR}
   </select>
 
-  <select id="countByMcMSn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectByMcMSn" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from material_consume
+        where mc_m_sn = #{mcMSn,jdbcType=VARCHAR} order by mc_date DESC
+    </select>
+
+    <select id="countByMcMSn" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     count(mc_count_indeed)
     from material_consume
     where mc_m_sn=#{mcMSn,jdbcType=VARCHAR} and mc_status = '1'
   </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from material_consume
-    order by mc_date desc
-  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from material_consume
+        order by mc_date desc
+    </select>
 
-
-
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from material_consume
-    where mc_id = #{mcId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from material_consume
     where mc_id = #{mcId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.tony.erp.domain.MaterialConsume">
+    <insert id="insert" parameterType="com.tony.erp.domain.MaterialConsume">
     insert into material_consume (mc_id, mc_mp_sn, mc_mo_sn, 
       mc_m_sn, mc_count_needed, mc_count_indeed, 
       mc_requestor, mc_operator, mc_date, 
@@ -61,107 +88,107 @@
       #{mcRequestor,jdbcType=VARCHAR}, #{mcOperator,jdbcType=VARCHAR}, #{mcDate,jdbcType=VARCHAR}, 
       #{mcStatus,jdbcType=CHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.tony.erp.domain.MaterialConsume">
-    insert into material_consume
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="mcId != null">
-        mc_id,
-      </if>
-      <if test="mcMpSn != null">
-        mc_mp_sn,
-      </if>
-      <if test="mcMoSn != null">
-        mc_mo_sn,
-      </if>
-      <if test="mcMSn != null">
-        mc_m_sn,
-      </if>
-      <if test="mcCountNeeded != null">
-        mc_count_needed,
-      </if>
-      <if test="mcCountIndeed != null">
-        mc_count_indeed,
-      </if>
-      <if test="mcRequestor != null">
-        mc_requestor,
-      </if>
-      <if test="mcOperator != null">
-        mc_operator,
-      </if>
-      <if test="mcDate != null">
-        mc_date,
-      </if>
-      <if test="mcStatus != null">
-        mc_status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="mcId != null">
-        #{mcId,jdbcType=VARCHAR},
-      </if>
-      <if test="mcMpSn != null">
-        #{mcMpSn,jdbcType=VARCHAR},
-      </if>
-      <if test="mcMoSn != null">
-        #{mcMoSn,jdbcType=VARCHAR},
-      </if>
-      <if test="mcMSn != null">
-        #{mcMSn,jdbcType=VARCHAR},
-      </if>
-      <if test="mcCountNeeded != null">
-        #{mcCountNeeded,jdbcType=INTEGER},
-      </if>
-      <if test="mcCountIndeed != null">
-        #{mcCountIndeed,jdbcType=INTEGER},
-      </if>
-      <if test="mcRequestor != null">
-        #{mcRequestor,jdbcType=VARCHAR},
-      </if>
-      <if test="mcOperator != null">
-        #{mcOperator,jdbcType=VARCHAR},
-      </if>
-      <if test="mcDate != null">
-        #{mcDate,jdbcType=VARCHAR},
-      </if>
-      <if test="mcStatus != null">
-        #{mcStatus,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.MaterialConsume">
-    update material_consume
-    <set>
-      <if test="mcMpSn != null">
-        mc_mp_sn = #{mcMpSn,jdbcType=VARCHAR},
-      </if>
-      <if test="mcMoSn != null">
-        mc_mo_sn = #{mcMoSn,jdbcType=VARCHAR},
-      </if>
-      <if test="mcMSn != null">
-        mc_m_sn = #{mcMSn,jdbcType=VARCHAR},
-      </if>
-      <if test="mcCountNeeded != null">
-        mc_count_needed = #{mcCountNeeded,jdbcType=INTEGER},
-      </if>
-      <if test="mcCountIndeed != null">
-        mc_count_indeed = #{mcCountIndeed,jdbcType=INTEGER},
-      </if>
-      <if test="mcRequestor != null">
-        mc_requestor = #{mcRequestor,jdbcType=VARCHAR},
-      </if>
-      <if test="mcOperator != null">
-        mc_operator = #{mcOperator,jdbcType=VARCHAR},
-      </if>
-      <if test="mcDate != null">
-        mc_date = #{mcDate,jdbcType=VARCHAR},
-      </if>
-      <if test="mcStatus != null">
-        mc_status = #{mcStatus,jdbcType=CHAR},
-      </if>
-    </set>
-    where mc_id = #{mcId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.MaterialConsume">
+    <insert id="insertSelective" parameterType="com.tony.erp.domain.MaterialConsume">
+        insert into material_consume
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mcId != null">
+                mc_id,
+            </if>
+            <if test="mcMpSn != null">
+                mc_mp_sn,
+            </if>
+            <if test="mcMoSn != null">
+                mc_mo_sn,
+            </if>
+            <if test="mcMSn != null">
+                mc_m_sn,
+            </if>
+            <if test="mcCountNeeded != null">
+                mc_count_needed,
+            </if>
+            <if test="mcCountIndeed != null">
+                mc_count_indeed,
+            </if>
+            <if test="mcRequestor != null">
+                mc_requestor,
+            </if>
+            <if test="mcOperator != null">
+                mc_operator,
+            </if>
+            <if test="mcDate != null">
+                mc_date,
+            </if>
+            <if test="mcStatus != null">
+                mc_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mcId != null">
+                #{mcId,jdbcType=VARCHAR},
+            </if>
+            <if test="mcMpSn != null">
+                #{mcMpSn,jdbcType=VARCHAR},
+            </if>
+            <if test="mcMoSn != null">
+                #{mcMoSn,jdbcType=VARCHAR},
+            </if>
+            <if test="mcMSn != null">
+                #{mcMSn,jdbcType=VARCHAR},
+            </if>
+            <if test="mcCountNeeded != null">
+                #{mcCountNeeded,jdbcType=INTEGER},
+            </if>
+            <if test="mcCountIndeed != null">
+                #{mcCountIndeed,jdbcType=INTEGER},
+            </if>
+            <if test="mcRequestor != null">
+                #{mcRequestor,jdbcType=VARCHAR},
+            </if>
+            <if test="mcOperator != null">
+                #{mcOperator,jdbcType=VARCHAR},
+            </if>
+            <if test="mcDate != null">
+                #{mcDate,jdbcType=VARCHAR},
+            </if>
+            <if test="mcStatus != null">
+                #{mcStatus,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.MaterialConsume">
+        update material_consume
+        <set>
+            <if test="mcMpSn != null">
+                mc_mp_sn = #{mcMpSn,jdbcType=VARCHAR},
+            </if>
+            <if test="mcMoSn != null">
+                mc_mo_sn = #{mcMoSn,jdbcType=VARCHAR},
+            </if>
+            <if test="mcMSn != null">
+                mc_m_sn = #{mcMSn,jdbcType=VARCHAR},
+            </if>
+            <if test="mcCountNeeded != null">
+                mc_count_needed = #{mcCountNeeded,jdbcType=INTEGER},
+            </if>
+            <if test="mcCountIndeed != null">
+                mc_count_indeed = #{mcCountIndeed,jdbcType=INTEGER},
+            </if>
+            <if test="mcRequestor != null">
+                mc_requestor = #{mcRequestor,jdbcType=VARCHAR},
+            </if>
+            <if test="mcOperator != null">
+                mc_operator = #{mcOperator,jdbcType=VARCHAR},
+            </if>
+            <if test="mcDate != null">
+                mc_date = #{mcDate,jdbcType=VARCHAR},
+            </if>
+            <if test="mcStatus != null">
+                mc_status = #{mcStatus,jdbcType=CHAR},
+            </if>
+        </set>
+        where mc_id = #{mcId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.MaterialConsume">
     update material_consume
     set mc_mp_sn = #{mcMpSn,jdbcType=VARCHAR},
       mc_mo_sn = #{mcMoSn,jdbcType=VARCHAR},

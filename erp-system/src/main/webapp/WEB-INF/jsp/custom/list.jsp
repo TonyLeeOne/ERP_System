@@ -22,7 +22,7 @@
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit',700,350)"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据：${customs.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -42,8 +42,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:if test="${page.total > 0}">
-            <c:forEach items="${page.rows}" var="custom">
+        <c:if test="${customs.total > 0}">
+            <c:forEach items="${customs.rows}" var="custom">
                 <tr>
                     <td>
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${custom.customName}'><i
@@ -59,14 +59,8 @@
                         <%@include file="../common/custom_status.jsp" %>
                     </td>
                     <td class="td-manage">
-                        <a title="编辑" onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customId}',700,350)" href="javascript:;">
-                            <i class="layui-icon">&#xe63c;</i>
-                        </a>
                         <a title="编辑" onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customCode}',700,350)" href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
-                        </a>
-                        <a title="删除" onclick="member_del(this,'${custom.customId}')" href="javascript:;">
-                            <i class="layui-icon">&#xe640;</i>
                         </a>
                     </td>
                 </tr>
@@ -75,7 +69,7 @@
         </c:if>
         </tbody>
     </table>
-    <jsp:include page="../common/pagination.jsp" flush="true"><jsp:param name="pageurl" value="/custom/getAllCustoms/"/></jsp:include>
+    <jsp:include page="../common/pagination.jsp"><jsp:param value="${customs.total}" name="total"/><jsp:param value="${customs.pageNum}" name="pageNum"/></jsp:include>
 </div>
 <script>
     layui.use('laydate', function () {

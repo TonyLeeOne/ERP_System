@@ -1,8 +1,12 @@
 package com.tony.erp.domain;
+
+import lombok.Data;
+
 /**
  * @author jli2
  * @date  2018/11/12
  */
+@Data
 public class MaterialConsume {
     private String mcId;
 
@@ -24,83 +28,14 @@ public class MaterialConsume {
 
     private String mcStatus;
 
-    public String getMcId() {
-        return mcId;
-    }
+    private ManOrder manOrder=new ManOrder();
 
-    public void setMcId(String mcId) {
-        this.mcId = mcId == null ? null : mcId.trim();
-    }
+    private ManPlan manPlan=new ManPlan();
 
-    public String getMcMpSn() {
-        return mcMpSn;
-    }
+    private Product product=new Product();
 
-    public void setMcMpSn(String mcMpSn) {
-        this.mcMpSn = mcMpSn == null ? null : mcMpSn.trim();
-    }
+    private Material material=new Material();
 
-    public String getMcMoSn() {
-        return mcMoSn;
-    }
 
-    public void setMcMoSn(String mcMoSn) {
-        this.mcMoSn = mcMoSn == null ? null : mcMoSn.trim();
-    }
 
-    public String getMcMSn() {
-        return mcMSn;
-    }
-
-    public void setMcMSn(String mcMSn) {
-        this.mcMSn = mcMSn == null ? null : mcMSn.trim();
-    }
-
-    public Integer getMcCountNeeded() {
-        return mcCountNeeded;
-    }
-
-    public void setMcCountNeeded(Integer mcCountNeeded) {
-        this.mcCountNeeded = mcCountNeeded;
-    }
-
-    public Integer getMcCountIndeed() {
-        return mcCountIndeed;
-    }
-
-    public void setMcCountIndeed(Integer mcCountIndeed) {
-        this.mcCountIndeed = mcCountIndeed;
-    }
-
-    public String getMcRequestor() {
-        return mcRequestor;
-    }
-
-    public void setMcRequestor(String mcRequestor) {
-        this.mcRequestor = mcRequestor == null ? null : mcRequestor.trim();
-    }
-
-    public String getMcOperator() {
-        return mcOperator;
-    }
-
-    public void setMcOperator(String mcOperator) {
-        this.mcOperator = mcOperator == null ? null : mcOperator.trim();
-    }
-
-    public String getMcDate() {
-        return mcDate;
-    }
-
-    public void setMcDate(String mcDate) {
-        this.mcDate = mcDate == null ? null : mcDate.trim();
-    }
-
-    public String getMcStatus() {
-        return mcStatus;
-    }
-
-    public void setMcStatus(String mcStatus) {
-        this.mcStatus = mcStatus == null ? null : mcStatus.trim();
-    }
 }

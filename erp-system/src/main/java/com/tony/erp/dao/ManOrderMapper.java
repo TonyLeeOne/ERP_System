@@ -29,4 +29,12 @@ public interface ManOrderMapper {
 
     int getTotal();
 
+    List<ManOrder> getAllManOrders();
+
+    List<ManOrder> selectByMpSn(@Param("moMpSn")String moMpSn);
+
+    ManOrder selectByMoSn(@Param("moSn")String MoSn);
+
+    List<String> selectAllMoSn();
+
 }

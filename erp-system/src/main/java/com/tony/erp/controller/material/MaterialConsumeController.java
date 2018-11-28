@@ -6,8 +6,10 @@ import com.tony.erp.service.material.MaterialConsumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -31,7 +33,7 @@ public class MaterialConsumeController {
     @RequestMapping("/getAll")
     public String getAll(ModelMap modelMap){
         modelMap.addAttribute("consumes",materialConsumService.getAll(1));
-        return "";
+        return "/mc/list";
     }
 
     /**
@@ -54,6 +56,7 @@ public class MaterialConsumeController {
     @RequestMapping("/add")
     @ResponseBody
     public String addConsume(MaterialConsume consume){
+        System.out.println(consume.toString());
         int i=materialConsumService.addMConsume(consume);
         if(Constant.STATUS_CANNOT_CHANGED==i){
             return Constant.NUMBER_BIG;
@@ -70,6 +73,7 @@ public class MaterialConsumeController {
     @RequestMapping("/update")
     @ResponseBody
     public String upConsume(MaterialConsume consume){
+        System.out.println(consume);
         int i=materialConsumService.upMConsum(consume);
         if(Constant.STATUS_CANNOT_CHANGED==i){
             return Constant.NUMBER_BIG;
@@ -101,13 +105,44 @@ public class MaterialConsumeController {
 
     /**
      * 确认领料单接口
-     * @param mcId  领料单主键
-     * @param indeed 实际领料数量
      * @return
      */
     @ResponseBody
     @RequestMapping("/confirm")
-    public String sure(String mcId,int indeed){
-        return materialConsumService.sureConsume(mcId,indeed)>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+    public String confirm(MaterialConsume consume){
+        int res=materialConsumService.sureConsume(consume);
+        if(Constant.STATUS_NEED_AUDIT==res){
+            return Constant.NEED_AUDIT;
+        }
+        return res>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
     }
+
+
+    /**
+     * 审核领料单接口
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/verify")
+    public String sure(MaterialConsume consume){
+      return materialConsumService.verifyConsume(consume)>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+    }
+
+    @RequestMapping("/edit")
+    public String get(@RequestParam(value = "mcId",required = false)String mcId,ModelMap modelMap){
+        if(!StringUtils.isEmpty(mcId)){
+            modelMap.addAttribute("consume",materialConsumService.getConsume(mcId));
+        }
+        return "/mc/edit";
+    }
+
+    @RequestMapping("/show")
+    public String show(@RequestParam(value = "mcId",required = false)String mcId,ModelMap modelMap){
+        if(!StringUtils.isEmpty(mcId)){
+            modelMap.addAttribute("consume",materialConsumService.getConsume(mcId));
+        }
+        return "/mc/show";
+    }
+
+
 }

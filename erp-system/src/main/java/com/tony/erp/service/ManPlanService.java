@@ -46,7 +46,8 @@ public class ManPlanService {
      * @return
      */
     public int upManPlan(ManPlan manPlan){
-        if(Constant.STRING_TWO.equals(manPlan.getMpStatus())){
+        ManPlan manPlan1=manPlanMapper.selectByPrimaryKey(manPlan.getMpId());
+        if(Constant.STRING_TWO.equals(manPlan1.getMpStatus())){
             return Constant.STATUS_CANNOT_CHANGED;
         }
         return manPlanMapper.updateByPrimaryKeySelective(manPlan);
@@ -104,4 +105,22 @@ public class ManPlanService {
         return manPlanMapper.getTotal();
     }
 
+
+    /**
+     * 批量删除生产计划表
+     * @param mpSns
+     * @return
+     */
+    public int batchDeleteByMpSn(String[] mpSns){
+        return manPlanMapper.batchDeleteByMpSn(mpSns);
+    }
+
+
+    /**
+     * 获取所有计划编号
+     * @return
+     */
+    public List<String> selectMpSns(){
+        return manPlanMapper.selectMpSns();
+    }
 }

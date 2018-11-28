@@ -23,6 +23,7 @@
 <div class="login layui-anim layui-anim-up">
     <div class="message">ERP管理系统1.0-管理登录</div>
     <div id="darkbannerwrap"></div>
+
     <form class="layui-form">
         <input name="uname" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
         <hr class="hr15">

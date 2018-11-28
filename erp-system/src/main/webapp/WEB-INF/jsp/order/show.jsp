@@ -152,9 +152,60 @@
             </legend>
         </fieldset>
         <div class="layui-row">
-            <c:if test="${empty order.plans}">
-                　　　暂无相关信息
+            <c:if test="${! empty order.plans}">
+                <div class="layui-collapse">
+                    <c:forEach items="${order.plans}" var="plan">
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">【生产计划编号】:${plan.mpSn} 【产品编号】:${plan.mpProCode}
+                                【计划开始日期】:${plan.mpStartDate} 【计划结束日期】:${plan.mpEndDate} 【当前状态】:
+                                <%@include file="../common/mp_status.jsp" %>
+                                【待生产数量】:${plan.mpCount}
+                            </h2>
+                            <div class="layui-colla-content">
+                                <table class="layui-table">
+                                    <thead>
+                                    <tr>
+                                        <th>工单编号</th>
+                                        <th>开始日期</th>
+                                        <th>结束日期</th>
+                                        <th>计划数</th>
+                                        <th>生产数</th>
+                                        <th>状态</th>
+                                        <th>进度</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:if test="${! empty plan.manOrders}">
+                                        <c:forEach items="${plan.manOrders}" var="mOrder">
+                                            <tr>
+                                                <td>${mOrder.moSn}</td>
+                                                <td>${mOrder.moStartDate}</td>
+                                                <td>${mOrder.moEndDate}</td>
+                                                <td>${mOrder.moCount}</td>
+                                                <td>${mOrder.moWaitCount}</td>
+                                                    <td>
+                                                    <%@include file="../common/mo_status.jsp" %>
+                                                    </td>
+                                                <td width="100px">
+                                                    <c:if test="${! empty mOrder.moWaitCount}">
+                                                        <div class="layui-progress">
+                                                            <div class="layui-progress-bar layui-bg-green"
+                                                                 lay-percent="${mOrder.moWaitCount}/${mOrder.moCount}"></div>
+                                                        </div>
+                                                    </c:if>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+
+                                    </c:if>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
             </c:if>
+
         </div>
         <fieldset class="layui-elem-field layui-field-title site-title">
             <legend>
@@ -281,7 +332,9 @@
             </legend>
         </fieldset>
         <div class="layui-row">
-            <p>${order.ONote}</p>
+            <div class="layui-col-md-8">
+                <textarea name="oNote" class="layui-textarea" readonly="readonly">${order.ONote}</textarea>
+            </div>
         </div>
     </div>
 
@@ -331,6 +384,7 @@
     </c:if>
 </div>
 <script>
+
     $(function () {
         layui.use(['form', 'layer'], function () {
             // $ = layui.jquery;

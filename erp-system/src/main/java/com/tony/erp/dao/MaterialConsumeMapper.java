@@ -30,4 +30,5 @@ public interface MaterialConsumeMapper {
     int countByMcMSn(@Param("mcMsn") String mcMsn);
 
 
+
 }

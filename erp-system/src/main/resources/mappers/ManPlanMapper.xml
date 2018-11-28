@@ -53,7 +53,7 @@
                 mp_status=#{mpStatus}
             </if>
         </trim>
-        order by mp_start_date DESC
+        order by mp_status ASC
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -162,4 +162,15 @@
       mp_status = #{mpStatus,jdbcType=CHAR}
     where mp_id = #{mpId,jdbcType=VARCHAR}
   </update>
+
+    <delete id="batchDeleteByMpSn" parameterType="java.lang.String">
+        delete from manufacture_plan where mp_sn in
+        <foreach collection="mpSns" item="mpSn" index="index" open="(" close=")" separator=",">
+            #{mpSn}
+        </foreach>
+    </delete>
+
+    <select id="selectMpSns" resultType="java.lang.String">
+        select distinct(mp_sn) from manufacture_plan where mp_status='1'
+    </select>
 </mapper>
