@@ -1,6 +1,7 @@
 package com.tony.erp.controller.user;
 
 import com.google.gson.Gson;
+import com.tony.erp.constant.Constant;
 import com.tony.erp.dao.DepartmentMapper;
 import com.tony.erp.domain.Department;
 import com.tony.erp.domain.Profile;
@@ -205,6 +206,17 @@ public class UserController {
         List<Department> departments = departmentService.getAllDeparts();
         modelMap.addAttribute("departments", departments);
         return "/user/edit";
+    }
+
+    /**
+     * 删除用户
+     * @param uid
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String deleteUser(String uid){
+        return userService.deleteByPrimaryKey(uid) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
     /**

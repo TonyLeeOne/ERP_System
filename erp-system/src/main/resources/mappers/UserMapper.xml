@@ -57,7 +57,6 @@
     order by p.p_indate
   </select>
 
-
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from user
     where id = #{id,jdbcType=VARCHAR}

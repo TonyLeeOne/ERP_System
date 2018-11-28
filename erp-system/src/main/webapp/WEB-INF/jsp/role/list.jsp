@@ -26,7 +26,8 @@
         <c:forEach items="${roles}" var="role">
             <tr>
                 <td>
-                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${role.rid}'><i
+                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-name="${role.rname}"
+                         data-id='${role.rid}'><i
                             class="layui-icon">&#xe605;</i>
                     </div>
                 </td>
@@ -77,7 +78,11 @@
 
     function delAll(argument) {
         var data = tableCheck.getData();
-        layer.confirm('确认要删除吗？' + data, function (index) {
+        var names = [];
+        jQuery("table tbody .layui-form-checked").each(function () {
+            names.push(jQuery(this).data("name"));
+        });
+        layer.confirm('确认要删除以下角色吗？<br />' + names.join("，"), function (index) {
             $.post('/role/batchDelete', {"rids": data.toString()}, function (res) {
                 //捉到所有被选中的，发异步进行删除
                 if (res == '数据删除成功') {

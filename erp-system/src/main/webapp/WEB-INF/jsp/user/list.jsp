@@ -61,7 +61,7 @@
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
-                        <a title="删除" onclick="member_del(this,${user.id})" href="javascript:;">
+                        <a title="删除" onclick="member_del(this,'${user.id}')" href="javascript:;">
                             <i class="layui-icon">&#xe640;</i>
                         </a>
                     </td>
@@ -125,7 +125,7 @@
     /*删除*/
     function member_del(obj, id) {
         layer.confirm('确认要删除吗？', function (index) {
-            $.get('/user/delete?rid=' + id, function (res) {
+            $.get('/user/delete?uid=' + id, function (res) {
                 //发异步删除数据
                 if (res == '数据删除成功') {
                     $(obj).parents("tr").remove();

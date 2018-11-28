@@ -112,4 +112,13 @@ public class UserService {
         return userMapper.selectByUname(null);
     }
 
+    /**
+     * 删除用户
+     * @param uid
+     * @return
+     */
+    public int deleteByPrimaryKey(String uid) {
+        return userMapper.deleteByPrimaryKey(uid);
+    }
+
 }
