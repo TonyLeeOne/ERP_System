@@ -1,13 +1,16 @@
 package com.tony.erp.controller.user;
 
 import com.google.gson.Gson;
+import com.tony.erp.dao.DepartmentMapper;
+import com.tony.erp.domain.Department;
 import com.tony.erp.domain.Profile;
+import com.tony.erp.domain.Role;
 import com.tony.erp.domain.User;
-import com.tony.erp.service.ProfileService;
-import com.tony.erp.service.UserRoleService;
-import com.tony.erp.service.UserService;
+import com.tony.erp.domain.pagehelper.PageHelperEntity;
+import com.tony.erp.service.*;
 import com.tony.erp.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.jdbc.Null;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
@@ -20,6 +23,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.tony.erp.constant.Constant.*;
@@ -34,6 +40,12 @@ import static com.tony.erp.constant.Constant.*;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     @Autowired
     private UserRoleService userRoleService;
@@ -118,20 +130,47 @@ public class UserController {
 
     /**
      * 添加新用户
+     * <p>
+     * //     * @param user 包含uname,upass,did
      *
-     * @param user 包含uname,upass,did
-     * @param rid
      * @return
      */
     @PostMapping("/add")
     @ResponseBody
-    public String addUser(User user, String rid) {
-        user.setUpass(SecurityUtils.getSecurityResult(user.getUname(), user.getUpass()));
-        if (ObjectUtils.isEmpty(user)) {
-            return ARG_EXCEPTION;
+    public String addUser(@RequestBody Map<String, String> map) {
+        User user = null;
+        if (!"".equals(map.get("id"))) {//更新
+            user = userService.getByPrimaryKey(map.get("id"));
+        } else {//新增
+            user = new User();
         }
-        User user1 = userService.saveUser(user);
-        boolean result = userRoleService.insertUserRole(user1.getId(), rid);
+        user.setUname(map.get("uname"));
+        user.setDepartId(map.get("departId"));
+        //user.setStatus(map.get("status"));
+        User user1 = null;
+        if (!"".equals(map.get("id"))) {//更新
+            //TODO::更新密码？
+            Integer result = userService.updateUser(user);
+            if (result == 0) return DATA_ADD_FAILED;
+            user1 = user;
+        } else {
+            user.setUpass(map.get("upass"));
+            user.setUpass(SecurityUtils.getSecurityResult(user.getUname(), user.getUpass()));
+            if (ObjectUtils.isEmpty(user)) {
+                return ARG_EXCEPTION;
+            }
+            user1 = userService.saveUser(user);
+        }
+
+        String rids = map.get("rids");
+
+        String[] ridsArr = rids.split(",");
+
+        boolean result = false;
+        for (int i = 0; i < ridsArr.length; i++) {
+            result = userRoleService.insertUserRole(user1.getId(), ridsArr[i]);
+        }
+
         if (result) {
             return DATA_ADD_SUCCESS;
         }
@@ -144,9 +183,31 @@ public class UserController {
      * @return
      */
     @GetMapping("/getAllUsers")
-    public String getAllUsers(int pageSize, ModelMap modelMap) {
-        modelMap.addAttribute("users", userService.getAllUsers(1));
-        return "";
+    public String getAllUsers(ModelMap modelMap) {
+        PageHelperEntity pageHelperEntity = userService.getAllUsers(1);
+        modelMap.addAttribute("users", pageHelperEntity);
+        return "/user/list";
+    }
+
+    /**
+     * 新增/编辑用户信息页面
+     *
+     * @param userId
+     * @param modelMap
+     * @return
+     */
+    @GetMapping("/edit")
+    public String editUser(@RequestParam(defaultValue = "", required = false) String userId, ModelMap modelMap) {
+        if (userId != null && !"".equals(userId)) {
+            User user = userService.getByPrimaryKey(userId);
+            modelMap.addAttribute("user", user);
+        }
+        List<Role> roles = roleService.getAllRoles();
+        System.out.println(roles);
+        modelMap.addAttribute("roles", roles);
+        List<Department> departments = departmentService.getAllDeparts();
+        modelMap.addAttribute("departments", departments);
+        return "/user/edit";
     }
 
     /**
@@ -156,7 +217,7 @@ public class UserController {
      */
     @GetMapping("/getAllUsers/{pageNum}")
     public String getAllUser(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("users", userService.getAllUsers(pageNum));
+        modelMap.addAttribute("users", userService.getAllUsers(1));
         return "";
     }
 
@@ -187,6 +248,7 @@ public class UserController {
 
     /**
      * 重置密码
+     *
      * @param user
      * @return
      */
@@ -218,3 +280,4 @@ public class UserController {
 
 
 }
+

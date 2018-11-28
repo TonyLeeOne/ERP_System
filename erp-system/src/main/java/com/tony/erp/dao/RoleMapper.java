@@ -1,6 +1,7 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Role;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
 
     List<Role> getAllRoles();
+    int batchDeleteByRid(@Param("rids")String[] rids);
+
 }

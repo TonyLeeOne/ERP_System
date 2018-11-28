@@ -1,6 +1,7 @@
 package com.tony.erp.controller.vendor;
 
 import com.tony.erp.constant.Constant;
+import com.tony.erp.domain.User;
 import com.tony.erp.domain.Vendor;
 import com.tony.erp.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 /**
  * @author jli2
  * @date  2018/11/12
@@ -26,7 +25,23 @@ public class VendorController {
     @RequestMapping("/getAllVendors")
     public String getAllVendors(ModelMap modelMap){
         modelMap.addAttribute("vendors",vendorService.getAllVendors(1));
-        return "";
+        return "/vendor/list";
+    }
+
+    /**
+     * 编辑、新增页面
+     * @param vId
+     * @param modelMap
+     * @return
+     */
+    @RequestMapping("/edit")
+    public String editVendor(@RequestParam(defaultValue = "",required = false) String vId,
+                             ModelMap modelMap){
+        if (vId != null && !"".equals(vId)) {
+            Vendor vendor = vendorService.getSingleVendor(vId);
+            modelMap.addAttribute("vendor", vendor);
+        }
+        return "/vendor/edit";
     }
 
     @RequestMapping("/getAllVendors/{pageNum}")
@@ -35,6 +50,11 @@ public class VendorController {
         return "";
     }
 
+    /**
+     * ajax 新增、更新接口
+     * @param vendor
+     * @return
+     */
     @PostMapping("/add")
     @ResponseBody
     public String addVendor(Vendor vendor){
@@ -53,6 +73,11 @@ public class VendorController {
         return vendorService.addVendor(vendor)>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
     }
 
+    /**
+     * 删除
+     * @param vid
+     * @return
+     */
     @PostMapping("/delete")
     @ResponseBody
     public String delVendor(String vid){

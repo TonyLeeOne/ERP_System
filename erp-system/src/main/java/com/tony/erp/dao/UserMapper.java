@@ -24,6 +24,7 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     List<User> findPropertiesByUsername(@Param("uname") String uname);
+    List<User> getAllUsers();
 
     int selectByUname(String uname);
 

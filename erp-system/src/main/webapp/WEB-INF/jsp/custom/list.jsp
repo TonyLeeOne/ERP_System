@@ -59,9 +59,6 @@
                         <%@include file="../common/custom_status.jsp" %>
                     </td>
                     <td class="td-manage">
-                        <a title="查看" onclick="x_admin_show('查看','/custom/show?customId=${custom.customId}')" href="javascript:;">
-                            <i class="layui-icon">&#xe63c;</i>
-                        </a>
                         <a title="编辑" onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customId}',700,350)" href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>

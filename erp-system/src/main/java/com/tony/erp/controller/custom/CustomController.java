@@ -33,7 +33,6 @@ public class CustomController {
                                 @RequestParam(defaultValue = "desc") String direction,
                                 ModelMap modelMap) {
         PageHelperEntity custom = customService.getAllCustoms(pageNum, pageSize);
-        System.out.println(custom.toString());
         modelMap.addAttribute("customs", custom);
         return "/custom/list";
     }

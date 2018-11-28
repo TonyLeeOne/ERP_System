@@ -7,6 +7,7 @@
     <collection property="modules" ofType="com.tony.erp.domain.Module">
       <id column="mid" jdbcType="VARCHAR" property="mid"></id>
       <result column="mname" jdbcType="VARCHAR" property="mname"></result>
+      <result column="remark" jdbcType="VARCHAR" property="remark"></result>
     </collection>
   </resultMap>
   <sql id="Base_Column_List">
@@ -69,4 +70,11 @@
     set rname = #{rname,jdbcType=VARCHAR}
     where rid = #{rid,jdbcType=VARCHAR}
   </update>
+
+  <delete id="batchDeleteByRid" parameterType="java.lang.String">
+    delete from role where role.rid in
+    <foreach collection="rids" item="rid" index="index" open="(" close=")" separator=",">
+      #{rid}
+    </foreach>
+  </delete>
 </mapper>

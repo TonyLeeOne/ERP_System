@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tony.erp.dao.DeviceMapper;
 import com.tony.erp.domain.Device;
+import com.tony.erp.domain.Vendor;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.utils.KeyGeneratorUtils;
 import com.tony.erp.utils.ListUtils;
@@ -48,6 +49,8 @@ public class DeviceService {
     public boolean checkDeviceCode(String deviceCode){
         return deviceMapper.checkDeviceCode(deviceCode)>0?true:false;
     }
-
+    public Device selectByPrimaryKey(String vid) {
+        return deviceMapper.selectByPrimaryKey(vid);
+    }
 
 }
