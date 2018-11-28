@@ -11,6 +11,7 @@ import com.tony.erp.utils.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +89,10 @@ public class ManPlanService {
     public ManPlan getManPlanByMpSn(String mpsn){
         Map<String,String> params=new HashMap<>();
         params.put("mpSn",mpsn);
+        List<ManPlan> plans=manPlanMapper.find(params);
+        if(CollectionUtils.isEmpty(plans)){
+            return null;
+        }
         return (ManPlan) manPlanMapper.find(params).get(0);
     }
 

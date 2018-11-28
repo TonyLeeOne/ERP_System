@@ -56,7 +56,7 @@
                 <div class="layui-col-md6">
 
                     <label for="customPublish" class="layui-form-label">
-                        客户法人
+                        客户联系人
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="customPublish" name="customPublish"
@@ -105,12 +105,15 @@
 <script>
     $(function () {
 
-        if ($("#single").attr('value') == '1') {
+        if($("#single").attr('value')) {
+            if ($("#single").attr('value') == '1') {
+                $("#pro").attr('checked', true);
+            }
+            if ($("#single").attr('value') == '2') {
+                $("#stop").attr('checked', true);
+            }
+        }else
             $("#pro").attr('checked', true);
-        }
-        if ($("#single").attr('value') == '2') {
-            $("#stop").attr('checked', true);
-        }
 
         layui.use(['form', 'layer'], function () {
             // $ = layui.jquery;

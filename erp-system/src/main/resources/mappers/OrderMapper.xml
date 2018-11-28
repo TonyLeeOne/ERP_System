@@ -403,6 +403,7 @@
         select count(1) from orders where o_status != '4'
     </select>
 
+
     <delete id="batchDeleteByOno" parameterType="java.lang.String">
         delete from orders where o_no in
         <foreach collection="orderNos" item="orderNo" index="index" open="(" close=")" separator=",">
@@ -410,7 +411,7 @@
         </foreach>
     </delete>
 
-    <select id="getONos" resultType="java.lang.String">
-        select concat(o_custom_name,'(',o_no,')') from orders where o_status = '3' order by o_no
+    <select id="getONos" parameterType="java.lang.String" resultType="java.lang.String">
+        select concat(o_custom_name,'(',o_no,')') from orders where o_status =#{oStatus} order by o_no
     </select>
 </mapper>

@@ -31,6 +31,6 @@ public interface OrderMapper {
 
     int batchDeleteByOno(@Param("orderNos")String[] orderNos);
 
-    List<String> getONos();
+    List<String> getONos(@Param("oStatus") String oStatus);
 
 }

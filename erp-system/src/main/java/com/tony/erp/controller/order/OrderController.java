@@ -44,8 +44,7 @@ public class OrderController {
     @PostMapping("/add")
     @ResponseBody
     public String addOrders(Order order) {
-        String data = orderService.addOrder(order) > 0 ? Constant.DATA_ADD_SUCCESS : Constant.DATA_ADD_FAILED;
-        return new Gson().toJson(data);
+        return orderService.addOrder(order) > 0 ? Constant.DATA_ADD_SUCCESS : Constant.DATA_ADD_FAILED;
     }
 
     @GetMapping("/edit")
@@ -88,8 +87,6 @@ public class OrderController {
     @ResponseBody
     @RequestMapping("/confirm")
     public String confirm(Order order) {
-        System.out.println(CurrentUser.getCurrentUser().getUname());
-        System.out.println(order);
         return orderService.confirmOrder(order.getOId(), order.getOStatus(), order.getONote()) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
     }
 
@@ -97,13 +94,18 @@ public class OrderController {
     @ResponseBody
     @RequestMapping("/getONos")
     public List<String> getONos() {
-        return orderService.getONos();
+        return orderService.getONos(Constant.STRING_THREE);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getMPONos")
+    public List<String> getMPONos() {
+        return orderService.getONos(Constant.STRING_FIVE);
     }
 
     @ResponseBody
     @RequestMapping("/getOrderByONo")
     public Order getOrderByONo(String oNo) {
-        System.out.println(oNo);
         Map<String, String> params = new HashMap(1);
         params.put("oNo", oNo);
         List<Order> orders = orderService.getByCriteria(params);

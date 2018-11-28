@@ -22,9 +22,9 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit',730,750)"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="x_admin_show('添加新生产计划','/manPlan/edit',730,550)"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据: ${orders.total} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据: ${plans.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -33,49 +33,34 @@
                 <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i
                         class="layui-icon">&#xe605;</i></div>
             </th>
-            <th>订单编号</th>
-            <th>客户名</th>
-            <th>联系人</th>
-            <th>联系人电话</th>
-            <th>下单日期</th>
-            <th>产品名称</th>
-            <th>订单数量</th>
-            <th>成交单价</th>
-            <th>产品单价</th>
-            <th>订单状态</th>
-            <th>出货数量统计</th>
+            <th>生产计划编号</th>
+            <th>订单号</th>
+            <th>产品编号</th>
+            <th>计划开始日期</th>
+            <th>计划结束日期</th>
+            <th>计划生产数量</th>
+            <th>当前状态</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        <c:if test="${orders.total > 0}">
-            <c:forEach items="${orders.rows}" var="order">
+        <c:if test="${plans.total > 0}">
+            <c:forEach items="${plans.rows}" var="plan">
                 <tr>
                     <td>
-                        <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${order.ONo}'><i
+                        <c:if test="${plan.mpStatus!='2'}">
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${plan.mpId}'><i
                                 class="layui-icon">&#xe605;</i></div>
                         </c:if>
                     </td>
-                    <td>${order.ONo}</td>
-                    <td>${order.OCustomName}</td>
-                    <td>${order.OContacts}</td>
-                    <td>${order.OTel}</td>
-                    <td>${order.OCreateDate}</td>
-                    <td>${order.product.proName}</td>
-                    <td>${order.OCount}</td>
-                    <td>${order.OPay}</td>
-                    <td>${order.product.proPrice}</td>
+                    <td>${plan.mpSn}</td>
+                    <td>${plan.mpOrderId}</td>
+                    <td>${plan.mpProCode}</td>
+                    <td>${plan.mpStartDate}</td>
+                    <td>${plan.mpEndDate}</td>
+                    <td>${plan.mpCount}</td>
                     <td>
-                        <%@include file="../common/order_status.jsp" %>
-                    </td>
-                    <td>
-                        <c:if test="${! empty order.OIndeedCount}">
-                            <div class="layui-progress" lay-showpercent="true">
-                                <div class="layui-progress-bar layui-bg-orange"
-                                     lay-percent="${order.OIndeedCount}/${order.OCount}"></div>
-                            </div>
-                        </c:if>
+                        <%@include file="../common/mp_status.jsp" %>
                     </td>
                     <td class="td-manage">
                         <a title="查看"
@@ -84,7 +69,7 @@
                             <i class="layui-icon">&#xe63c;</i>
                         </a>
                         <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
-                        <a title="编辑" onclick="x_admin_show('编辑','/order/edit?oId=${order.OId}',730,750)"
+                        <a title="编辑" onclick="x_admin_show('编辑','/manPlan/edit?mpSn=${plan.mpSn}',730,750)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>

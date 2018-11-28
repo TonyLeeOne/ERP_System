@@ -10,6 +10,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author jli2
  * @date 2018/11/12
@@ -125,5 +127,27 @@ public class CustomController {
             return null;
         }
         return customService.getCustom(cid);
+    }
+
+
+    /**
+     * 获取所有客户名和编号
+     * @return
+     */
+    @RequestMapping("/getAllCusNames")
+    @ResponseBody
+    public List<String> getCustoms() {
+        return customService.getCustoms();
+    }
+
+
+    /**
+     * 根据客户编号获取客户信息
+     * @return
+     */
+    @RequestMapping("/getCustomByCode")
+    @ResponseBody
+    public Custom getCustomByCode(String customCode) {
+        return customService.getCustom(customCode);
     }
 }

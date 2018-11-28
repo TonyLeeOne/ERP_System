@@ -27,4 +27,6 @@ public interface CustomMapper {
     List<Custom> getAllCustoms(@Param("offset") int offset,@Param("limit") int limit);
 
     int getTotal();
+
+    List<String> getCustoms();
 }
