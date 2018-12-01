@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 /**
  * @author jli2
- * @date  2018/11/12
+ * @date 2018/11/12
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -32,7 +33,7 @@ public class DepartmentService {
         return departmentMapper.deleteByPrimaryKey(did);
     }
 
-    public List<Department> getAllDeparts(){
+    public List<Department> getAllDeparts() {
         return departmentMapper.selectAll();
     }
 //    public PageHelperEntity getAllDeparts(int pageNum) {
@@ -50,5 +51,7 @@ public class DepartmentService {
         return departmentMapper.selectByPrimaryKey(did);
     }
 
-
+    public int batchDeleteByIds(String[] ids) {
+        return departmentMapper.batchDeleteByIds(ids);
+    }
 }

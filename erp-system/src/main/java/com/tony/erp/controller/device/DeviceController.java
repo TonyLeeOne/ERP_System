@@ -34,7 +34,7 @@ public class DeviceController {
     @GetMapping("/getAllDevices/{pageNum}")
     public String getAllDevice(@PathVariable int pageNum, ModelMap modelMap) {
         modelMap.addAttribute("devices", deviceService.getAllDevices(pageNum));
-        return "";
+        return "/device/list";
     }
 
     @RequestMapping("/edit")
@@ -69,5 +69,20 @@ public class DeviceController {
     @ResponseBody
     public String delDevice(String did) {
         return deviceService.delDevice(did) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/batchDelete")
+    @ResponseBody
+    public String batchDelete(@RequestBody String[] ids) {
+        if (ids.length < 1) {
+            return Constant.ARG_EXCEPTION;
+        }
+        return deviceService.batchDeleteByIds(ids) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 }

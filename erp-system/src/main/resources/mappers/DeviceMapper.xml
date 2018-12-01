@@ -161,4 +161,10 @@
       device_status = #{deviceStatus,jdbcType=CHAR}
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </update>
+    <delete id="batchDeleteByIds" parameterType="java.lang.String">
+        delete from device where device.device_id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

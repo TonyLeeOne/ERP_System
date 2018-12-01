@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 /**
  * @author jli2
- * @date  2018/11/12
+ * @date 2018/11/12
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -22,8 +23,9 @@ public class CustomService {
 
     @Autowired
     private CustomMapper customMapper;
+
     public PageHelperEntity getAllCustoms(int pageNum, int pageSize) {
-        List<Custom> customs = customMapper.getAllCustoms(pageNum,pageSize);
+        List<Custom> customs = customMapper.getAllCustoms(pageNum, pageSize);
         PageHelper.startPage(pageNum, pageSize);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(customs);
@@ -62,11 +64,19 @@ public class CustomService {
 
     /**
      * 获取所有的客户名及编号
+     *
      * @return
      */
-    public List<String> getCustoms(){
+    public List<String> getCustoms() {
         return customMapper.getCustoms();
     }
 
-
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    public int batchDeleteByIds(String[] ids) {
+        return customMapper.batchDeleteByIds(ids);
+    }
 }

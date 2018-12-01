@@ -3,14 +3,12 @@ package com.tony.erp.controller.depart;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.Department;
 import com.tony.erp.service.DepartmentService;
+import com.tony.erp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +23,9 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 添加新部门
      *
@@ -33,41 +34,38 @@ public class DepartmentController {
      */
     @RequestMapping("/add")
     @ResponseBody
-    public String addDepart(Department department) {
+    public String addDepart(@RequestParam(defaultValue = "", required = false) String dId, Department department) {
+        if (dId != null && !"".equals(dId)) {
+            Department department1 = departmentService.getDepart(dId);
+            department1.setdName(department.getdName());
+            department1.setdMamager(department.getdMamager());
+            department1.setdDuty(department.getdDuty());
+            return departmentService.updateDepart(department1) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
+        }
         if (ObjectUtils.isEmpty(department)) {
             return Constant.ARG_EXCEPTION;
         }
-        return departmentService.addDepart(department) > 0 ? Constant.DATA_ADD_SUCCESS : Constant.DATA_ADD_FAILED;
-    }
 
-    /**
-     * 更新部门信息
-     *
-     * @param department
-     * @return
-     */
-    @RequestMapping("/update")
-    @ResponseBody
-    public String upDepart(Department department) {
-        if (ObjectUtils.isEmpty(department)) {
-            return Constant.ARG_EXCEPTION;
-        }
-        return departmentService.updateDepart(department) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
+        return departmentService.addDepart(department) > 0 ? Constant.DATA_ADD_SUCCESS : Constant.DATA_ADD_FAILED;
     }
 
     /**
      * 删除部门信息
      *
-     * @param did
+     * @param dId
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String delDepart(String did) {
-        if (ObjectUtils.isEmpty(did)) {
+    public String delDepart(@RequestParam(defaultValue = "", required = false) String dId) {
+        if (ObjectUtils.isEmpty(dId)) {
             return Constant.ARG_EXCEPTION;
         }
-        return departmentService.delDepart(did) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
+        int result = userService.getTotalByDepartId(dId);
+        if (result > 0) {
+            return "当前部门下还有用户，不可删除";
+        }
+        return departmentService.delDepart(dId) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
     /**
@@ -85,6 +83,7 @@ public class DepartmentController {
 
     /**
      * 新增、编辑部门
+     *
      * @param dId
      * @param modelMap
      * @return
@@ -130,5 +129,20 @@ public class DepartmentController {
     @ResponseBody
     public Department getDepart(String did) {
         return departmentService.getDepart(did);
+    }
+
+    /**
+     * 批量删除部门
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/batchDelete")
+    @ResponseBody
+    public String batchDelete(@RequestBody String[] ids) {
+        if (ids.length < 1) {
+            return Constant.ARG_EXCEPTION;
+        }
+        return departmentService.batchDeleteByIds(ids) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 }

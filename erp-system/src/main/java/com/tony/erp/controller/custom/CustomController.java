@@ -150,4 +150,19 @@ public class CustomController {
     public Custom getCustomByCode(String customCode) {
         return customService.getCustom(customCode);
     }
+
+    /**
+     * 批量删除客户
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/batchDelete")
+    @ResponseBody
+    public String batchDelete(@RequestBody String[] ids) {
+        if (ids.length < 1) {
+            return Constant.ARG_EXCEPTION;
+        }
+        return customService.batchDeleteByIds(ids) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
+    }
 }

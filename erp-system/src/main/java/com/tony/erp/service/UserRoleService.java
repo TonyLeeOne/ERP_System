@@ -37,6 +37,16 @@ public class UserRoleService {
     }
 
     /**
+     * 根据rids获取角色的使用统计
+     *
+     * @param rids
+     * @return
+     */
+    public boolean checks(String[] rids) {
+        return userRoleMapper.selectByRids(rids) > 0 ? true : false;
+    }
+
+    /**
      * 根据rid删除角色
      *
      * @param rid

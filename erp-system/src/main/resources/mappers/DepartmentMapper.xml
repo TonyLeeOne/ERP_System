@@ -85,4 +85,12 @@
     <include refid="Base_Column_List" />
     from department
   </select>
+
+  <delete id="batchDeleteByIds" parameterType="java.lang.String">
+    delete from department where department.d_id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
 </mapper>

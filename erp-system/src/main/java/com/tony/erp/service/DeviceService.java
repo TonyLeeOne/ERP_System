@@ -53,4 +53,7 @@ public class DeviceService {
         return deviceMapper.selectByPrimaryKey(vid);
     }
 
+    public int batchDeleteByIds(String[] ids) {
+        return deviceMapper.batchDeleteByIds(ids);
+    }
 }

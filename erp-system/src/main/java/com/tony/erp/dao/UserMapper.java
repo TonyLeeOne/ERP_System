@@ -5,9 +5,10 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 /**
  * @author jli2
- * @date  2018/11/12
+ * @date 2018/11/12
  */
 @Repository
 public interface UserMapper {
@@ -24,8 +25,13 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     List<User> findPropertiesByUsername(@Param("uname") String uname);
+
     List<User> getAllUsers();
 
     int selectByUname(String uname);
+
+    int selecTotalByDepartId(@Param("departId") String departId);
+
+    int batchDeleteByIds(@Param("ids") String[] ids);
 
 }

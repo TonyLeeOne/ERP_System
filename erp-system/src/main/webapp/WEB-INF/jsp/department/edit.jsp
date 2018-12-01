@@ -4,7 +4,7 @@
 <div class="x-body">
     <form class="layui-form">
         <div class="layui-form-item">
-            <input type="hidden" name="id" value="${department.dId}">
+            <input type="hidden" name="dId" value="${department.dId}">
             <label for="dName" class="layui-form-label">
                 <span class="x-red">*</span>部门名称
             </label>
@@ -70,27 +70,22 @@
 
         //监听提交
         form.on('submit(add)', function (data) {
-            var obj = data.field, param = new Object(), arr = new Array();
-            for (key in obj) {
-                if (key.substr(0, 4) == 'dId[') {
-                    arr.push(obj[key]);
-                } else {
-                    param[key] = obj[key];
-                }
-            }
-            param['rids'] = arr.join(',');
+            var obj = data.field;
             var msg = "新增";
-            if (obj.id != '') {
+            console.log(obj);
+            var url = "/department/add";
+            if (obj.dId != '') {
                 msg = "更新";
+                url = url + "?rid=" + obj.dId;
             }
             jQuery.ajax({
-                url: "/department/add",
+                url: url,
                 type: "POST",
-                data: JSON.stringify(param),
+                data: obj,
                 // dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                // contentType: "application/json; charset=utf-8",
                 success: function (res) {
-                    if (res == '数据新增成功') {
+                    if (res == '数据新增成功' || res == '数据更新成功') {
                         //发异步，把数据提交给php
                         layer.alert(msg + "成功", {icon: 6}, function () {
                             // 获得frame索引

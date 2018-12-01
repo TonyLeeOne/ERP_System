@@ -12,7 +12,7 @@
     <%--</form>--%>
     <%--</div>--%>
     <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/user/batchDelete"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','/user/edit',700,350)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：${users.total} 条</span>
@@ -61,8 +61,7 @@
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
-                        <a title="删除" onclick="member_del(this,'${user.id}')" href="javascript:;">
-                            <i class="layui-icon">&#xe640;</i>
+                        <a title="删除" id="delete" href="/user/delete?uid=${user.id}"><i class="layui-icon">&#xe640;</i>
                         </a>
                     </td>
                 </tr>
@@ -121,39 +120,6 @@
     //
     //     });
     // }
-
-    /*删除*/
-    function member_del(obj, id) {
-        layer.confirm('确认要删除吗？', function (index) {
-            $.get('/user/delete?uid=' + id, function (res) {
-                //发异步删除数据
-                if (res == '数据删除成功') {
-                    $(obj).parents("tr").remove();
-                    layer.msg('已删除!', {icon: 1, time: 1000});
-                } else {
-                    layer.msg(res + '!', {icon: 0, time: 2000});
-                }
-
-            });
-        });
-    }
-
-
-    function delAll(argument) {
-        var data = tableCheck.getData();
-        layer.confirm('确认要删除吗？' + data, function (index) {
-            $.post('/user/batchDelete', {"uids": data.toString()}, function (res) {
-                //捉到所有被选中的，发异步进行删除
-                if (res == '数据删除成功') {
-                    // $(".layui-form-checked").not('.header').parents('tr').remove();
-                    layer.msg('已删除!', {icon: 1, time: 1000});
-                } else {
-                    layer.msg(res + '!', {icon: 0, time: 2000});
-                }
-
-            });
-        });
-    }
 </script>
 </body>
 

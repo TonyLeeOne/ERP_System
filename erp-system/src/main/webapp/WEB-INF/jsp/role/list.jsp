@@ -4,7 +4,7 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/role/batchDelete"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加角色','/role/edit',700,350)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：${roles.size()} 条</span>
@@ -48,7 +48,7 @@
                     <a title="编辑" onclick="x_admin_show('编辑','/role/edit?rid=${role.rid}',700,400)" href="javascript:;">
                         <i class="layui-icon">&#xe642;</i>
                     </a>
-                    <a title="删除" onclick="member_del(this,'${role.rid}')" href="javascript:;">
+                    <a title="删除" id="delete" href="/role/delete?rid=${role.rid}">
                         <i class="layui-icon">&#xe640;</i>
                     </a>
                 </td>
@@ -58,44 +58,6 @@
     </table>
 
 </div>
-<script>
-    /*删除*/
-    function member_del(obj, id) {
-        layer.confirm('确认要删除吗？', function (index) {
-            $.get('/role/delete?rid=' + id, function (res) {
-                //发异步删除数据
-                if (res == '数据删除成功') {
-                    $(obj).parents("tr").remove();
-                    layer.msg('已删除!', {icon: 1, time: 1000});
-                } else {
-                    layer.msg(res + '!', {icon: 0, time: 2000});
-                }
-
-            });
-        });
-    }
-
-
-    function delAll(argument) {
-        var data = tableCheck.getData();
-        var names = [];
-        jQuery("table tbody .layui-form-checked").each(function () {
-            names.push(jQuery(this).data("name"));
-        });
-        layer.confirm('确认要删除以下角色吗？<br />' + names.join("，"), function (index) {
-            $.post('/role/batchDelete', {"rids": data.toString()}, function (res) {
-                //捉到所有被选中的，发异步进行删除
-                if (res == '数据删除成功') {
-                    // $(".layui-form-checked").not('.header').parents('tr').remove();
-                    layer.msg('已删除!', {icon: 1, time: 1000});
-                } else {
-                    layer.msg(res + '!', {icon: 0, time: 2000});
-                }
-
-            });
-        });
-    }
-</script>
 </body>
 
 </html>

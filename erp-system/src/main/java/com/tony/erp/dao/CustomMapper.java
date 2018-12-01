@@ -29,4 +29,7 @@ public interface CustomMapper {
     int getTotal();
 
     List<String> getCustoms();
+
+    int batchDeleteByIds(@Param("ids") String[] ids);
+
 }

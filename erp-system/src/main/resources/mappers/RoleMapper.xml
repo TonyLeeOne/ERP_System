@@ -71,10 +71,10 @@
     where rid = #{rid,jdbcType=VARCHAR}
   </update>
 
-  <delete id="batchDeleteByRid" parameterType="java.lang.String">
+  <delete id="batchDeleteByIds" parameterType="java.lang.String">
     delete from role where role.rid in
-    <foreach collection="rids" item="rid" index="index" open="(" close=")" separator=",">
-      #{rid}
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
     </foreach>
   </delete>
 </mapper>

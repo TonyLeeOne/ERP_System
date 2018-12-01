@@ -61,7 +61,8 @@ public class RoleService {
         return roleMapper.updateByPrimaryKeySelective(role);
     }
 
-    public int batchDeleteByRid(String[] rids) {
-        return roleMapper.batchDeleteByRid(rids);
+    public int batchDeleteByIds(String[] rids) {
+
+        return roleMapper.batchDeleteByIds(rids);
     }
 }

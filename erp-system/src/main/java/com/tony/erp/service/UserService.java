@@ -112,8 +112,20 @@ public class UserService {
         return userMapper.selectByUname(null);
     }
 
+
+    /**
+     * 获取部门下有多少用户
+     *
+     * @param departId
+     * @return
+     */
+    public int getTotalByDepartId(String departId) {
+        return userMapper.selecTotalByDepartId(departId);
+    }
+
     /**
      * 删除用户
+     *
      * @param uid
      * @return
      */
@@ -121,4 +133,7 @@ public class UserService {
         return userMapper.deleteByPrimaryKey(uid);
     }
 
+    public int batchDeleteByIds(String[] ids) {
+        return userMapper.batchDeleteByIds(ids);
+    }
 }

@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 /**
  * @author jli2
- * @date  2018/11/12
+ * @date 2018/11/12
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -25,7 +26,7 @@ public class VendorService {
 
     public int addVendor(Vendor vendor) {
         vendor.setVId(KeyGeneratorUtils.keyUUID());
-        vendor.setVStatus("1");
+//        vendor.setVStatus("1");
         return vendorMapper.insert(vendor);
     }
 
@@ -34,13 +35,13 @@ public class VendorService {
     }
 
     public PageHelperEntity getAllVendors(int pageNum) {
-        PageHelper.startPage(pageNum,10);
-        List<Vendor> vendors= vendorMapper.getAllVendors();
-        PageHelperEntity pageHelperEntity=new PageHelperEntity();
+        PageHelper.startPage(pageNum, 10);
+        List<Vendor> vendors = vendorMapper.getAllVendors();
+        PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(vendors);
-        PageInfo<Vendor> pageInfo=new PageInfo<>(vendors);
+        PageInfo<Vendor> pageInfo = new PageInfo<>(vendors);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(),10));
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), 10));
         return pageHelperEntity;
     }
 
@@ -50,5 +51,9 @@ public class VendorService {
 
     public Vendor getSingleVendor(String vid) {
         return vendorMapper.selectByPrimaryKey(vid);
+    }
+
+    public int batchDeleteByIds(String[] ids) {
+        return vendorMapper.batchDeleteByIds(ids);
     }
 }

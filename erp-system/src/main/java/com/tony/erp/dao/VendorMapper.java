@@ -1,6 +1,7 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Vendor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,4 +24,7 @@ public interface VendorMapper {
     int updateByPrimaryKey(Vendor record);
 
     List<Vendor> getAllVendors();
+
+    int batchDeleteByIds(@Param("ids") String[] ids);
+
 }

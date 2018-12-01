@@ -80,10 +80,10 @@ public class UserController {
      */
     @PostMapping("/doLogin")
     @ResponseBody
-    public String login(@RequestBody User user,  HttpSession session) {
+    public String login(@RequestBody User user, HttpSession session) {
         Subject subject = org.apache.shiro.SecurityUtils.getSubject();
         cache = cacheManager.getCache("passwordRetryCache");
-        if (!subject.isAuthenticated()||subject.getPrincipal()==null) {
+        if (!subject.isAuthenticated() || subject.getPrincipal() == null) {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUname(), user.getUpass());
             try {
                 subject.login(token);
@@ -210,12 +210,13 @@ public class UserController {
 
     /**
      * 删除用户
+     *
      * @param uid
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String deleteUser(String uid){
+    public String deleteUser(String uid) {
         return userService.deleteByPrimaryKey(uid) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
@@ -226,8 +227,8 @@ public class UserController {
      */
     @GetMapping("/getAllUsers/{pageNum}")
     public String getAllUser(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("users", userService.getAllUsers(1));
-        return "";
+        modelMap.addAttribute("users", userService.getAllUsers(pageNum));
+        return "/user/list";
     }
 
 
@@ -287,6 +288,21 @@ public class UserController {
 
     }
 
+    /**
+     * 批量删除
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/batchDelete")
+    @ResponseBody
+    public String batchDelete(@RequestBody String[] ids) {
+        if (ids.length < 1) {
+            return Constant.ARG_EXCEPTION;
+        }
+        int res = userService.batchDeleteByIds(ids);
+        return res > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
+    }
 
 }
 

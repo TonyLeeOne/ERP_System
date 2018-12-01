@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.tony.erp.dao.UserMapper">
     <resultMap id="BaseResultMap" type="com.tony.erp.domain.User">
         <id column="id" jdbcType="VARCHAR" property="id"/>
@@ -155,4 +156,17 @@
             where uname=#{uname,jdbcType=VARCHAR}
         </if>
     </select>
+
+    <select id="selecTotalByDepartId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select
+        count(id)
+        from user
+        WHERE departId=#{departId,jdbcType=VARCHAR}
+    </select>
+    <delete id="batchDeleteByIds" parameterType="java.lang.String">
+        delete from user where user.id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

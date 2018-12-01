@@ -184,7 +184,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/device/getAllDevices">
+                        <a _href="/device/getAllDevices/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有设备</cite>
                         </a>

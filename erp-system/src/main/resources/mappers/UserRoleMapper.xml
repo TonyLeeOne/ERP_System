@@ -18,6 +18,16 @@
     where rid = #{rid,jdbcType=VARCHAR}
   </select>
 
+    <select id="selectByRids" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select
+        count(1)
+        from user_role
+        where rid IN
+        <foreach collection="rids" item="rid" index="index" open="(" close=")" separator=",">
+            #{rid}
+        </foreach>
+    </select>
+
     <delete id="delete" parameterType="java.lang.String">
     delete from user_role where rid=#{rid,jdbcType=VARCHAR}
   </delete>

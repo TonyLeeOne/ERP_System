@@ -117,14 +117,21 @@ public class RoleController {
     /**
      * 批量删除
      *
-     * @param rids
+     * @param ids
      * @return
      */
     @RequestMapping("/batchDelete")
     @ResponseBody
-    public String batchDelete(String rids) {
-        System.out.println(rids);
-        String[] pros = rids.split(",");
-        return roleService.batchDeleteByRid(pros) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
+    public String batchDelete(@RequestBody String[] ids) {
+        if (ids.length < 1) {
+            return Constant.ARG_EXCEPTION;
+        }
+        for (String id : ids) {
+            if (userRoleService.check(id)) {
+                return "有角色因被用户使用，不可删除";
+            }
+        }
+        int res = roleService.batchDeleteByIds(ids);
+        return res > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 }

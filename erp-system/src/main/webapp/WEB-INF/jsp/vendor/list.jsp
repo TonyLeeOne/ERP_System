@@ -12,8 +12,8 @@
     <%--</form>--%>
     <%--</div>--%>
     <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加供应商','/vendor/edit',700,350)"><i class="layui-icon"></i>添加
+        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/vendor/batchDelete"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="x_admin_show('添加供应商','/vendor/edit',700,500)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：${vendors.total} 条</span>
     </xblock>
@@ -29,7 +29,7 @@
             <th>供应商联系方式</th>
             <th>供应商法人代表</th>
             <th>供应商全名</th>
-            <th>供应商状态 1代表正常 2代表终止合作</th>
+            <th>供应商状态</th>
             <th>备注</th>
             <th>操作</th>
         </thead>
@@ -38,7 +38,7 @@
             <c:forEach items="${vendors.rows}" var="vendor">
                 <tr>
                     <td>
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${vendor.id}'><i
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-name="${vendor.VName}" data-id='${vendor.VId}'><i
                                 class="layui-icon">&#xe605;</i></div>
                     </td>
                         <%--<td>${vendor.id}</td>--%>
@@ -47,14 +47,16 @@
                     <td>${vendor.VTel}</td>
                     <td>${vendor.VPublish}</td>
                     <td>${vendor.VFullname}</td>
-                    <td>${vendor.VStatus}</td>
+                    <td>
+                        <%@include file="../common/vendor_status.jsp" %>
+                    </td>
                     <td>${vendor.VNote}</td>
                     <td class="td-manage">
-                        <a title="编辑" onclick="x_admin_show('编辑','/user/vendor?vId=${vendor.vId}',700,350)"
+                        <a title="编辑" onclick="x_admin_show('编辑','/vendor/edit?vId=${vendor.VId}',700,500)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
-                        <a title="删除" onclick="member_del(this,${vendor.vId})" href="javascript:;">
+                        <a title="删除" id="delete" href="/vendor/delete?vId=${vendor.VId}">
                             <i class="layui-icon">&#xe640;</i>
                         </a>
                     </td>
@@ -76,40 +78,6 @@
     </div>
 
 </div>
-<script>
-    /*删除*/
-    function member_del(obj, id) {
-        layer.confirm('确认要删除吗？', function (index) {
-            $.get('/vendor/delete?vId=' + id, function (res) {
-                //发异步删除数据
-                if (res == '数据删除成功') {
-                    $(obj).parents("tr").remove();
-                    layer.msg('已删除!', {icon: 1, time: 1000});
-                } else {
-                    layer.msg(res + '!', {icon: 0, time: 2000});
-                }
-
-            });
-        });
-    }
-
-
-    function delAll(argument) {
-        var data = tableCheck.getData();
-        layer.confirm('确认要删除吗？' + data, function (index) {
-            $.post('/vendor/batchDelete', {"vIds": data.toString()}, function (res) {
-                //捉到所有被选中的，发异步进行删除
-                if (res == '数据删除成功') {
-                    // $(".layui-form-checked").not('.header').parents('tr').remove();
-                    layer.msg('已删除!', {icon: 1, time: 1000});
-                } else {
-                    layer.msg(res + '!', {icon: 0, time: 2000});
-                }
-
-            });
-        });
-    }
-</script>
 </body>
 
 </html>

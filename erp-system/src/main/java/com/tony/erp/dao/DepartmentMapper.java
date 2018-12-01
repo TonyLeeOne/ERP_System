@@ -1,6 +1,7 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Department;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +26,7 @@ public interface DepartmentMapper {
     int updateByPrimaryKey(Department record);
 
     List<Department> selectAll();
+
+    int batchDeleteByIds(@Param("ids") String[] ids);
+
 }
