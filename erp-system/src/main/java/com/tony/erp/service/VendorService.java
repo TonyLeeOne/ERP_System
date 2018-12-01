@@ -56,4 +56,8 @@ public class VendorService {
     public int batchDeleteByIds(String[] ids) {
         return vendorMapper.batchDeleteByIds(ids);
     }
+
+    public List<Vendor> getAll() {
+        return vendorMapper.getAllVendors();
+    }
 }

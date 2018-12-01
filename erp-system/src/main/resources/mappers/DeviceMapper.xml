@@ -25,7 +25,7 @@
     </select>
 
     <select id="checkDeviceCode" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(1) from device where device_code = #{device_code,jdbcType=VARCHAR}
+        select count(1) from device where device_code = #{deviceCode,jdbcType=VARCHAR}
     </select>
 
     <select id="getAllDevices" parameterType="java.lang.String" resultMap="BaseResultMap">

@@ -37,7 +37,7 @@ public class DeviceService {
 
     public int addDevice(Device device){
         device.setDeviceId(KeyGeneratorUtils.keyUUID());
-        device.setDeviceStatus("1");
+//        device.setDeviceStatus("1");
         return deviceMapper.insert(device);
     }
     public int upDevice(Device device){
