@@ -102,16 +102,16 @@ public class CustomController {
     /**
      * 删除客户信息
      *
-     * @param cid
+     * @param customId
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String delCus(String cid) {
-        if (ObjectUtils.isEmpty(cid)) {
+    public String delCus(String customId) {
+        if (ObjectUtils.isEmpty(customId)) {
             return Constant.ARG_EXCEPTION;
         }
-        return customService.delCustom(cid) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
+        return customService.delCustom(customId) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
     /**
@@ -132,6 +132,7 @@ public class CustomController {
 
     /**
      * 获取所有客户名和编号
+     *
      * @return
      */
     @RequestMapping("/getAllCusNames")
@@ -143,6 +144,7 @@ public class CustomController {
 
     /**
      * 根据客户编号获取客户信息
+     *
      * @return
      */
     @RequestMapping("/getCustomByCode")

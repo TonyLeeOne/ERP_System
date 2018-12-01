@@ -12,13 +12,14 @@
                 <input type="text" id="deviceName" name="deviceName" required="" lay-verify="required"
                        value="${device.deviceName}" autocomplete="off" value="admin" class="layui-input">
             </div>
-            <label for="devicePurDate" class="layui-form-label">
-                <span class="x-red">*</span>采购日期
+            <label for="deviceCode" class="layui-form-label">
+                <span class="x-red">*</span>设备编号
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="devicePurDate" name="devicePurDate" required="" lay-verify="required"
-                       value="${device.devicePurDate}" autocomplete="off" class="layui-input">
+                <input type="text" id="deviceCode" name="deviceCode" required="" lay-verify="required"
+                       value="${device.deviceCode}" autocomplete="off" class="layui-input">
             </div>
+
         </div>
         <div class="layui-form-item">
             <label for="devicePrice" class="layui-form-label">
@@ -28,15 +29,6 @@
                 <input type="text" id="devicePrice" name="devicePrice" required="" lay-verify="required"
                        value="${device.devicePrice}" autocomplete="off" class="layui-input">
             </div>
-            <label for="deviceCode" class="layui-form-label">
-                <span class="x-red">*</span>设备编号
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="deviceCode" name="deviceCode" required="" lay-verify="required"
-                       value="${device.deviceCode}" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
             <label for="deviceVendor" class="layui-form-label">
                 <span class="x-red">*</span>设备供应商
             </label>
@@ -50,9 +42,16 @@
                     </c:forEach>
                 </select>
             </div>
-        </div>
 
+        </div>
         <div class="layui-form-item">
+            <label for="devicePurDate" class="layui-form-label">
+                <span class="x-red">*</span>采购日期
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="devicePurDate" name="devicePurDate" required="" lay-verify="required"
+                       value="${device.devicePurDate}" autocomplete="off" class="layui-input">
+            </div>
             <label for="deviceUsedPeriod" class="layui-form-label">
                 <span class="x-red">*</span>设备使用截止日期
             </label>
@@ -60,6 +59,10 @@
                 <input type="text" id="deviceUsedPeriod" name="deviceUsedPeriod" required="" lay-verify="required"
                        value="${device.deviceUsedPeriod}" autocomplete="off" class="layui-input">
             </div>
+        </div>
+
+        <div class="layui-form-item">
+
             <label for="deviceStatus" class="layui-form-label">
                 <span class="x-red">*</span>设备状态
             </label>

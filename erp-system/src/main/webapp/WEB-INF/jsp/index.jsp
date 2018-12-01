@@ -86,7 +86,7 @@
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont">&#xe6b8;</i>
+                    <i class="iconfont">&#xe6f5;</i>
                     <cite>供应商管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
@@ -217,7 +217,7 @@
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont">&#xe70b;</i>
+                    <i class="iconfont">&#xe753;</i>
                     <cite>部门管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>

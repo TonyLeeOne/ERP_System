@@ -7,7 +7,7 @@
         <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/device/batchDelete"><i
                 class="layui-icon"></i>批量删除
         </button>
-        <button class="layui-btn" onclick="x_admin_show('添加设备','/device/edit',700,350)"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="x_admin_show('添加设备','/device/edit',700,500)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：${devices.total} 条</span>
     </xblock>
@@ -48,7 +48,7 @@
                     <td>${device.deviceStatus}</td>
                     <td>${device.deviceNote}</td>
                     <td class="td-manage">
-                        <a title="编辑" onclick="x_admin_show('编辑','/device/edit?deviceId=${device.deviceId}',700,350)"
+                        <a title="编辑" onclick="x_admin_show('编辑','/device/edit?deviceId=${device.deviceId}',700,500)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
