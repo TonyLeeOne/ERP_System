@@ -200,7 +200,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/device/getAllDeviceHis/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>设备保养记录</cite>
                         </a>

@@ -97,6 +97,17 @@
     </form>
 </div>
 <script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#devicePurDate' //指定元素
+        });
+
+        laydate.render({
+            elem: '#deviceUsedPeriod' //指定元素
+        });
+    });
     layui.use(['form', 'layer'], function () {
         // $ = layui.jquery;
         var form = layui.form

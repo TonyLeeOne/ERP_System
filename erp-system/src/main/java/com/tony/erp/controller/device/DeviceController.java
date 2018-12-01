@@ -44,6 +44,7 @@ public class DeviceController {
 
     /**
      * 编辑、新增页面
+     *
      * @param deviceId
      * @param modelMap
      * @return
@@ -62,6 +63,7 @@ public class DeviceController {
 
     /**
      * 保存数据
+     *
      * @param deviceId
      * @param device
      * @return
@@ -72,18 +74,20 @@ public class DeviceController {
         if (ObjectUtils.isEmpty(device) && StringUtils.isEmpty(device.getDeviceCode())) {
             return Constant.ARG_EXCEPTION;
         }
+        Vendor vendor = vendorService.getSingleVendor(device.getDeviceVendor());
+        device.setDeviceVendorTel(vendor.getVTel());
+
+        //更新
+        if (device.getDeviceId() != null && !"".equals(device.getDeviceId())) {
+            return deviceService.upDevice(device) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
+        }
+
+        //新增
         if (!deviceService.checkDeviceCode(device.getDeviceCode())) {
-            Vendor vendor = vendorService.getSingleVendor(device.getDeviceVendor());
-            device.setDeviceVendorTel(vendor.getVTel());
             return deviceService.addDevice(device) > 0 ? Constant.DATA_ADD_SUCCESS : Constant.DATA_ADD_FAILED;
         }
-        return Constant.DEVICE_CODE_EXISTS;
-    }
 
-    @PostMapping("/update")
-    @ResponseBody
-    public String upDevice(Device device) {
-        return deviceService.upDevice(device) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
+        return Constant.DEVICE_CODE_EXISTS;
     }
 
     @GetMapping("/delete")
