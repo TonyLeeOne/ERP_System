@@ -38,7 +38,7 @@ public class DeviceController {
 
     @GetMapping("/getAllDevices/{pageNum}")
     public String getAllDevice(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("devices", deviceService.getAllDevices(pageNum));
+        modelMap.addAttribute("page", deviceService.getAllDevices(pageNum));
         return "/device/list";
     }
 

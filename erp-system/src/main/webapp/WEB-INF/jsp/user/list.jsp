@@ -12,10 +12,12 @@
     <%--</form>--%>
     <%--</div>--%>
     <xblock>
-        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/user/batchDelete"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/user/batchDelete"><i
+                class="layui-icon"></i>批量删除
+        </button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','/user/edit',700,350)"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：${users.total} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -33,30 +35,30 @@
             <th>操作</th>
         </thead>
         <tbody>
-        <c:if test="${users.total > 0}">
-            <c:forEach items="${users.rows}" var="user">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="user">
                 <tr>
                     <td>
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${user.id}'><i
                                 class="layui-icon">&#xe605;</i></div>
                     </td>
-                    <%--<td>${user.id}</td>--%>
+                        <%--<td>${user.id}</td>--%>
                     <td>${user.uname}</td>
                     <td>${user.department.dName}</td>
                     <td>
                         <c:forEach items="${user.roles}" var="role" varStatus="status">
-                           <c:if test="${status.index != 0}">,</c:if> ${role.rname}
+                            <c:if test="${status.index != 0}">,</c:if> ${role.rname}
                         </c:forEach>
                     </td>
-                    <%--<td>${user.upass}</td>--%>
+                        <%--<td>${user.upass}</td>--%>
                         <%--<td>${user.status}</td>--%>
-                    <%--<td class="td-status">--%>
+                        <%--<td class="td-status">--%>
                         <%--<span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>--%>
-                    <%--</td>--%>
+                        <%--</td>--%>
                     <td class="td-manage">
-                        <%--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">--%>
+                            <%--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">--%>
                             <%--<i class="layui-icon">&#xe601;</i>--%>
-                        <%--</a>--%>
+                            <%--</a>--%>
                         <a title="编辑" onclick="x_admin_show('编辑','/user/edit?userId=${user.id}',700,350)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
@@ -70,16 +72,9 @@
         </c:if>
         </tbody>
     </table>
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
+    <jsp:include page="../common/pagination.jsp" flush="true">
+        <jsp:param name="pageurl" value="/user/getAllUsers/"/>
+    </jsp:include>
 
 </div>
 <script>

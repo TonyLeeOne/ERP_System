@@ -77,7 +77,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/custom/getAllCustoms">
+                        <a _href="/custom/getAllCustoms/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有客户</cite>
                         </a>
@@ -92,7 +92,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/vendor/getAllVendors">
+                        <a _href="/vendor/getAllVendors/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有供应商</cite>
                         </a>
@@ -250,7 +250,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/user/getAllUsers">
+                        <a _href="/user/getAllUsers/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>管理员列表</cite>
                         </a>

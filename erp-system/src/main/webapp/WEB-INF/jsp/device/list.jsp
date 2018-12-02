@@ -9,7 +9,7 @@
         </button>
         <button class="layui-btn" onclick="x_admin_show('添加设备','/device/edit',700,500)"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：${devices.total} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -25,13 +25,13 @@
             <th>设备供应商</th>
             <th>供应商联系电话</th>
             <th>设备使用截止日期</th>
-            <th>设备状态，1代表良好，2代表待维修，3代表维修OK</th>
-            <th>备注</th>
+            <th>设备状态</th>
+            <%--<th>备注</th>--%>
             <th>操作</th>
         </thead>
         <tbody>
-        <c:if test="${devices.total > 0}">
-            <c:forEach items="${devices.rows}" var="device">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="device">
                 <tr>
                     <td>
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary"
@@ -45,8 +45,10 @@
                     <td>${device.deviceVendor}</td>
                     <td>${device.deviceVendorTel}</td>
                     <td>${device.deviceUsedPeriod}</td>
-                    <td>${device.deviceStatus}</td>
-                    <td>${device.deviceNote}</td>
+                    <td>
+                        <%@ include file="../common/device_status.jsp" %>
+                    </td>
+                        <%--<td>${device.deviceNote}</td>--%>
                     <td class="td-manage">
                         <a title="编辑" onclick="x_admin_show('编辑','/device/edit?deviceId=${device.deviceId}',700,500)"
                            href="javascript:;">
@@ -62,17 +64,7 @@
         </c:if>
         </tbody>
     </table>
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
-
+    <jsp:include page="../common/pagination.jsp" flush="true"><jsp:param name="pageurl" value="/device/getAllDevices/"/></jsp:include>
 </div>
 </body>
 

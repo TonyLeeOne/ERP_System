@@ -29,13 +29,10 @@ public class CustomController {
      * @param modelMap
      * @return
      */
-    @RequestMapping("/getAllCustoms")
-    public String getAllCustoms(@RequestParam(defaultValue = "1") int pageNum,
-                                @RequestParam(defaultValue = "5") int pageSize,
-                                @RequestParam(defaultValue = "desc") String direction,
-                                ModelMap modelMap) {
-        PageHelperEntity custom = customService.getAllCustoms(pageNum, pageSize);
-        modelMap.addAttribute("customs", custom);
+    @RequestMapping("/getAllCustoms/{pageNum}")
+    public String getAllCustoms(@PathVariable int pageNum, ModelMap modelMap) {
+        PageHelperEntity custom = customService.getAllCustoms(pageNum, 10);
+        modelMap.addAttribute("page", custom);
         return "/custom/list";
     }
 

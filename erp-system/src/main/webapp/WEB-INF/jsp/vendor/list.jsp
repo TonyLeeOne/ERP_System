@@ -12,10 +12,12 @@
     <%--</form>--%>
     <%--</div>--%>
     <xblock>
-        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/vendor/batchDelete"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/vendor/batchDelete"><i
+                class="layui-icon"></i>批量删除
+        </button>
         <button class="layui-btn" onclick="x_admin_show('添加供应商','/vendor/edit',700,500)"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：${vendors.total} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -30,15 +32,16 @@
             <th>供应商法人代表</th>
             <th>供应商全名</th>
             <th>供应商状态</th>
-            <th>备注</th>
+            <%--<th>备注</th>--%>
             <th>操作</th>
         </thead>
         <tbody>
-        <c:if test="${vendors.total > 0}">
-            <c:forEach items="${vendors.rows}" var="vendor">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="vendor">
                 <tr>
                     <td>
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-name="${vendor.VName}" data-id='${vendor.VId}'><i
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-name="${vendor.VName}"
+                             data-id='${vendor.VId}'><i
                                 class="layui-icon">&#xe605;</i></div>
                     </td>
                         <%--<td>${vendor.id}</td>--%>
@@ -50,7 +53,7 @@
                     <td>
                         <%@include file="../common/vendor_status.jsp" %>
                     </td>
-                    <td>${vendor.VNote}</td>
+                        <%--<td>${vendor.VNote}</td>--%>
                     <td class="td-manage">
                         <a title="编辑" onclick="x_admin_show('编辑','/vendor/edit?vId=${vendor.VId}',700,500)"
                            href="javascript:;">
@@ -66,16 +69,9 @@
         </c:if>
         </tbody>
     </table>
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
+    <jsp:include page="../common/pagination.jsp" flush="true">
+        <jsp:param name="pageurl" value="/vendor/getAllVendors/"/>
+    </jsp:include>
 
 </div>
 </body>

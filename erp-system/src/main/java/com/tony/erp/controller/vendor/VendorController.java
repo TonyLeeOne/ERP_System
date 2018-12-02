@@ -46,8 +46,8 @@ public class VendorController {
 
     @RequestMapping("/getAllVendors/{pageNum}")
     public String getAllVendor(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("vendors", vendorService.getAllVendors(pageNum));
-        return "";
+        modelMap.addAttribute("page", vendorService.getAllVendors(pageNum));
+        return "/vendor/list";
     }
 
     /**

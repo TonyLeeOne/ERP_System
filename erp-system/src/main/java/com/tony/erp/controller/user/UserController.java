@@ -227,7 +227,7 @@ public class UserController {
      */
     @GetMapping("/getAllUsers/{pageNum}")
     public String getAllUser(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("users", userService.getAllUsers(pageNum));
+        modelMap.addAttribute("page", userService.getAllUsers(pageNum));
         return "/user/list";
     }
 

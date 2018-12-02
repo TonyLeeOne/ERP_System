@@ -13,4 +13,5 @@ public class PageHelperEntity {
     private long total;
     private List<?> rows;
     private int pageNum;
+    private int currentPage;
 }
