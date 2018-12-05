@@ -20,8 +20,8 @@ public class SecurityUtils {
         return new SimpleHash(Constant.ALGORITHM,password,byteSource,Constant.ITERATORS).toString().trim();
     }
 
-    public static void main(String[] args) {
-        System.out.println(getSecurityResult("tony","tony"));
-    }
+//    public static void main(String[] args) {
+//        System.out.println(getSecurityResult("tony","tony"));
+//    }
 
 }
