@@ -80,7 +80,7 @@
                 备注
             </label>
             <div class="layui-input-inline">
-                <textarea name="vNote" id="vNote" cols="69" rows="9"></textarea>
+                <textarea name="vNote" id="vNote" cols="69" rows="9">${device.vNote}</textarea>
             </div>
         </div>
         <div class="layui-form-item">

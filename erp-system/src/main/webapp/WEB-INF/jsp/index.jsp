@@ -190,30 +190,30 @@
                         </a>
                     </li>
                 </ul>
+                <%--<ul class="sub-menu">--%>
+                    <%--<li>--%>
+                        <%--<a _href="#">--%>
+                            <%--<i class="iconfont">&#xe6a7;</i>--%>
+                            <%--<cite>设备维修记录</cite>--%>
+                        <%--</a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>设备维修记录</cite>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/device/getAllDeviceHis/1">
+                        <a _href="/deviceHis/getAllDeviceHis/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>设备保养记录</cite>
                         </a>
                     </li>
                 </ul>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="order-list.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>设备采购记录</cite>
-                        </a>
-                    </li>
-                </ul>
+                <%--<ul class="sub-menu">--%>
+                    <%--<li>--%>
+                        <%--<a _href="#">--%>
+                            <%--<i class="iconfont">&#xe6a7;</i>--%>
+                            <%--<cite>设备采购记录</cite>--%>
+                        <%--</a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
             </li>
             <li>
                 <a href="javascript:;">

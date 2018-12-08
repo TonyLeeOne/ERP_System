@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tony.erp.dao.DeviceMapper;
 import com.tony.erp.domain.Device;
-import com.tony.erp.domain.Vendor;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.utils.KeyGeneratorUtils;
 import com.tony.erp.utils.ListUtils;
@@ -28,10 +27,6 @@ public class DeviceService {
     public PageHelperEntity getAllDevices(int pageNum) {
         PageHelper.startPage(pageNum, 10);
         List<Device> devices = deviceMapper.getAllDevices();
-        for (Device ele:devices){
-            System.out.println(ele);
-        }
-
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(devices);
         pageHelperEntity.setCurrentPage(pageNum);

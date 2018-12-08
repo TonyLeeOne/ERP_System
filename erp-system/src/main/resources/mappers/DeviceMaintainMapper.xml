@@ -1,42 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tony.erp.dao.DeviceMaintainMapper">
-  <resultMap id="BaseResultMap" type="com.tony.erp.domain.DeviceMaintain">
-    <id column="his_id" jdbcType="VARCHAR" property="hisId" />
-    <result column="his_device_code" jdbcType="VARCHAR" property="hisDeviceCode" />
-    <result column="his_date" jdbcType="VARCHAR" property="hisDate" />
-    <result column="his_operator" jdbcType="VARCHAR" property="hisOperator" />
-    <result column="his_result" jdbcType="CHAR" property="hisResult" />
-    <result column="his_note" jdbcType="VARCHAR" property="hisNote" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.tony.erp.domain.DeviceMaintain">
+        <id column="his_id" jdbcType="VARCHAR" property="hisId"/>
+        <result column="his_device_code" jdbcType="VARCHAR" property="hisDeviceCode"/>
+        <result column="his_date" jdbcType="VARCHAR" property="hisDate"/>
+        <result column="his_operator" jdbcType="VARCHAR" property="hisOperator"/>
+        <result column="his_result" jdbcType="CHAR" property="hisResult"/>
+        <result column="his_note" jdbcType="VARCHAR" property="hisNote"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     his_id, his_device_code, his_date, his_operator, his_result, his_note
   </sql>
-  <select id="selectByDeviceCode" parameterType="java.lang.String" resultMap="BaseResultMap">
-  select
-  <include refid="Base_Column_List" />
-  from device_maintain_his
-  where his_device_code = #{his_device_code,jdbcType=VARCHAR}
-</select>
+    <select id="selectByDeviceCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from device_maintain_his
+        where his_device_code = #{his_device_code,jdbcType=VARCHAR}
+    </select>
 
-  <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from device_maintain_his
-  </select>
+    <select id="getAllDeviceMaintains" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from device_maintain_his
+    </select>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from device_maintain_his
-    where his_id = #{hisId,jdbcType=VARCHAR}
-  </select>
+    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from device_maintain_his
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from device_maintain_his
+        where his_id = #{hisId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from device_maintain_his
     where his_id = #{hisId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.tony.erp.domain.DeviceMaintain">
+    <insert id="insert" parameterType="com.tony.erp.domain.DeviceMaintain">
     insert into device_maintain_his (his_id, his_device_code, his_date, 
       his_operator, his_result, his_note
       )
@@ -44,71 +50,71 @@
       #{hisOperator,jdbcType=VARCHAR}, #{hisResult,jdbcType=CHAR}, #{hisNote,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.tony.erp.domain.DeviceMaintain">
-    insert into device_maintain_his
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="hisId != null">
-        his_id,
-      </if>
-      <if test="hisDeviceCode != null">
-        his_device_code,
-      </if>
-      <if test="hisDate != null">
-        his_date,
-      </if>
-      <if test="hisOperator != null">
-        his_operator,
-      </if>
-      <if test="hisResult != null">
-        his_result,
-      </if>
-      <if test="hisNote != null">
-        his_note,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="hisId != null">
-        #{hisId,jdbcType=VARCHAR},
-      </if>
-      <if test="hisDeviceCode != null">
-        #{hisDeviceCode,jdbcType=VARCHAR},
-      </if>
-      <if test="hisDate != null">
-        #{hisDate,jdbcType=VARCHAR},
-      </if>
-      <if test="hisOperator != null">
-        #{hisOperator,jdbcType=VARCHAR},
-      </if>
-      <if test="hisResult != null">
-        #{hisResult,jdbcType=CHAR},
-      </if>
-      <if test="hisNote != null">
-        #{hisNote,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.DeviceMaintain">
-    update device_maintain_his
-    <set>
-      <if test="hisDeviceCode != null">
-        his_device_code = #{hisDeviceCode,jdbcType=VARCHAR},
-      </if>
-      <if test="hisDate != null">
-        his_date = #{hisDate,jdbcType=VARCHAR},
-      </if>
-      <if test="hisOperator != null">
-        his_operator = #{hisOperator,jdbcType=VARCHAR},
-      </if>
-      <if test="hisResult != null">
-        his_result = #{hisResult,jdbcType=CHAR},
-      </if>
-      <if test="hisNote != null">
-        his_note = #{hisNote,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where his_id = #{hisId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.DeviceMaintain">
+    <insert id="insertSelective" parameterType="com.tony.erp.domain.DeviceMaintain">
+        insert into device_maintain_his
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hisId != null">
+                his_id,
+            </if>
+            <if test="hisDeviceCode != null">
+                his_device_code,
+            </if>
+            <if test="hisDate != null">
+                his_date,
+            </if>
+            <if test="hisOperator != null">
+                his_operator,
+            </if>
+            <if test="hisResult != null">
+                his_result,
+            </if>
+            <if test="hisNote != null">
+                his_note,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hisId != null">
+                #{hisId,jdbcType=VARCHAR},
+            </if>
+            <if test="hisDeviceCode != null">
+                #{hisDeviceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="hisDate != null">
+                #{hisDate,jdbcType=VARCHAR},
+            </if>
+            <if test="hisOperator != null">
+                #{hisOperator,jdbcType=VARCHAR},
+            </if>
+            <if test="hisResult != null">
+                #{hisResult,jdbcType=CHAR},
+            </if>
+            <if test="hisNote != null">
+                #{hisNote,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.DeviceMaintain">
+        update device_maintain_his
+        <set>
+            <if test="hisDeviceCode != null">
+                his_device_code = #{hisDeviceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="hisDate != null">
+                his_date = #{hisDate,jdbcType=VARCHAR},
+            </if>
+            <if test="hisOperator != null">
+                his_operator = #{hisOperator,jdbcType=VARCHAR},
+            </if>
+            <if test="hisResult != null">
+                his_result = #{hisResult,jdbcType=CHAR},
+            </if>
+            <if test="hisNote != null">
+                his_note = #{hisNote,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where his_id = #{hisId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.DeviceMaintain">
     update device_maintain_his
     set his_device_code = #{hisDeviceCode,jdbcType=VARCHAR},
       his_date = #{hisDate,jdbcType=VARCHAR},
@@ -117,4 +123,10 @@
       his_note = #{hisNote,jdbcType=VARCHAR}
     where his_id = #{hisId,jdbcType=VARCHAR}
   </update>
+    <delete id="batchDeleteByIds" parameterType="java.lang.String">
+        delete from device_maintain_his where device_maintain_his.his_id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

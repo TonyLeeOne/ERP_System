@@ -1,6 +1,7 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.DeviceMaintain;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +26,8 @@ public interface DeviceMaintainMapper {
     List<DeviceMaintain> selectByDeviceCode(String deviceCode);
 
     List<DeviceMaintain> selectAll();
+
+    List<DeviceMaintain> getAllDeviceMaintains();
+    int batchDeleteByIds(@Param("ids") String[] ids);
+
 }
