@@ -12,6 +12,12 @@
         <result column="device_used_period" jdbcType="VARCHAR" property="deviceUsedPeriod"/>
         <result column="device_note" jdbcType="VARCHAR" property="deviceNote"/>
         <result column="device_status" jdbcType="CHAR" property="deviceStatus"/>
+        <association property="vendor" javaType="com.tony.erp.domain.Vendor">
+            <id column="v_id" jdbcType="VARCHAR" property="vId"/>
+            <result column="v_name" jdbcType="VARCHAR" property="vName"/>
+            <result column="v_address" jdbcType="VARCHAR" property="vAddress"/>
+            <result column="v_tel" jdbcType="VARCHAR" property="vTel"/>
+        </association>
     </resultMap>
     <sql id="Base_Column_List">
     device_id, device_name, device_pur_date, device_price, device_code, device_vendor, 
@@ -30,8 +36,9 @@
 
     <select id="getAllDevices" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        device.*,vendor.v_name,vendor.v_tel
         from device
+        left join vendor on device_vendor=vendor.v_id
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

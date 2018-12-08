@@ -27,4 +27,7 @@ public class Device {
     private String deviceNote;
 
     private String deviceStatus;
+
+    private Vendor vendor = new Vendor();
+
 }

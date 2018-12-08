@@ -28,6 +28,10 @@ public class DeviceService {
     public PageHelperEntity getAllDevices(int pageNum) {
         PageHelper.startPage(pageNum, 10);
         List<Device> devices = deviceMapper.getAllDevices();
+        for (Device ele:devices){
+            System.out.println(ele);
+        }
+
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(devices);
         pageHelperEntity.setCurrentPage(pageNum);

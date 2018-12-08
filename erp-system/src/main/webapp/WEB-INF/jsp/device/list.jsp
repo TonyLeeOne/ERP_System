@@ -42,8 +42,8 @@
                     <td>${device.devicePurDate}</td>
                     <td>${device.devicePrice}</td>
                     <td>${device.deviceCode}</td>
-                    <td>${device.deviceVendor}</td>
-                    <td>${device.deviceVendorTel}</td>
+                    <td>${device.vendor.VName}</td>
+                    <td>${device.vendor.VTel}</td>
                     <td>${device.deviceUsedPeriod}</td>
                     <td>
                         <%@ include file="../common/device_status.jsp" %>
@@ -64,7 +64,9 @@
         </c:if>
         </tbody>
     </table>
-    <jsp:include page="../common/pagination.jsp" flush="true"><jsp:param name="pageurl" value="/device/getAllDevices/"/></jsp:include>
+    <jsp:include page="../common/pagination.jsp" flush="true">
+        <jsp:param name="pageurl" value="/device/getAllDevices/"/>
+    </jsp:include>
 </div>
 </body>
 
