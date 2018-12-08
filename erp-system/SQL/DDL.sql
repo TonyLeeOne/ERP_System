@@ -335,59 +335,59 @@ comment '供应商管理表'
 
 -- 固定权限值
 # 物料
-insert into module values(''1f22d285fa534142a11e134502420372'',''material:add'');
-insert into module values(''2e227af26ebe43baa15064af33bf2bbf'',''material:update'');
-insert into module values(''b57eab5f57d24c009c05faafdcf04928'',''material:delete'');
-insert into module values(''a9afdc5ed43d4188b2fb197daed79a0b'',''material:query'');
+insert into module values('1f22d285fa534142a11e134502420372','material:add','添加物料信息');
+insert into module values('2e227af26ebe43baa15064af33bf2bbf','material:update','修改物料信息');
+insert into module values('b57eab5f57d24c009c05faafdcf04928','material:delete','删除物料信息');
+insert into module values('a9afdc5ed43d4188b2fb197daed79a0b','material:query','查询物料信息');
 # 订单
-insert into module values(''1706f112d3a642ddb92f2667b851858b'',''order:add'');
-insert into module values(''a418f73f74c741b3bcc2f2434bbdf50b'',''order:update'');
-insert into module values(''e6dd5eaa3aaf4f72a2f02da80310989b'',''order:delete'');
-insert into module values(''94df464babec4fef9269716aa61b1c0f'',''order:query'');
+insert into module values('1706f112d3a642ddb92f2667b851858b','order:add','添加订单信息');
+insert into module values('a418f73f74c741b3bcc2f2434bbdf50b','order:update','修改订单信息');
+insert into module values('e6dd5eaa3aaf4f72a2f02da80310989b','order:delete','删除订单信息');
+insert into module values('94df464babec4fef9269716aa61b1c0f','order:query','查询订单信息');
 # 客户
-insert into module values(''fe721445594845b4a4bb1e6fcd9a4f13'',''custom:add'');
-insert into module values(''4de7c371565c4b868b1bd7ca644793c9'',''custom:update'');
-insert into module values(''7307e5d4b7c54ee58af76b2820e1bdc8'',''custom:delete'');
-insert into module values(''c652f17bbdd6471fa818b0c21f0b801a'',''custom:query'');
+insert into module values('fe721445594845b4a4bb1e6fcd9a4f13','custom:add','添加客户信息');
+insert into module values('4de7c371565c4b868b1bd7ca644793c9','custom:update','修改客户信息');
+insert into module values('7307e5d4b7c54ee58af76b2820e1bdc8','custom:delete','删除客户信息');
+insert into module values('c652f17bbdd6471fa818b0c21f0b801a','custom:query','查询客户信息');
 # 供应商
-insert into module values(''0ffa99c1c8df4332853105087e4b4fbd'',''vendor:add'');
-insert into module values(''9f64d1e79ee7419aa8226dd023125164'',''vendor:query'');
-insert into module values(''ef3c036ffe7447d5b329b2699e30f0ed'',''vendor:delete'');
-insert into module values(''281ea6f66f85470485fd523716100d5c'',''vendor:update'');
+insert into module values('0ffa99c1c8df4332853105087e4b4fbd','vendor:add','添加供应商信息');
+insert into module values('9f64d1e79ee7419aa8226dd023125164','vendor:query','修改供应商信息');
+insert into module values('ef3c036ffe7447d5b329b2699e30f0ed','vendor:delete','删除供应商信息');
+insert into module values('281ea6f66f85470485fd523716100d5c','vendor:update','查询供应商信息');
 # 生产计划
-insert into module values(''5e518fe53c3046db9ab3c544534d0722'',''manfacturePlan:add'');
-insert into module values(''602429a9ac1e4bda8b732f3767acbf11'',''manfacturePlan:delete'');
-insert into module values(''c4332a8289994f7eb274403d2f6cc040'',''manfacturePlan:query'');
-insert into module values(''b1361cf6253b445d95ecba281246a11a'',''manfacturePlan:update'');
+insert into module values('5e518fe53c3046db9ab3c544534d0722','manfacturePlan:add','添加生产计划');
+insert into module values('602429a9ac1e4bda8b732f3767acbf11','manfacturePlan:delete','删除生产计划');
+insert into module values('c4332a8289994f7eb274403d2f6cc040','manfacturePlan:query','查询生产计划');
+insert into module values('b1361cf6253b445d95ecba281246a11a','manfacturePlan:update','修改生产计划');
 # 生产计划进度
-insert into module values(''aad73fbdca4c4a9a91ab514a591dbe77'',''manfactureProgress:add'');
-insert into module values(''9b862a57762e41808e27fe03679051d1'',''manfactureProgress:delete'');
-insert into module values(''be28d24db96e4353bcf4b4944b70ebbf'',''manfactureProgress:update'');
-insert into module values(''218d29a3500a4f61992f1fe197bce142'',''manfactureProgress:query'');
+insert into module values('aad73fbdca4c4a9a91ab514a591dbe77','manfactureOrde:add','新建生产工单');
+insert into module values('9b862a57762e41808e27fe03679051d1','manfactureOrde:delete','删除生产工单');
+insert into module values('be28d24db96e4353bcf4b4944b70ebbf','manfactureOrde:update','修改生产工单');
+insert into module values('218d29a3500a4f61992f1fe197bce142','manfactureOrde:query','查询生产工单');
 
 # 用户管理
-insert into module values(''5f13dc4a078143c19113069aa60e49a8'',''user:add'');
-insert into module values(''7071e74f76f1497ab3c0c2b8069dc741'',''user:delete'');
-insert into module values(''136be568b62e40519f7b72250dac18e7'',''user:update'');
-insert into module values(''da2786008f7842b39e1fb17ff6b7dcad'',''user:query'');
+insert into module values('5f13dc4a078143c19113069aa60e49a8','user:add','新建用户信息');
+insert into module values('7071e74f76f1497ab3c0c2b8069dc741','user:delete','删除用户信息');
+insert into module values('136be568b62e40519f7b72250dac18e7','user:update','修改用户信息');
+insert into module values('da2786008f7842b39e1fb17ff6b7dcad','user:query','查询所有用户信息');
 
 # 用户角色管理
-insert into module values(''a4e6f7a2c46e4ae99620b204f8ec4da8'',''role:add'');
-insert into module values(''0f63060888d44433b07ae23fd7ca3e41'',''role:delete'');
-insert into module values(''495ba188daa446e380c5448a94073d41'',''role:update'');
-insert into module values(''aa83386d79f74f4fa40917b4526ca22a'',''role:query'');
+insert into module values('a4e6f7a2c46e4ae99620b204f8ec4da8','role:add','添加角色');
+insert into module values('0f63060888d44433b07ae23fd7ca3e41','role:delete','删除角色');
+insert into module values('495ba188daa446e380c5448a94073d41','role:update','更新角色');
+insert into module values('aa83386d79f74f4fa40917b4526ca22a','role:query','查询角色');
 
 # 部门管理
-insert into module values(''18fa28ba77a148f8b5e24cffdb0ec44e'',''department:add'');
-insert into module values(''0a695d95e5e6493b846a44e9eda90ab7'',''department:delete'');
-insert into module values(''4906dd6502ae4d139ffc50f3f56e4c65'',''department:update'');
-insert into module values(''fcc04b913a8d457ab5eef35c27e3ccbe'',''department:query'');
+insert into module values('18fa28ba77a148f8b5e24cffdb0ec44e','department:add','新增部门');
+insert into module values('0a695d95e5e6493b846a44e9eda90ab7','department:delete','删除部门');
+insert into module values('4906dd6502ae4d139ffc50f3f56e4c65','department:update','修改部门');
+insert into module values('fcc04b913a8d457ab5eef35c27e3ccbe','department:query','查询部门');
 
 # 设备管理
-insert into module values(''363007d98c5a443bbb9ded207602c0ce'',''device:add'');
-insert into module values(''920558b684164340a9ed454dac3d5198'',''device:delete'');
-insert into module values(''cb2b67025dbf4d62b6c63d992685f80d'',''device:update'');
-insert into module values(''cd73ba81f5974b19899bbee31b9665e1'',''device:query'');
+insert into module values('363007d98c5a443bbb9ded207602c0ce','device:add','添加设备');
+insert into module values('920558b684164340a9ed454dac3d5198','device:delete','删除设备');
+insert into module values('cb2b67025dbf4d62b6c63d992685f80d','device:update','更新设备');
+insert into module values('cd73ba81f5974b19899bbee31b9665e1','device:query','查询设备');
 
 
 #超级系统管理员，默认拥有所有权限

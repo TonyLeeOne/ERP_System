@@ -17,7 +17,7 @@
         </button>
         <button class="layui-btn" onclick="x_admin_show('添加供应商','/vendor/edit',700,500)"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据：${vendors.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -36,8 +36,8 @@
             <th>操作</th>
         </thead>
         <tbody>
-        <c:if test="${page.total > 0}">
-            <c:forEach items="${page.rows}" var="vendor">
+        <c:if test="${vendors.total > 0}">
+            <c:forEach items="${vendors.rows}" var="vendor">
                 <tr>
                     <td>
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-name="${vendor.VName}"

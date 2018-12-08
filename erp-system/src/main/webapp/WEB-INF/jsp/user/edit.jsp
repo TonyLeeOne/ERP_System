@@ -108,7 +108,7 @@
         <div class="layui-form-item">
             <label for="upass_re" class="layui-form-label">
             </label>
-            <c:if test="${not empty user.id}">
+            <c:if test="${! empty user.id}">
                 <button class="layui-btn" lay-filter="add" lay-submit="">
                     更新
                 </button>

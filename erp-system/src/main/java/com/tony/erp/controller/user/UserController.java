@@ -36,7 +36,6 @@ import static com.tony.erp.constant.Constant.*;
  * @date 2018/11/12
  */
 @Controller
-@RequestMapping("/user")
 @Slf4j
 public class UserController {
     @Autowired
@@ -122,7 +121,7 @@ public class UserController {
     public String logout(HttpSession session) {
         Subject subject = org.apache.shiro.SecurityUtils.getSubject();
         subject.logout();
-        return "login";
+        return "redirect:/login";
     }
 
 

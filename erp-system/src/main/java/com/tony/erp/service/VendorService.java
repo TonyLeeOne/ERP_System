@@ -26,7 +26,6 @@ public class VendorService {
 
     public int addVendor(Vendor vendor) {
         vendor.setVId(KeyGeneratorUtils.keyUUID());
-//        vendor.setVStatus("1");
         return vendorMapper.insert(vendor);
     }
 
