@@ -120,6 +120,7 @@
         </fieldset>
         <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由x-admin提供技术支持。</blockquote>
     </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/echarts/3.3.2/echarts.min.js" charset="utf-8"></script>
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
@@ -128,249 +129,262 @@
         var planChart = echarts.init(document.getElementById('plan_chart'));
         var materialChart = echarts.init(document.getElementById('material_chart'));
 
-        // 指定图表的配置项和数据
-       var optionOrder = {
-           color : [
-               '#009688', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
-               '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
-               '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
-               '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
-           ],
-            title : {
-                text: '最近一周',
-                subtext: '变化趋势图'
-            },
-            tooltip : {
-                trigger: 'axis'
-            },
-            legend: {
-                data:['订单数','']
-            },
-            toolbox: {
-                show : true,
-                feature : {
-                    mark : {show: true},
-                    dataView : {show: true, readOnly: false},
-                    magicType : {show: true, type: ['line', 'bar']},
-                    restore : {show: true},
-                    saveAsImage : {show: true}
-                }
-            },
-            calculable : true,
-            xAxis : [
-                {
-                    type : 'category',
-                    data : ['2018.11.13','2018.11.14','2018.11.15','2018.11.16','2018.11.17','2018.11.18','2018.11.19']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value'
-                }
-            ],
-            series : [
-                {
-                    name:'订单数',
-                    type:'bar',
-                    data:[2, 4, 7, 23, 25, 76, 135],
-                    markPoint : {
-                        data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
+        $(function () {
+            $.ajax({
+                url:"/orderData",
+                method:'get',
+                success:function (data) {
+                   if(data.order_data)
+                    // 指定图表的配置项和数据
+                    var optionOrder = {
+                        color : [
+                            '#009688', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
+                            '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
+                            '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
+                            '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
+                        ],
+                        title : {
+                            text: '订单数量',
+                            subtext: '变化趋势图'
+                        },
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['订单数','']
+                        },
+                        toolbox: {
+                            show : true,
+                            feature : {
+                                mark : {show: true},
+                                dataView : {show: true, readOnly: false},
+                                magicType : {show: true, type: ['line', 'bar']},
+                                restore : {show: true},
+                                saveAsImage : {show: true}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : data.order_date
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'订单数',
+                                type:'bar',
+                                data:data.order_data,
+                                markPoint : {
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                markLine : {
+                                    data : [
+                                        {type : 'average', name: '平均值'}
+                                    ]
+                                }
+                            }
                         ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name: '平均值'}
+                    };
+                   if(data.productCount)
+                    // 指定图表的配置项和数据
+                    var optionProduct = {
+                        color : [
+                            '#87cefa', '#009688', '#da70d6', '#32cd32', '#6495ed',
+                            '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
+                            '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
+                            '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
+                        ],
+                        title : {
+                            text: '产品统计',
+                            subtext: '库存数量'
+                        },
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['产品数','']
+                        },
+                        toolbox: {
+                            show : true,
+                            feature : {
+                                mark : {show: true},
+                                dataView : {show: true, readOnly: false},
+                                magicType : {show: true, type: ['line', 'bar']},
+                                restore : {show: true},
+                                saveAsImage : {show: true}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : data.productName
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'产品数',
+                                type:'bar',
+                                data:data.productCount,
+                                markPoint : {
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                markLine : {
+                                    data : [
+                                        {type : 'average', name: '平均值'}
+                                    ]
+                                }
+                            }
                         ]
-                    }
-                }
-            ]
-        };
-        // 指定图表的配置项和数据
-        var optionProduct = {
-            color : [
-                '#87cefa', '#009688', '#da70d6', '#32cd32', '#6495ed',
-                '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
-                '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
-                '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
-            ],
-            title : {
-                text: '最近一周',
-                subtext: '变化趋势图'
-            },
-            tooltip : {
-                trigger: 'axis'
-            },
-            legend: {
-                data:['产品数','']
-            },
-            toolbox: {
-                show : true,
-                feature : {
-                    mark : {show: true},
-                    dataView : {show: true, readOnly: false},
-                    magicType : {show: true, type: ['line', 'bar']},
-                    restore : {show: true},
-                    saveAsImage : {show: true}
-                }
-            },
-            calculable : true,
-            xAxis : [
-                {
-                    type : 'category',
-                    data : ['2018.11.13','2018.11.14','2018.11.15','2018.11.16','2018.11.17','2018.11.18','2018.11.19']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value'
-                }
-            ],
-            series : [
-                {
-                    name:'产品数',
-                    type:'bar',
-                    data:[2, 4, 7, 23, 25, 76, 135],
-                    markPoint : {
-                        data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
+                    };
+                   if(data.materialName)
+                    // 指定图表的配置项和数据
+                    var optionPlan = {
+                        color : [
+                            '#da70d6', '#009688', '#87cefa', '#32cd32', '#6495ed',
+                            '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
+                            '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
+                            '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
+                        ],
+                        title : {
+                            text: '物料统计',
+                            subtext: '库存数量'
+                        },
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['物料数','']
+                        },
+                        toolbox: {
+                            show : true,
+                            feature : {
+                                mark : {show: true},
+                                dataView : {show: true, readOnly: false},
+                                magicType : {show: true, type: ['line', 'bar']},
+                                restore : {show: true},
+                                saveAsImage : {show: true}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : data.materialName
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'物料数',
+                                type:'bar',
+                                data:data.materialCount,
+                                markPoint : {
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                markLine : {
+                                    data : [
+                                        {type : 'average', name: '平均值'}
+                                    ]
+                                }
+                            }
                         ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name: '平均值'}
-                        ]
-                    }
-                }
-            ]
-        };
-        // 指定图表的配置项和数据
-        var optionPlan = {
-            color : [
-                '#da70d6', '#009688', '#87cefa', '#32cd32', '#6495ed',
-                '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
-                '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
-                '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
-            ],
-            title : {
-                text: '最近一周',
-                subtext: '变化趋势图'
-            },
-            tooltip : {
-                trigger: 'axis'
-            },
-            legend: {
-                data:['产品数','']
-            },
-            toolbox: {
-                show : true,
-                feature : {
-                    mark : {show: true},
-                    dataView : {show: true, readOnly: false},
-                    magicType : {show: true, type: ['line', 'bar']},
-                    restore : {show: true},
-                    saveAsImage : {show: true}
-                }
-            },
-            calculable : true,
-            xAxis : [
-                {
-                    type : 'category',
-                    data : ['2018.11.13','2018.11.14','2018.11.15','2018.11.16','2018.11.17','2018.11.18','2018.11.19']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value'
-                }
-            ],
-            series : [
-                {
-                    name:'产品数',
-                    type:'bar',
-                    data:[2, 4, 7, 23, 25, 76, 135],
-                    markPoint : {
-                        data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
-                        ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name: '平均值'}
-                        ]
-                    }
-                }
-            ]
-        };
+                    };
 
-        // 指定图表的配置项和数据
-        var optionMaterial = {
-            color : [
-                '#32cd32', '#009688', '#87cefa', '#da70d6', '#6495ed',
-                '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
-                '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
-                '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
-            ],
-            title : {
-                text: '最近一周',
-                subtext: '变化趋势图'
-            },
-            tooltip : {
-                trigger: 'axis'
-            },
-            legend: {
-                data:['产品数','']
-            },
-            toolbox: {
-                show : true,
-                feature : {
-                    mark : {show: true},
-                    dataView : {show: true, readOnly: false},
-                    magicType : {show: true, type: ['line', 'bar']},
-                    restore : {show: true},
-                    saveAsImage : {show: true}
-                }
-            },
-            calculable : true,
-            xAxis : [
-                {
-                    type : 'category',
-                    data : ['2018.11.13','2018.11.14','2018.11.15','2018.11.16','2018.11.17','2018.11.18','2018.11.19']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value'
-                }
-            ],
-            series : [
-                {
-                    name:'产品数',
-                    type:'bar',
-                    data:[2, 4, 7, 23, 25, 76, 135],
-                    markPoint : {
-                        data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
+                    // 指定图表的配置项和数据
+                    var optionMaterial = {
+                        color : [
+                            '#32cd32', '#009688', '#87cefa', '#da70d6', '#6495ed',
+                            '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
+                            '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
+                            '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
+                        ],
+                        title : {
+                            text: '最近一周',
+                            subtext: '变化趋势图'
+                        },
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['产品数','']
+                        },
+                        toolbox: {
+                            show : true,
+                            feature : {
+                                mark : {show: true},
+                                dataView : {show: true, readOnly: false},
+                                magicType : {show: true, type: ['line', 'bar']},
+                                restore : {show: true},
+                                saveAsImage : {show: true}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : ['2018.11.13','2018.11.14','2018.11.15','2018.11.16','2018.11.17','2018.11.18','2018.11.19']
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'产品数',
+                                type:'bar',
+                                data:[2, 4, 7, 23, 25, 76, 135],
+                                markPoint : {
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                markLine : {
+                                    data : [
+                                        {type : 'average', name: '平均值'}
+                                    ]
+                                }
+                            }
                         ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name: '平均值'}
-                        ]
-                    }
-                }
-            ]
-        };
+                    };
 
-        // 使用刚指定的配置项和数据显示图表。
-        orderChart.setOption(optionOrder);
-        productChart.setOption(optionProduct);
-        planChart.setOption(optionPlan);
-        materialChart.setOption(optionMaterial);
+                    // 使用刚指定的配置项和数据显示图表。
+                    productChart.setOption(optionProduct);
+                    planChart.setOption(optionPlan);
+                    // materialChart.setOption(optionMaterial);
+                    orderChart.setOption(optionOrder);
+                }
+            });
+
+        });
+
         </script>
     </body>
 </html>

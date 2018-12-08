@@ -2,7 +2,6 @@ package com.tony.erp.service.material;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.regexp.internal.RE;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.dao.MaterialConsumeMapper;
 import com.tony.erp.dao.MaterialMapper;
@@ -109,18 +108,15 @@ public class MaterialConsumService {
 
     /**
      * 删除领料记录,若已领料，不允许删除
-     *
      * @param mcid
      * @return
      */
     public int delMConsume(String mcid) {
         MaterialConsume consume = materialConsumeMapper.selectByPrimaryKey(mcid);
-        if (Constant.STRING_ONE.equals(consume.getMcStatus())) {
-            Material material = materialService.checkSnExist(consume.getMcMSn());
-            material.setmCount(material.getmCount() + consume.getMcCountIndeed());
-            return materialConsumeMapper.deleteByPrimaryKey(mcid) + materialService.upMaterial(material);
+        if (Constant.STRING_THREE.equals(consume.getMcStatus())||Constant.STRING_FOUR.equals(consume.getMcStatus())) {
+            return Constant.STATUS_CANNOT_CHANGED;
         }
-        return Constant.STATUS_CANNOT_CHANGED;
+        return materialConsumeMapper.deleteByPrimaryKey(mcid);
     }
 
     /**
@@ -152,12 +148,12 @@ public class MaterialConsumService {
         MaterialConsume con = materialConsumeMapper.selectByPrimaryKey(consume.getMcId());
         if(Constant.STRING_THREE.equals(con.getMcStatus())) {
             Material material = materialService.checkSnExist(con.getMcMSn());
-            material.setmCount(material.getmCount() - con.getMcCountNeeded());
-            consume.setMcStatus(Constant.STRING_TWO);
+            material.setmCount(material.getmCount() - consume.getMcCountIndeed());
+            consume.setMcStatus(Constant.STRING_FOUR);
             consume.setMcDate(KeyGeneratorUtils.dateGenerator());
             consume.setMcOperator(CurrentUser.getCurrentUser().getUname());
             consume.setMcCountIndeed(consume.getMcCountIndeed());
-            return materialConsumeMapper.updateByPrimaryKeySelective(consume);
+            return materialConsumeMapper.updateByPrimaryKeySelective(consume)+materialService.upMaterial(material);
         }
         return Constant.STATUS_NEED_AUDIT;
     }

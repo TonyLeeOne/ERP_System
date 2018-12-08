@@ -31,4 +31,6 @@ public interface ProductMapper {
     int batchDeleteByProCode(@Param("proCodes")String[] proCodes);
 
     List<String> selectProCodes();
+
+    List<String> dataCollection();
 }

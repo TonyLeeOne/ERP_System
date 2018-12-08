@@ -38,6 +38,7 @@ public class ShiroService {
         configures.forEach(con->{
             filterChainDefinitionMap.put(con.getUrl(),con.getAuthority());
         });
+        filterChainDefinitionMap.put("/static/**", "anon");
 
         return filterChainDefinitionMap;
     }

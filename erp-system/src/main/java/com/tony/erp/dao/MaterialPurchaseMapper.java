@@ -10,19 +10,58 @@ import java.util.List;
  */
 @Repository
 public interface MaterialPurchaseMapper {
+    /**
+     * 根据主键删除采购记录
+     * @param mphId
+     * @return
+     */
     int deleteByPrimaryKey(String mphId);
 
+    /**
+     * 插入新的采购记录
+     * @param record
+     * @return
+     */
     int insert(MaterialPurchase record);
 
+    /**
+     * 有选择的插入新的采购记录
+     * @param record
+     * @return
+     */
     int insertSelective(MaterialPurchase record);
 
+    /**
+     * 根据主键查找采购记录
+     * @param mphId
+     * @return
+     */
     MaterialPurchase selectByPrimaryKey(String mphId);
 
+    /**
+     * 根据主键有选择的更新采购记录
+     * @param record
+     * @return
+     */
     int updateByPrimaryKeySelective(MaterialPurchase record);
 
+    /**
+     * 根据主键更新采购记录
+     * @param record
+     * @return
+     */
     int updateByPrimaryKey(MaterialPurchase record);
 
+    /**
+     * 查找所有采购记录
+     * @return
+     */
     List<MaterialPurchase> selectAll();
 
+    /**
+     * 根据物料编号查找所有采购记录
+     * @param mphSn
+     * @return
+     */
     List<MaterialPurchase> selectByMphSn(String mphSn);
 }

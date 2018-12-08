@@ -10,6 +10,10 @@
     <result column="mo_count" jdbcType="INTEGER" property="moCount" />
     <result column="mo_wait_count" jdbcType="INTEGER" property="moWaitCount" />
     <result column="mo_status" jdbcType="CHAR" property="moStatus" />
+    <association property="manPlan" javaType="com.tony.erp.domain.ManPlan">
+      <result column="mp_sn" jdbcType="VARCHAR" property="mpSn"/>
+      <result column="mp_pro_code" jdbcType="VARCHAR" property="mpProCode"/>
+    </association>
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -158,18 +162,22 @@
 
   <select id="selectByMoSn" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
-    <include refid="Base_Column_List" />
-    from manufacture_order
-    where  mo_sn = #{moSn,jdbcType=VARCHAR}
+    *
+    from manufacture_order mo inner join manufacture_plan mp
+    on mo.mo_mp_sn=mp.mp_sn
+    where mo.mo_sn = #{moSn,jdbcType=VARCHAR}
   </select>
 
 
 
-  <select id="selectAllMoSn" resultType="java.lang.String">
+  <select id="selectAllMoSn" parameterType="java.lang.String" resultType="java.lang.String">
     select
     distinct (mo_sn)
     from manufacture_order
-    where mo_status='1'
+    <if test="moStatus != null">
+      where mo_status=#{moStatus}
+    </if>
+
   </select>
 
 </mapper>

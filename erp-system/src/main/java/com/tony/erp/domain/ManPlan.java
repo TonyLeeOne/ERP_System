@@ -12,6 +12,7 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode
 public class ManPlan {
+
     private String mpId;
 
     private String mpSn;

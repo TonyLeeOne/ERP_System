@@ -1,8 +1,9 @@
 package com.tony.erp.utils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import org.springframework.util.CollectionUtils;
+
+import java.util.*;
+
 /**
  * @author jli2
  * @date  2018/11/12
@@ -27,6 +28,24 @@ public class ListUtils {
      */
     public static int getPageNum(long total,int pageSize){
         return (int)total%pageSize>0?(int)total/pageSize+1:(int)total/pageSize;
+    }
+
+
+    public static Map<String,Object> splitToArray(List<String> original){
+        if(!CollectionUtils.isEmpty(original)){
+            String[] date=new String[original.size()];
+            String[] data=new String[original.size()];
+            Map<String,Object> result=new HashMap<>(2);
+            for (int i = 0; i <original.size() ; i++) {
+                String[] array=original.get(i).split(",");
+                data[i]=array[0];
+                date[i]=array[1];
+            }
+            result.put("date",date);
+            result.put("data",data);
+            return result;
+        }
+        return null;
     }
 
 }

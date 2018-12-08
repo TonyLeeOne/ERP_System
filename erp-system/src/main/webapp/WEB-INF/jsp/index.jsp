@@ -26,22 +26,22 @@
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
-    <ul class="layui-nav left fast-add" lay-filter="">
-        <li class="layui-nav-item">
-            <a href="javascript:;">+新增</a>
-            <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                <dd><a onclick="x_admin_show('资讯','http://www.baidu.com')"><i class="iconfont">&#xe6a2;</i>资讯</a></dd>
-                <dd><a onclick="x_admin_show('图片','http://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a></dd>
-                <dd><a onclick="x_admin_show('用户','http://www.baidu.com')"><i class="iconfont">&#xe6b8;</i>用户</a></dd>
-            </dl>
-        </li>
-    </ul>
+    <%--<ul class="layui-nav left fast-add" lay-filter="">--%>
+        <%--<li class="layui-nav-item">--%>
+            <%--<a href="javascript:;">+新增</a>--%>
+            <%--<dl class="layui-nav-child"> <!-- 二级菜单 -->--%>
+                <%--<dd><a onclick="x_admin_show('资讯','http://www.baidu.com')"><i class="iconfont">&#xe6a2;</i>资讯</a></dd>--%>
+                <%--<dd><a onclick="x_admin_show('图片','http://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a></dd>--%>
+                <%--<dd><a onclick="x_admin_show('用户','http://www.baidu.com')"><i class="iconfont">&#xe6b8;</i>用户</a></dd>--%>
+            <%--</dl>--%>
+        <%--</li>--%>
+    <%--</ul>--%>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
             <a href="javascript:;">${sessionScope.user.uname}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onclick="x_admin_show('个人信息','admin-edit.html',600)">个人信息</a></dd>
-                <dd><a href="/user/logout">退出</a></dd>
+                <dd><a href="/logout">退出</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item to-index"><a href="/">前台页面</a></li>
@@ -71,7 +71,7 @@
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont">&#xe6b8;</i>
+                    <i class="layui-icon">&#xe770;</i>
                     <cite>客户管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
@@ -146,6 +146,14 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
+                        <a _href="/storage/getAll">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>入库记录</cite>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sub-menu">
+                    <li>
                         <a _href="/ship/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>出货记录</cite>
@@ -169,7 +177,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/materialPurchase/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>采购记录</cite>
                         </a>
@@ -177,7 +185,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
+                        <a _href="/materialConsume/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>领料记录</cite>
                         </a>
@@ -277,6 +285,34 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="layui-icon">&#xe62c;</i>
+                    <cite>系统监控</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/system">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>系统配置信息</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="/urlConfigure/getAllUrls">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>内存监控</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="admin-list.html">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>接口访问监控</cite>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
         </ul>
     </div>
 </div>
@@ -302,34 +338,47 @@
 <!-- 底部开始 -->
 <div class="footer">
     <div class="copyright">Copyright ©2018 ERP管理系统 v1.0 All Rights Reserved　
-          当前用户：
-            <span class="x-red">${sessionScope.user.uname}</span> 　当前时间： <span id="timer"></span>
+        当前用户：
+        <span class="x-red">${sessionScope.user.uname}</span> 　当前时间： <span id="timer"></span>
     </div>
 </div>
 <script>
-    function time(){
-        var timer=new Date();
-        var date=timer.getDate();
-        var month=timer.getMonth();
-        var hour=timer.getHours();
-        var min=timer.getMinutes();
-        var sec=timer.getSeconds();
-        var year=timer.getFullYear();
-        if(sec<10)
-            sec="0"+sec;
-        if(hour<10)
-            hour="0"+hour;
-        if(month<10)
-            month="0"+month;
-        if(date<0)
-            date="0"+date;
-        if(min<10)
-            min="0"+min;
+    //全局ajax事件，处理session过期跳转登录
+    $.ajaxSetup({
+        complete: function (XMLHttpRequest, sessionStatus) {
+            var sessionstatus = XMLHttpRequest.getResponseHeader("session-status");
+            if (sessionstatus == "timeout") {
+                layer.alert("登录超时！请重新登录！", {icon: 6}, function () {
+                    window.location.href = '/login';
+                });
 
-        document.getElementById("timer").innerHTML=year+"年"+(month+1)+"月"+date+"日"+" "+hour+":"+min+":"+sec;
+            }
+        }
+    });
+
+    function time() {
+        var timer = new Date();
+        var date = timer.getDate();
+        var month = timer.getMonth();
+        var hour = timer.getHours();
+        var min = timer.getMinutes();
+        var sec = timer.getSeconds();
+        var year = timer.getFullYear();
+        if (sec < 10)
+            sec = "0" + sec;
+        if (hour < 10)
+            hour = "0" + hour;
+        if (month < 10)
+            month = "0" + month;
+        if (date < 0)
+            date = "0" + date;
+        if (min < 10)
+            min = "0" + min;
+
+        document.getElementById("timer").innerHTML = year + "年" + (month + 1) + "月" + date + "日" + " " + hour + ":" + min + ":" + "<span style='color: #e4554a;font-size: 20px'>" + sec + "</span>";
     }
 
-    setInterval("time()",1000);
+    setInterval("time()", 1000);
 </script>
 <!-- 底部结束 -->
 </body>

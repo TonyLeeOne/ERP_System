@@ -1,9 +1,13 @@
 package com.tony.erp.domain;
+
+import lombok.Data;
+
 /**
  * @author jli2
  * @date  2018/11/12
  */
 public class MaterialPurchase {
+
     private String mphId;
 
     private String mphName;
@@ -25,6 +29,8 @@ public class MaterialPurchase {
     private String mphDate;
 
     private String mphNote;
+
+    private Vendor vendor=new Vendor();
 
     public String getMphId() {
         return mphId;
@@ -112,5 +118,30 @@ public class MaterialPurchase {
 
     public void setMphNote(String mphNote) {
         this.mphNote = mphNote == null ? null : mphNote.trim();
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    @Override
+    public String toString() {
+        return "MaterialPurchase{" +
+                "mphId='" + mphId + '\'' +
+                ", mphName='" + mphName + '\'' +
+                ", mphSn='" + mphSn + '\'' +
+                ", mphPrice=" + mphPrice +
+                ", mphCount=" + mphCount +
+                ", mphVendorId='" + mphVendorId + '\'' +
+                ", mphVendorCode='" + mphVendorCode + '\'' +
+                ", mphSender='" + mphSender + '\'' +
+                ", mphOperator='" + mphOperator + '\'' +
+                ", mphDate='" + mphDate + '\'' +
+                ", mphNote='" + mphNote + '\'' +
+                '}';
     }
 }

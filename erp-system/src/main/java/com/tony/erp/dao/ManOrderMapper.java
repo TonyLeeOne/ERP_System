@@ -35,6 +35,6 @@ public interface ManOrderMapper {
 
     ManOrder selectByMoSn(@Param("moSn")String MoSn);
 
-    List<String> selectAllMoSn();
+    List<String> selectAllMoSn(@Param("moStatus")String moStatus);
 
 }

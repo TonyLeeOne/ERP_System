@@ -150,14 +150,17 @@
 
         var data = tableCheck.getData();
 
-        layer.confirm('确认要删除产品编号为【'+data+'】的记录吗？', function (index) {
-            //捉到所有被选中的，发异步进行删除
-            $.post('/product/batchDelete',{"proCodes":data.toString()},function(res){
-                layer.msg(res, {icon: 1});
-                $(".layui-form-checked").not('.header').parents('tr').remove();
-            });
+        if(data.length>0) {
+            layer.confirm('确认要删除产品编号为【' + data + '】的记录吗？', function (index) {
+                //捉到所有被选中的，发异步进行删除
+                $.post('/product/batchDelete', {"proCodes": data.toString()}, function (res) {
+                    layer.msg(res, {icon: 2});
+                    $(".layui-form-checked").not('.header').parents('tr').remove();
+                });
 
-        });
+            });
+        }else
+            layer.alert("请至少选择一行记录", {icon: 2});
     }
 </script>
 </body>

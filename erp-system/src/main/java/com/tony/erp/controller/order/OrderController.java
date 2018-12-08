@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -87,6 +88,12 @@ public class OrderController {
     @ResponseBody
     @RequestMapping("/confirm")
     public String confirm(Order order) {
+        if(StringUtils.isEmpty(order.getOStatus())){
+            return "请选择一项出货结果";
+        }
+        if(StringUtils.isEmpty(order.getONote())){
+           order.setONote("暂无信息");
+        }
         return orderService.confirmOrder(order.getOId(), order.getOStatus(), order.getONote()) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
     }
 

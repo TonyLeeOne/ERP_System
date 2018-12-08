@@ -72,5 +72,17 @@ public class CaffeineService {
         return (int) cache.get(Constant.PRODUCT_COUNTS);
     }
 
+    public List<String> orderDataCollection() {
+        return (List<String>) cache.get(Constant.ORDER_DATA_COLLECTION);
+    }
+
+    public List<String> productDataCollection() {
+        return  (List<String>) cache.get(Constant.PRODUCT_DATA_COLLECTION);
+    }
+
+    public List<String> materialDataCollection() {
+        return (List<String>) cache.get(Constant.MATERIAL_DATA_COLLECTION);
+    }
+
 
 }

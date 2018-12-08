@@ -16,6 +16,8 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.util.CollectionUtils;
 import org.apache.shiro.realm.Realm;
 
@@ -36,14 +38,13 @@ public class ShiroConfiguration {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //配置登录的url和登录成功的url
-        shiroFilterFactoryBean.setLoginUrl("/user/login");
+        shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
         //配置url访问权限
         List<UrlConfigure> configureList=service.getAllUrls();
 
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-
         if(!CollectionUtils.isEmpty(configureList)) {
             configureList.forEach(configure -> {
                 filterChainDefinitionMap.put(configure.getUrl(), configure.getAuthority());
@@ -55,7 +56,9 @@ public class ShiroConfiguration {
         return shiroFilterFactoryBean;
     }
 
-    //配置核心安全事务管理器
+    /**
+     *     配置核心安全事务管理器
+     */
     @Bean(name = "securityManager")
     public SecurityManager securityManager(@Qualifier("authRealm") AuthRealm authRealm) {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
@@ -64,7 +67,9 @@ public class ShiroConfiguration {
         return manager;
     }
 
-    //配置自定义的权限登录器
+    /**
+     *     配置自定义的权限登录器
+     */
     @Bean(name = "authRealm")
     public AuthRealm authRealm(@Qualifier("credentialsMatcher") CredentialMatcher matcher) {
         AuthRealm authRealm = new AuthRealm();
@@ -72,19 +77,25 @@ public class ShiroConfiguration {
         return authRealm;
     }
 
-    //配置自定义的密码比较器
+    /**
+     *     配置自定义的密码比较器
+     */
     @Bean(name = "credentialsMatcher")
     public CredentialMatcher credentialsMatcher() {
         return new CredentialMatcher();
     }
 
-    //shiro bean生命周期管理器
+    /**
+     * shiro bean生命周期管理器
+     */
     @Bean
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
 
-    //上下文扫描通知器
+    /**
+     *     上下文扫描通知器
+     */
     @Bean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
@@ -92,7 +103,9 @@ public class ShiroConfiguration {
         return creator;
     }
 
-    //    权限资源通知器
+    /**
+     *     权限资源通知器
+      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(@Qualifier("securityManager") SecurityManager manager) {
         AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
@@ -101,7 +114,10 @@ public class ShiroConfiguration {
     }
 
 
-    //    cookieRememberMeManager管理者
+    /**
+     * cookieRememberMeManager管理者
+     * @return
+     */
     @Bean
     public CookieRememberMeManager rememberMeManager() {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
@@ -115,7 +131,10 @@ public class ShiroConfiguration {
         return cookieRememberMeManager;
     }
 
-    //记住我cookie Bean注入
+    /**
+     * 记住我cookie Bean注入
+     * @return
+     */
     @Bean
     public SimpleCookie rememberMeCookie() {
         //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
@@ -128,7 +147,10 @@ public class ShiroConfiguration {
     }
 
 
-    //    EhCache缓存管理器
+    /**
+     * EhCache缓存管理器
+     * @return
+     */
     @Bean
     public EhCacheManager ehCacheManager() {
         EhCacheManager cacheManager = new EhCacheManager();

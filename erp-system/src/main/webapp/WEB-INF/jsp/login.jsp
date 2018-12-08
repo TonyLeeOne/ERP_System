@@ -36,11 +36,15 @@
 
 <script>
     $(function () {
+        if (window.top!=null && window.top.document.URL!=document.URL){
+            window.top.location= document.URL;
+        }
+
         layui.use('form', function () {
             var form = layui.form;
             form.on('submit(login)', function (data) {
                 $.ajax({
-                    url: "/user/doLogin",
+                    url: "/doLogin",
                     data: JSON.stringify(data.field),
                     type: "POST",
                     dataType: "json",

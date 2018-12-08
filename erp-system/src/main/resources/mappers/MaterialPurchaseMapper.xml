@@ -13,6 +13,10 @@
     <result column="mph_operator" jdbcType="VARCHAR" property="mphOperator" />
     <result column="mph_date" jdbcType="VARCHAR" property="mphDate" />
     <result column="mph_note" jdbcType="VARCHAR" property="mphNote" />
+    <association property="vendor" javaType="com.tony.erp.domain.Vendor">
+      <id column="v_id" jdbcType="VARCHAR" property="vId" />
+      <result column="v_name" jdbcType="VARCHAR" property="vName" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     mph_id, mph_name, mph_sn, mph_price, mph_count, mph_vendor_id, mph_vendor_code, mph_sender, 
@@ -35,14 +39,16 @@
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from material_purchase
-    order by mph_date DESC
+    from material_purchase mp left join vendor v
+    on mp.mph_vendor_code=v.v_id
+    order by mp.mph_date DESC
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from material_purchase
     where mph_id = #{mphId,jdbcType=VARCHAR}
   </delete>
+
   <insert id="insert" parameterType="com.tony.erp.domain.MaterialPurchase">
     insert into material_purchase (mph_id, mph_name, mph_sn, 
       mph_price, mph_count, mph_vendor_id, 

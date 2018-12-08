@@ -5,6 +5,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.service.*;
+import com.tony.erp.service.material.MaterialService;
 import com.tony.erp.service.product.ProductService;
 import com.tony.erp.service.shiro.UrlConfigureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,8 @@ public class CaffeineConfiguration {
 
     @Autowired
     private CustomService customService;
+    @Autowired
+    private MaterialService materialService;
 
     /**
      * 初始化cacheLoader实例
@@ -88,11 +91,9 @@ public class CaffeineConfiguration {
         if (Constant.ALL_URLS.equals(key)) {
             return urlConfigureService.getAllUrlsFromDB();
         }
-
         if (Constant.ALL_MODULES.equals(key)) {
             return moduleService.getAllModules();
         }
-
         if (Constant.ALL_ROLES.equals(key)) {
             return roleService.getAllRoles();
         }
@@ -105,7 +106,6 @@ public class CaffeineConfiguration {
         if (Constant.PRODUCT_COUNTS.equals(key)) {
             return productService.getTotal();
         }
-
         if (Constant.MAN_PLANS.equals(key)) {
             return manPlanService.getTotal();
         }
@@ -115,8 +115,15 @@ public class CaffeineConfiguration {
         if (Constant.CUSTOM_COUNTS.equals(key)) {
             return customService.getTotal();
         }
-
-
+        if (Constant.ORDER_DATA_COLLECTION.equals(key)) {
+            return orderService.dataCollection();
+        }
+        if (Constant.MATERIAL_DATA_COLLECTION.equals(key)) {
+            return materialService.dataCollection();
+        }
+        if (Constant.PRODUCT_DATA_COLLECTION.equals(key)) {
+            return productService.dataCollection();
+        }
         return null;
     }
 

@@ -42,7 +42,6 @@ public class OrderService {
 
     /**
      * 分页查询订单数据
-     *
      * @param pageNum
      * @return
      */
@@ -70,7 +69,6 @@ public class OrderService {
             order.setOId(KeyGeneratorUtils.keyUUID());
             order.setOCreateDate(KeyGeneratorUtils.dateGenerator());
             order.setOCreator(CurrentUser.getCurrentUser().getUname());
-            order.setOStatus(Constant.STRING_ONE);
             order.setOCustomName(custom.getCustomName());
             return orderMapper.insertSelective(order);
         }
@@ -94,7 +92,6 @@ public class OrderService {
 
     /**
      * 审核订单
-     *
      * @param oId
      * @param status
      * @param notes
@@ -102,18 +99,15 @@ public class OrderService {
      */
     public int confirmOrder(String oId, String status, String notes) {
         Order order = this.getByOid(oId);
-        System.out.println(order.toString());
-        if (Constant.STRING_ONE.equals(order.getOStatus()) || Constant.STRING_TWO.equals(order.getOStatus()) || Constant.STRING_FIVE.equals(order.getOStatus())) {
+        order.setOAuditor(CurrentUser.getCurrentUser().getUname());
+        order.setOAuditDate(KeyGeneratorUtils.dateGenerator());
+        if (Constant.STRING_ONE.equals(order.getOStatus()) || Constant.STRING_TWO.equals(order.getOStatus())) {
             if (order.getOCount() > order.getProduct().getProCount()) {
-                order.setOAuditor(CurrentUser.getCurrentUser().getUname());
                 order.setOStatus(Constant.STRING_FIVE);
-                order.setOAuditDate(KeyGeneratorUtils.dateGenerator());
                 order.setONote(Constant.PRO_SHORTAGE);
                 return orderMapper.updateByPrimaryKeySelective(order);
             }
-            order.setOAuditor(CurrentUser.getCurrentUser().getUname());
             order.setOStatus(status);
-            order.setOAuditDate(KeyGeneratorUtils.dateGenerator());
             if(notes!=null){
                 order.setONote(notes);
             }
@@ -128,17 +122,19 @@ public class OrderService {
 
 
     /**
-     * 修改订单信息,订单状态为3,4的，不允许修改
+     * 修改订单信息,订单状态为3,4,5的，不允许修改
      */
     public int upOrder(Order order) {
         Custom custom=customService.getCustom(order.getOCustomName());
-        order.setOCustomName(custom.getCustomName());
+        if(!ObjectUtils.isEmpty(custom)){
+            order.setOCustomName(custom.getCustomName());
+        }
         Order exist = this.getByOid(order.getOId());
-        if (Constant.STRING_FOUR.equals(exist.getOStatus())||Constant.STRING_THREE.equals(exist.getOStatus())) {
+        if (Constant.STRING_FOUR.equals(exist.getOStatus())||Constant.STRING_THREE.equals(exist.getOStatus())||Constant.STRING_FIVE.equals(exist.getOStatus())) {
             return Constant.STATUS_CANNOT_CHANGED;
         }
         order.setOModifier(CurrentUser.getCurrentUser().getUname());
-        if (Constant.STRING_TWO.equals(exist.getOStatus())||Constant.STRING_FIVE.equals(exist.getOStatus())) {
+        if (Constant.STRING_TWO.equals(exist.getOStatus())) {
             order.setOStatus(Constant.STRING_ONE);
         }
         return orderMapper.updateByPrimaryKeySelective(order);
@@ -154,7 +150,7 @@ public class OrderService {
             return Constant.STATUS_CANNOT_CHANGED;
         }
         order.setOModifier(CurrentUser.getCurrentUser().getUname());
-        if (Constant.STRING_TWO.equals(exist.getOStatus())||Constant.STRING_FIVE.equals(exist.getOStatus())) {
+        if (Constant.STRING_TWO.equals(exist.getOStatus())) {
             order.setOStatus(Constant.STRING_ONE);
         }
         return orderMapper.updateByPrimaryKeySelective(order);
@@ -163,7 +159,6 @@ public class OrderService {
 
     /**
      * 根据主键获取订单信息
-     *
      * @param oid
      * @return
      */
@@ -194,7 +189,6 @@ public class OrderService {
 
     /**
      * 根据订单号，批量删除
-     *
      * @param orderNos
      * @return
      */
@@ -205,7 +199,6 @@ public class OrderService {
 
     /**
      * 获取所有待出货的状态为订单
-     *
      * @return
      */
     public List<String> getONos(String oStatus) {
@@ -213,4 +206,11 @@ public class OrderService {
     }
 
 
+    /**
+     * 统计数据
+     * @return
+     */
+    public List<String> dataCollection(){
+        return orderMapper.dataCollection();
+    }
 }

@@ -21,6 +21,9 @@
       <result column="pro_note" jdbcType="VARCHAR" property="proNote"/>
       <result column="pro_status" jdbcType="CHAR" property="proStatus"/>
     </association>
+    <association property="manOrder" javaType="com.tony.erp.domain.ManOrder">
+      <result column="mo_count" jdbcType="INTEGER" property="moCount" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     sto_id, sto_mp_sn, sto_mo_sn, sto_pro_code, sto_indeed_num, sto_real_date, sto_surer, 
@@ -35,9 +38,10 @@
 
   <select id="find" parameterType="map" resultMap="BaseResultMap">
     select
-    p.pro_code,p.pro_name,s.sto_mp_sn,s.sto_mo_sn,s.sto_indeed_num,s.sto_sender,s.sto_surer,s.sto_real_date
+    p.pro_code,p.pro_name,s.sto_mp_sn,s.sto_mo_sn,s.sto_indeed_num,s.sto_sender,s.sto_surer,s.sto_real_date,s.sto_status,mo.mo_count,s.sto_id
     from storage s inner join product p
     on s.sto_pro_code=p.pro_code
+    inner join manufacture_order mo on mo.mo_sn=s.sto_mo_sn
     <trim prefix="WHERE" prefixOverrides="AND|OR">
       <if test="stoMpSn !=null">
         s.sto_mp_sn=#{stoMpSn}

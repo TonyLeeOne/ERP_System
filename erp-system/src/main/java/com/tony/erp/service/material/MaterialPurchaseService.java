@@ -32,31 +32,17 @@ public class MaterialPurchaseService {
 
     /**
      * 添加采购记录
-     *
      * @param materialPurchase
      * @return
      */
     public int addMPurchase(MaterialPurchase materialPurchase) {
         materialPurchase.setMphId(KeyGeneratorUtils.keyUUID());
-        materialPurchase.setMphDate(KeyGeneratorUtils.dateGenerator());
-        materialPurchase.setMphOperator(CurrentUser.getCurrentUser().getUname());
-        if (StringUtils.isEmpty(materialPurchase.getMphSn())) {
-            return -1;
-        }
-        Material material = materialService.checkSnExist(materialPurchase.getMphSn());
-        if (ObjectUtils.isEmpty(material)) {
-            Material m = new Material();
-            m.setmCount(materialPurchase.getMphCount());
-            m.setmName(materialPurchase.getMphName());
-            m.setmSn(materialPurchase.getMphSn());
-            m.setmNote(materialPurchase.getMphNote());
-            m.setmStatus(Constant.STRING_ONE);
-            return materialPurchaseMapper.insert(materialPurchase) + materialService.addMaterial(m);
-        }
-        material.setmCount(material.getmCount() + materialPurchase.getMphCount());
-        material.setmNote(materialPurchase.getMphNote());
-        material.setmStatus(Constant.STRING_ONE);
-        return materialPurchaseMapper.insert(materialPurchase) + materialService.upMaterial(material);
+        String mph=materialPurchase.getMphSn();
+        materialPurchase.setMphName(mph.substring(0,mph.indexOf("(")));
+        materialPurchase.setMphSn(mph.substring(mph.indexOf("(")+1,mph.indexOf(")")));
+        materialPurchase.setMphVendorId(Constant.STRING_ONE);
+        System.out.println(materialPurchase.toString());
+        return materialPurchaseMapper.insertSelective(materialPurchase);
     }
 
     /**
@@ -65,17 +51,7 @@ public class MaterialPurchaseService {
      * @return
      */
     public int upMPurchase(MaterialPurchase materialPurchase) {
-        if (StringUtils.isEmpty(materialPurchase.getMphSn()) || StringUtils.isEmpty(materialPurchase.getMphId())) {
-            return Constant.ARG_NOT_MATCHED;
-        }
-        MaterialPurchase mp = materialPurchaseMapper.selectByPrimaryKey(materialPurchase.getMphId());
-        if (ObjectUtils.isEmpty(materialPurchase)) {
-            return Constant.ARG_NOT_MATCHED;
-        }
-        Material material = materialService.checkSnExist(materialPurchase.getMphSn());
-        material.setmCount(material.getmCount() + materialPurchase.getMphCount() - mp.getMphCount());
-        material.setmStatus(Constant.STRING_ONE);
-        return materialPurchaseMapper.updateByPrimaryKeySelective(materialPurchase) + materialService.upMaterial(material);
+        return materialPurchaseMapper.updateByPrimaryKeySelective(materialPurchase);
 
     }
 
@@ -110,17 +86,47 @@ public class MaterialPurchaseService {
      * @return
      */
     public int delMPurchase(String mpid) {
-        if (StringUtils.isEmpty(mpid)) {
-            return -1;
-        }
         MaterialPurchase materialPurchase = materialPurchaseMapper.selectByPrimaryKey(mpid);
         if (ObjectUtils.isEmpty(materialPurchase)) {
             return -1;
         }
-        Material material = materialService.checkSnExist(materialPurchase.getMphSn());
-        material.setmCount(material.getmCount() - materialPurchase.getMphCount());
-        return materialPurchaseMapper.deleteByPrimaryKey(mpid) + materialService.upMaterial(material);
+        if(Constant.STRING_FOUR.equals(materialPurchase.getMphVendorId())||Constant.STRING_THREE.equals(materialPurchase.getMphVendorId())){
+            return Constant.STATUS_CANNOT_CHANGED;
+        }
+        return materialPurchaseMapper.deleteByPrimaryKey(mpid);
     }
 
+
+    /**
+     * 根据主键查找采购记录
+     * @param mpId
+     * @return
+     */
+    public MaterialPurchase getMaterialPurchase(String mpId){
+        return materialPurchaseMapper.selectByPrimaryKey(mpId);
+    }
+
+
+    /**
+     * 审核采购申请
+     * @param purchase
+     * @return
+     */
+    public int audit(MaterialPurchase purchase){
+        purchase.setMphSender(CurrentUser.getCurrentUser().getUname());
+        return materialPurchaseMapper.updateByPrimaryKeySelective(purchase);
+    }
+
+
+    /**
+     * 确认采购入库
+     * @param purchase
+     * @return
+     */
+    public int confirm(MaterialPurchase purchase){
+        purchase.setMphOperator(CurrentUser.getCurrentUser().getUname());
+        purchase.setMphDate(KeyGeneratorUtils.dateGenerator());
+        return materialPurchaseMapper.updateByPrimaryKeySelective(purchase);
+    }
 
 }

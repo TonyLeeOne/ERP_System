@@ -11,24 +11,31 @@
     <form class="layui-form">
         <div class="layui-form-item">
             <div class="layui-row">
-                <div class="layui-col-md6">
-                    <c:if test="${!empty consume.mcId}">
-                        <div class="layui-input-inline">
-                            <input type="hidden" value="${consume.mcId}" name="mcId">
-                        </div>
-                    </c:if>
-                </div>
+                <c:if test="${!empty storage.stoId}">
+                    <div class="layui-input-inline">
+                        <input type="hidden" value="${storage.stoId}" name="stoId">
+                    </div>
+                </c:if>
             </div>
 
+            <label for="stoIndeedNum" class="layui-form-label">
+                入库数量<span>*</span>
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="stoIndeedNum" name="stoIndeedNum" lay-verify="required"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
             <div class="layui-row">
-                <div class="layui-col-md6">
-                    <label for="mcCountIndeed" class="layui-form-label">
-                        领取数量<span>*</span>
+                <div class="layui-col-md12" style="margin-top: 2%">
+
+                    <label class="layui-form-label">
+                        确认结果<span>*</span>
                     </label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="mcCountIndeed" name="mcCountIndeed"  lay-verify="required"
-                               autocomplete="off"
-                               class="layui-input">
+                    <div class="layui-input-block">
+                        <input type="radio" name="stoStatus" value='3' title="入库产品与生产计划产品一致,可入库">
+                        <input type="radio" name="stoStatus" value='4' title="入库产品与生产计划产品不一致，拒绝入库">
+
                     </div>
                 </div>
             </div>
@@ -37,7 +44,7 @@
                 <div class="layui-col-md12" style="margin-top: 2%">
                     <label class="layui-form-label">
                     </label>
-                    <c:if test="${! empty consume.mcId}">
+                    <c:if test="${! empty storage.stoId}">
                         <button class="layui-btn" lay-filter="edit" lay-submit="">
                             确定
                         </button>
@@ -55,7 +62,7 @@
             //监听提交
             form.on('submit(edit)', function (data) {
                 $.ajax({
-                    url: "/materialConsume/confirm",
+                    url: "/storage/confirm",
                     data: data.field,
                     type: "POST",
                     async: false,

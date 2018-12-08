@@ -16,9 +16,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+
 /**
  * @author jli2
- * @date  2018/11/12
+ * @date 2018/11/12
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -27,52 +28,56 @@ public class ProductService {
     @Autowired
     private ProductMapper productMapper;
 
-    public PageHelperEntity getAllProducts(int pageNum){
-        PageHelper.startPage(pageNum,10);
-        List<Product> products=productMapper.getAllProducts();
-        PageHelperEntity pageHelperEntity=new PageHelperEntity();
+    public PageHelperEntity getAllProducts(int pageNum) {
+        PageHelper.startPage(pageNum, 10);
+        List<Product> products = productMapper.getAllProducts();
+        PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(products);
-        PageInfo<Product> pageInfo=new PageInfo<>(products);
+        PageInfo<Product> pageInfo = new PageInfo<>(products);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(),10));
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), 10));
         return pageHelperEntity;
     }
 
-    public int addProduct(Product product){
-        if(StringUtils.isEmpty(product.getProCode())){
+    public int addProduct(Product product) {
+        if (StringUtils.isEmpty(product.getProCode())) {
             return Constant.ARG_NOT_MATCHED;
         }
-        Product p=productMapper.selectByProCode(product.getProCode());
-        if(!ObjectUtils.isEmpty(p)){
-         return Constant.STATUS_CANNOT_CHANGED;
+        Product p = productMapper.selectByProCode(product.getProCode());
+        if (!ObjectUtils.isEmpty(p)) {
+            return Constant.STATUS_CANNOT_CHANGED;
         }
         product.setProId(KeyGeneratorUtils.keyUUID());
         product.setProStatus(Constant.STRING_ONE);
         return productMapper.insert(product);
     }
 
-    public int upProduct(Product product){
+    public int upProduct(Product product) {
         return productMapper.updateByPrimaryKeySelective(product);
     }
 
-    public int delProduct(String pid){
+    public int delProduct(String pid) {
         return productMapper.deleteByPrimaryKey(pid);
     }
 
-    public Product getProduct(String proCode){
+    public Product getProduct(String proCode) {
         return productMapper.selectByProCode(proCode);
     }
 
-    public int getTotal(){
+    public int getTotal() {
         return productMapper.getTotal();
     }
 
-    public int batchDelete(String[] proCodes){
+    public int batchDelete(String[] proCodes) {
         return productMapper.batchDeleteByProCode(proCodes);
     }
 
-    public List<String> selectProCodes(){
+    public List<String> selectProCodes() {
         return productMapper.selectProCodes();
+    }
+
+    public List<String> dataCollection() {
+        return productMapper.dataCollection();
     }
 
 }

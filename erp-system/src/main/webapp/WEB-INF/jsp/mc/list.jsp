@@ -5,18 +5,9 @@
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
-            <input class="layui-input" placeholder="开始日" name="start" id="start">
-            <input class="layui-input" placeholder="截止日" name="end" id="end">
-            <div class="layui-input-inline">
-                <select name="contrller">
-                    <option value="">订单状态</option>
-                    <option value="1">待审核</option>
-                    <option value="2">审核未通过</option>
-                    <option value="3">待出货</option>
-                    <option value="4">已安排出货</option>
-                </select>
-            </div>
-            <input type="text" name="oNo" placeholder="请输入订单号" autocomplete="off" class="layui-input">
+            <input type="text" name="oNo" placeholder="请输入工单号" autocomplete="off" class="layui-input">
+            <input type="text" name="oNo" placeholder="请输入物料号" autocomplete="off" class="layui-input">
+            <input type="text" name="oNo" placeholder="请输入生产计划单号" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
@@ -50,8 +41,8 @@
             <c:forEach items="${consumes.rows}" var="consume">
                 <tr>
                     <td>
-                        <c:if test="${mOrder.moStatus!='2'}">
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${mOrder.moId}'><i
+                        <c:if test="${consume.mcStatus!='4'}">
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${consume.mcId}'><i
                                 class="layui-icon">&#xe605;</i></div>
                         </c:if>
                     </td>
@@ -68,15 +59,21 @@
                     </td>
                     <td class="td-manage">
                         <c:if test="${consume.mcStatus=='1'||consume.mcStatus=='2'}">
-                        <a title="编辑领料单" onclick="x_admin_show('编辑领料单','/materialConsume/edit?mcId=${consume.mcId}',730,500)"
+                        <a title="编辑领料单" onclick="x_admin_show('编辑领料单','/materialConsume/edit?mcId=${consume.mcId}',730,300)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
                         </c:if>
                         <c:if test="${consume.mcStatus=='1'||consume.mcStatus=='2'}">
-                            <a title="审核领料单" onclick="x_admin_show('审核领料单','/materialConsume/show?mcId=${consume.mcId}',730,500)"
+                            <a title="审核领料单" onclick="x_admin_show('审核领料单','/materialConsume/show?mcId=${consume.mcId}',730,400)"
                                href="javascript:;">
                                 <i class="layui-icon">&#xe672;</i>
+                            </a>
+                        </c:if>
+                        <c:if test="${consume.mcStatus=='3'}">
+                            <a title="确认领料单" onclick="x_admin_show('确认领料单','/materialConsume/sure?mcId=${consume.mcId}',730,230)"
+                               href="javascript:;">
+                                <i class="layui-icon">&#xe605;</i>
                             </a>
                         </c:if>
                     </td>
@@ -160,7 +157,7 @@
         if (data.length > 0) {
             layer.confirm('确认要删除选定的'+data.length+'记录吗？', function (index) {
                 //捉到所有被选中的，发异步进行删除
-                $.post('/manOrder/delete', {"moId": data.toString()}, function (res) {
+                $.post('/materialConsume/delete', {"mcId": data.toString()}, function (res) {
                     layer.msg(res, {icon: 1});
                     $(".layui-form-checked").not('.header').parents('tr').remove();
                 });

@@ -5,19 +5,10 @@
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
-            <input class="layui-input" placeholder="开始日" name="start" id="start">
-            <input class="layui-input" placeholder="截止日" name="end" id="end">
-            <div class="layui-input-inline">
-                <select name="contrller">
-                    <option value="">订单状态</option>
-                    <option value="1">待审核</option>
-                    <option value="2">审核未通过</option>
-                    <option value="3">待出货</option>
-                    <option value="4">已安排出货</option>
-                </select>
-            </div>
+            <input class="layui-input" placeholder="开始日期" name="start" id="start">
+            <input class="layui-input" placeholder="截止日期" name="end" id="end">
             <input type="text" name="oNo" placeholder="请输入订单号" autocomplete="off" class="layui-input">
-            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+            <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
@@ -165,7 +156,7 @@
             });
         }
         else
-            layer.alert("请至少选择一行记录", {icon: 1});
+            layer.alert("请至少选择一行记录", {icon: 2});
     }
 
 </script>

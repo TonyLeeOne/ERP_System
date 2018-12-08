@@ -8,7 +8,7 @@
             <li class="layui-timeline-item">
                 <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                 <div class="layui-timeline-content layui-text">
-                    <h3 class="layui-timeline-title"><i class="layui-icon">&#xe637;</i>  ${ship.SShipDate}</h3>
+                    <h3 class="layui-timeline-title"><i class="layui-icon">&#xe637;</i>【出货时间】  ${ship.SShipDate}</h3>
                     <p>
 
                         <i class="layui-icon layui-icon-user">【客户】: ${ship.order.OCustomName}</i><br>

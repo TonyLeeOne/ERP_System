@@ -21,10 +21,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseResult defaultExceptionHandler(HttpServletRequest request, Exception e){
-
-        if(e instanceof java.lang.NullPointerException){
-            return ResponseResult.serverError(Constant.ARG_EXCEPTION,null);
-        }
         return ResponseResult.serverError(e.getCause().getMessage(),null);
     }
 

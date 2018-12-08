@@ -150,11 +150,19 @@ public class ManOrderService {
     }
 
     /**
-     * 查找所有的转态为1的工单编号
+     * 查找所有的状态为2的工单编号
+     * @return
+     */
+    public List<String> selectFinishedMoSn(){
+        return manOrderMapper.selectAllMoSn(Constant.STRING_TWO);
+    }
+
+    /**
+     * 查找所有的状态为1的工单编号
      * @return
      */
     public List<String> selectAllMoSn(){
-        return manOrderMapper.selectAllMoSn();
+        return manOrderMapper.selectAllMoSn(Constant.STRING_ONE);
     }
 
     /**

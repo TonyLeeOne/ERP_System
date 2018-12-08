@@ -12,91 +12,79 @@
         <div class="layui-form-item">
             <div class="layui-row">
                 <div class="layui-col-md6">
-                    <c:if test="${!empty plan.mpId}">
+                    <c:if test="${!empty storage.stoId}">
                         <div class="layui-input-inline">
-                            <input type="hidden" value="${plan.mpId}" name="mpId">
+                            <input type="hidden" value="${storage.stoId}" name="stoId">
                         </div>
                     </c:if>
                 </div>
             </div>
             <div class="layui-row">
-                <div class="layui-col-md6">
-                    <label for="mpSn" class="layui-form-label">
-                        计划编号<span>*</span>
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="mpSn" name="mpSn" value="${plan.mpSn}" lay-verify="required"
-                               autocomplete="off"
-                               class="layui-input">
-                    </div>
-                </div>
 
                 <div class="layui-col-md6">
-
-                    <label for="mpCount" class="layui-form-label">
-                        待生产数量<span>*</span>
+                    <label for="stoMoSn" class="layui-form-label">
+                        工单编号<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="number" id="mpCount" name="mpCount" lay-verify="required"
-                               value="${plan.mpCount}" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
-            </div>
-            <div class="layui-row">
-                <div class="layui-col-md6">
-                    <label for="mpOrderId" class="layui-form-label">
-                        订单号<span>*</span>
-                    </label>
-                    <div class="layui-input-inline">
-                        <select name="mpOrderId" lay-verify="required" lay-search id="mpOrderId" lay-filter="orders"
-                                val="${plan.mpOrderId}">
+                        <select name="stoMoSn" lay-verify="required" lay-search id="stoMoSn" lay-filter="orders"
+                                val="${storage.stoMoSn}">
+                            <option>请选择工单号</option>
                         </select>
                     </div>
                 </div>
+
                 <div class="layui-col-md6">
-                    <label for="mpProCode" class="layui-form-label">
-                        产品编号<span>*</span>
+                    <label for="stoMpSn" class="layui-form-label">
+                        生产计划<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="mpProCode" name="mpProCode" value="${plan.mpProCode}" readonly="readonly" lay-verify="required"
+                        <input type="text" id="stoMpSn" name="stoMpSn" value="${storage.stoMpSn}" lay-verify="required"
                                autocomplete="off"
+                               readonly="readonly"
                                class="layui-input">
                     </div>
                 </div>
             </div>
+
+
             <div class="layui-row">
                 <div class="layui-col-md6">
-
-                    <label for="mpStartDate" class="layui-form-label">
-                        开始日期<span>*</span>
+                    <label for="stoProCode" class="layui-form-label">
+                        产品编号<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" placeholder="计划开始日期" name="mpStartDate" id="mpStartDate" value="${plan.mpStartDate}" lay-verify="required">
+                        <input type="text" id="stoProCode" name="stoProCode" value="${storage.stoProCode}" lay-verify="required"
+                               readonly="readonly"
+                               class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-col-md6">
-
-                    <label for="mpEndDate" class="layui-form-label">
-                        结束日期<span>*</span>
+                    <label for="stoSender" class="layui-form-label">
+                        入库人<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" placeholder="计划结束日期" name="mpEndDate" id="mpEndDate" value="${plan.mpEndDate}" lay-verify="required">
+                        <input type="text" id="stoSender" name="stoSender" value="${storage.stoSender}" lay-verify="required"
+                               class="layui-input">
                     </div>
                 </div>
+
             </div>
 
             <div class="layui-row">
-
                 <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label"> 当前状态</label>
-                            <div class="layui-input-block" id="single" value="${plan.mpStatus}">
-                                <input type="radio" name="mpStatus" value="1" title="生产中" id="pro">
-                                <input type="radio" name="mpStatus" value="2" title="已完工" id="stop">
-                            </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">当前状态</label>
+                        <div class="layui-input-block">
+                            <c:if test="${empty storage.stoStatus}">
+                                <input type="radio" title="待确认" checked="checked">
+                            </c:if>
+                            <c:if test="${!empty storage.stoStatus}">
+                                <input type="radio" title=" <%@include file="../common/sto_status.jsp" %>"
+                                       checked="checked">
+                            </c:if>
                         </div>
+                    </div>
                 </div>
             </div>
 
@@ -105,12 +93,12 @@
                 <div class="layui-col-md12" style="margin-top: 2%">
                     <label class="layui-form-label">
                     </label>
-                    <c:if test="${! empty plan.mpSn}">
+                    <c:if test="${! empty storage.stoId}">
                         <button class="layui-btn" lay-filter="edit" lay-submit="">
                             更新
                         </button>
                     </c:if>
-                    <c:if test="${empty plan.mpSn}">
+                    <c:if test="${empty storage.stoId}">
                         <button class="layui-btn layui-btn-normal" lay-filter="add" lay-submit="">
                             新增
                         </button>
@@ -121,60 +109,36 @@
     </form>
 </div>
 <script>
-
-    layui.use('laydate', function () {
-        var laydate = layui.laydate;
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#mpStartDate' //指定元素
+    function renderForm() {
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
         });
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#mpEndDate' //指定元素
-        });
-    });
+    }
 
     $(function () {
-
-        if($("#single").attr('value')) {
-            if ($("#single").attr('value') == '1') {
-                $("#pro").attr('checked', true);
-            }
-            if ($("#single").attr('value') == '2') {
-                $("#stop").attr('checked', true);
-            }
-        }else
-            $("#pro").attr('checked', true);
-
-
         layui.use(['form', 'layer'], function () {
             // $ = layui.jquery;
             var form = layui.form, layer = layui.layer;
 
-            /**
-             * 填充订单编号
-             */
             $.ajax({
-                url: "/order/getMPONos",
+                url: "/manOrder/getFinishedMoSn",
                 method: "get",
                 success: function (data) {
                     if (data) {
-                        if ($("#mpOrderId").attr('val')) {
+                        if ($("#stoMoSn").attr('val')) {
                             $.each(data, function (index, pro) {
-                                if ($("#mpOrderId").attr('val') == pro.substring(pro.indexOf("(") + 1, pro.indexOf(")"))) {
-                                    $("#mpOrderId").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "' selected='selected'>" + pro + "</option>");
+                                if ($("#stoMoSn").attr('val') == pro) {
+                                    $("#stoMoSn").append("<option value='" + pro+ "' selected='selected'>" + pro + "</option>");
                                 } else
-                                    $("#mpOrderId").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "'>" + pro + "</option>");
+                                    $("#stoMoSn").append("<option value='" + pro + "'>" + pro + "</option>");
                             });
                         } else
                             $.each(data, function (index, pro) {
-                                $("#mpOrderId").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "'>" + pro + "</option>");
+                                $("#stoMoSn").append("<option value='" + pro + "'>" + pro + "</option>");
                             });
-
                     }
-                    form.render();
+                    renderForm();
                 },
                 error: function () {
                     alert("获取数据失败");
@@ -183,31 +147,32 @@
 
             form.on('select(orders)', function (data) {
                 $.ajax({
-                    url: "/order/getOrderByONo",
+                    url: "/manOrder/getByMoSn",
                     method: "post",
-                    data: {oNo: data.elem[data.elem.selectedIndex].value},
+                    data: {moSn: data.elem[data.elem.selectedIndex].value},
                     dataType: 'json',
-                    success: function (o) {
-                        $("#mpProCode").val(o.oproductCode);
-                        $("#mpCount").val(o.ocount);
+                    success: function (order) {
+                        if (order) {
+                            $("#stoMpSn").val(order.moMpSn);
+                            $("#stoProCode").val(order.manPlan.mpProCode);
+                        }
+
                     },
                     error: function () {
-                        layer.alert("你查找的订单号可能不存在");
+                        layer.alert("你选择的工单信息可能不存在");
                     }
                 });
 
             });
 
-
             //监听提交
             form.on('submit(add)', function (data) {
                 $.ajax({
-                    url: "/manPlan/add",
+                    url: "/storage/add",
                     data: data.field,
                     type: "POST",
                     async: false,
                     success: function (res) {
-                        //发异步，把数据提交给php
                         if (res == "数据新增成功")
                             layer.alert(res, {icon: 6}, function () {
                                 // 获得frame索引
@@ -232,7 +197,7 @@
             //监听提交
             form.on('submit(edit)', function (data) {
                 $.ajax({
-                    url: "/manPlan/update",
+                    url: "/storage/update",
                     data: data.field,
                     type: "POST",
                     async: false,

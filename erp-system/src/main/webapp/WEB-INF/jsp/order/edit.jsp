@@ -46,7 +46,6 @@
                     </label>
                     <div class="layui-input-inline">
                         <select name="oProductCode" lay-verify="" val="${order.OProductCode}" lay-search id="oProductCode" lay-verify="required">
-                            <option>请选择</option>
                         </select>
                     </div>
                 </div>

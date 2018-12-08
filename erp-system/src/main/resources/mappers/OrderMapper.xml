@@ -99,10 +99,10 @@
         on o.o_product_code=p.pro_code
         <trim prefix="WHERE" prefixOverrides="AND |OR ">
             <if test="custom_name != null">
-                 o.o_custom_name=#{custom_name}
+                o.o_custom_name=#{custom_name}
             </if>
             <if test="salesman != null">
-                 o.o_salesman=#{salesman}
+                o.o_salesman=#{salesman}
             </if>
             <if test="oNo != null">
                 o.o_no=#{oNo}
@@ -115,6 +115,7 @@
     delete from orders
     where o_id = #{oId,jdbcType=VARCHAR}
   </delete>
+
     <insert id="insert" parameterType="com.tony.erp.domain.Order">
     insert into orders (o_id, o_modifier, o_creator, 
       o_no, o_com_no, o_product_code, 
@@ -414,4 +415,45 @@
     <select id="getONos" parameterType="java.lang.String" resultType="java.lang.String">
         select concat(o_custom_name,'(',o_no,')') from orders where o_status =#{oStatus} order by o_no
     </select>
+
+    <select id="dataCollection" resultType="java.lang.String">
+        select concat(count(1),',',left(o_create_date,8)) from orders group by left(o_create_date,8) ASC
+    </select>
+
+
+    <select id="search" parameterType="com.tony.erp.domain.Order" resultMap="BaseResultMap">
+        select
+        o.o_id,
+        o.o_no,
+        o.o_com_no,
+        o.o_count,
+        o.o_custom_name,
+        o.o_contacts,
+        o.o_tel,
+        o.o_create_date,
+        o.o_status,
+        o.o_pay,
+        o.o_note,
+        o.o_product_code,
+        o.o_indeed_count,
+        p.pro_price,
+        p.pro_name
+        from orders o
+        left join product p
+        on o.o_product_code=p.pro_code
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="oCreateDate != null">
+               and o.o_create_date=#{oCreateDate}
+            </if>
+            <if test="oNo != null">
+                and o.o_no=#{oNo}
+            </if>
+            <if test="oStatus != null">
+                and o.o_status=#{oStatus}
+            </if>
+        </trim>
+        order by o.o_create_date DESC
+    </select>
 </mapper>
+
+

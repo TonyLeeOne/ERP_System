@@ -53,7 +53,6 @@ public class ManOrderController {
     @RequestMapping("/delete")
     @ResponseBody
     public String batchDelManOrders(String moId){
-        System.out.println(moId);
         int i=0;
         String[] moIds=moId.split(",");
         for (String mid:moIds
@@ -71,6 +70,17 @@ public class ManOrderController {
         modelMap.addAttribute("manOrders",manOrderService.selectByMpSn(mpsn));
         return "/mp/history";
     }
+
+    /**
+     * 获取所有状态为2的工单号
+     * @return
+     */
+    @RequestMapping("/getFinishedMoSn")
+    @ResponseBody
+    public List<String> selectFinishMoSn(){
+        return manOrderService.selectFinishedMoSn();
+    }
+
 
     /**
      * 获取所有状态为1的工单号

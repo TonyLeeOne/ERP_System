@@ -1,26 +1,21 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@include file="../common/header.jsp" %>
-<style>
-    img {
-        height: 50px;
-        width: 50px;
-    }
-</style>
 <body>
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
-            <input type="text" name="proCode" placeholder="请输入订单编号" autocomplete="off" class="layui-input">
+            <input type="text" name="proCode" placeholder="请输入产品编号" autocomplete="off" class="layui-input">
+            <input type="text" name="proCode" placeholder="请输入工单号" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('新增出货记录','/ship/edit',530,350)"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="x_admin_show('新增入库记录','/storage/edit',730,450)"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据: ${ships.total} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据: ${storages.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -29,63 +24,56 @@
                 <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i
                         class="layui-icon">&#xe605;</i></div>
             </th>
-            <th>订单编号</th>
+            <th>生产计划编号</th>
+            <th>工单编号</th>
             <th>产品编号</th>
             <th>产品名称</th>
-            <th>订单数量</th>
-            <th>出货数量</th>
-            <th>客户</th>
-            <th>审核人</th>
-            <th>审核日期</th>
+            <th>工单数量</th>
+            <th>入库数量</th>
+            <th>入库日期</th>
             <th>确认人</th>
-            <th>出货日期</th>
-            <th>当前状态</th>
-            <th>当前进度</th>
+            <th>入库人</th>
+            <th>状态</th>
+            <th>进度</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        <c:if test="${ships.total > 0}">
-            <c:forEach items="${ships.rows}" var="ship">
+        <c:if test="${storages.total > 0}">
+            <c:forEach items="${storages.rows}" var="storage">
                 <tr>
                     <td>
-                        <c:if test="${ship.SStatus!='4'||ship.SStatus!='3'}">
-                            <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${ship.SId}'>
+                        <c:if test="${storage.stoStatus!='3'}">
+                            <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${storage.stoId}'>
                                 <i class="layui-icon">&#xe605;</i></div>
                         </c:if>
                     </td>
-                    <td>${ship.SOrderNo}</td>
-                    <td>${ship.SProCode}</td>
-                    <td>${ship.product.proName}</td>
-                    <td>${ship.order.OCount}</td>
-                    <td>${ship.SShipCount}</td>
-                    <td>${ship.order.OCustomName}</td>
-                    <td>${ship.SAuditor}</td>
-                    <td>${ship.SAuditDate}</td>
-                    <td>${ship.SSurer}</td>
-                    <td>${ship.SShipDate}</td>
+                    <td>${storage.stoMpSn}</td>
+                    <td>${storage.stoMoSn}</td>
+                    <td>${storage.product.proCode}</td>
+                    <td>${storage.product.proName}</td>
+                    <td>${storage.manOrder.moCount}</td>
+                    <td>${storage.stoIndeedNum}</td>
+                    <td>${storage.stoRealDate}</td>
+                    <td>${storage.stoSurer}</td>
+                    <td>${storage.stoSender}</td>
                     <td>
-                        <%@include file="../common/ship_status.jsp" %>
+                        <%@include file="../common/sto_status.jsp" %>
                     </td>
                     <td>
                         <div class="layui-progress" lay-showpercent="true">
-                            <div class="layui-progress-bar layui-bg-green" lay-percent="${ship.SStatus}/4"></div>
+                            <div class="layui-progress-bar layui-bg-green" lay-percent="${storage.stoStatus}/3"></div>
                         </div>
                     </td>
                     <td class="td-manage">
-                        <c:if test="${ship.SStatus=='1'||ship.SStatus=='2'}">
-                            <a title="编辑" onclick="x_admin_show('编辑出货清单','/ship/edit?sId=${ship.SId}',530,350)"
+                        <c:if test="${storage.stoStatus=='1'||storage.stoStatus=='2'}">
+                            <a title="编辑" onclick="x_admin_show('编辑入库清单','/storage/edit?stoId=${storage.stoId}',730,350)"
                                href="javascript:;">
                                 <i class="layui-icon">&#xe642;</i>
                             </a>
                         </c:if>
-                        <c:if test="${ship.SStatus=='1'||ship.SStatus=='2'}">
-                            <a title="审核" onclick="x_admin_show('审核出货申请','/ship/verify?sId=${ship.SId}',530,300)">
-                                <i class="layui-icon">&#xe672;</i>
-                            </a>
-                        </c:if>
-                        <c:if test="${ship.SStatus=='3'}">
-                            <a title="确认出货" onclick="member_confirm(this,'${ship.SId}')" href="javascript:;"
+                        <c:if test="${storage.stoStatus=='1'}">
+                            <a title="确认入库" onclick="x_admin_show('确认入库记录清单','/storage/confirm?stoId=${storage.stoId}',730,350)"
                                id="confirm">
                                 <i class="layui-icon">&#x1005;</i>
                             </a>
@@ -154,8 +142,8 @@
         var shipment = new Object();
         shipment.sId = id;
         shipment.sStatus = '4';
-        layer.confirm('确认出货信息无误？', function (index) {
-            $.post('/ship/confirm', shipment, function (res) {
+        layer.confirm('确认入库信息无误？', function (index) {
+            $.post('/storage/confirm', shipment, function (res) {
                 if (res == "数据更新成功")
                     layer.alert(res, {icon: 6}, function () {
                         window.location.reload();
@@ -174,18 +162,19 @@
         var data = tableCheck.getData();
 
         if (data.length > 0) {
-            layer.confirm('确认要删除已选的出货记录吗？', function (index) {
+            layer.confirm('确认要删除已选的入库记录吗？', function (index) {
                 //捉到所有被选中的，发异步进行删除
-                $.post('/ship/delete', {"sId": data.toString()}, function (res) {
+                $.post('/storage/delete', {"sId": data.toString()}, function (res) {
                     if (res == '数据删除成功') {
-                        layer.msg(res, {icon: 6});
+                        layer.msg(res, {icon: 1});
                         $(".layui-form-checked").not('.header').parents('tr').remove();
                     } else
-                        layer.msg(res, {icon: 3});
+                        layer.msg(res, {icon: 1});
                 });
 
             });
         }
+
         else
             layer.alert("请至少选择一行记录", {icon: 2});
     }

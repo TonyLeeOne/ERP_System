@@ -25,4 +25,6 @@ public class ManOrder {
 
     private String moStatus;
 
+    private ManPlan manPlan=new ManPlan();
+
 }

@@ -62,4 +62,8 @@ public class MaterialService {
         return materialMapper.getAvailableMaterials();
     }
 
+    public List<String> dataCollection(){
+        return materialMapper.dataCollection();
+    }
+
 }

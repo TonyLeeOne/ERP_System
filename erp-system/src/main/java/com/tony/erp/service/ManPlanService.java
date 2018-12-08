@@ -35,6 +35,7 @@ public class ManPlanService {
      * @return
      */
     public int addManPlan(ManPlan manPlan){
+        System.out.println(manPlan.toString());
         manPlan.setMpId(KeyGeneratorUtils.keyUUID());
         manPlan.setMpStatus(Constant.STRING_ONE);
         return manPlanMapper.insert(manPlan);

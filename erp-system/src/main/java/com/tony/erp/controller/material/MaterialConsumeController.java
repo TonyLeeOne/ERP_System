@@ -45,7 +45,7 @@ public class MaterialConsumeController {
     @RequestMapping("/getAll/{pageNum}")
     public String getAll(@PathVariable int pageNum, ModelMap modelMap){
         modelMap.addAttribute("consumes",materialConsumService.getAll(pageNum));
-        return "";
+        return "/mc/list";
     }
 
     /**
@@ -83,13 +83,23 @@ public class MaterialConsumeController {
 
     /**
      * 删除领料记录
-     * @param mcid
+     * @param mcId
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String delConsume(String mcid){
-        return materialConsumService.delMConsume(mcid)>1? Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
+    public String delConsume(String mcId){
+        String[] mcIds=mcId.split(",");
+        if(mcIds.length>1){
+            for (String mcid:mcIds
+                 ) {
+               int res= materialConsumService.delMConsume(mcid);
+               if(res<0){
+                   return Constant.DATA_DELETE_FAILED;
+               }
+            }
+        }
+        return  materialConsumService.delMConsume(mcId)>0?Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
     }
 
     /**
@@ -142,6 +152,15 @@ public class MaterialConsumeController {
             modelMap.addAttribute("consume",materialConsumService.getConsume(mcId));
         }
         return "/mc/show";
+    }
+
+
+    @RequestMapping("/sure")
+    public String sure(@RequestParam(value = "mcId",required = false)String mcId,ModelMap modelMap){
+        if(!StringUtils.isEmpty(mcId)){
+            modelMap.addAttribute("consume",materialConsumService.getConsume(mcId));
+        }
+        return "/mc/confirm";
     }
 
 

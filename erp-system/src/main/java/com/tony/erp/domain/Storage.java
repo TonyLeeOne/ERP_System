@@ -31,7 +31,7 @@ public class Storage {
 
     private Product product=new Product();
 
-    private Set<ManPlan> plans=new HashSet<>();
+    private ManOrder manOrder=new ManOrder();
 
 
 

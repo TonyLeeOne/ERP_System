@@ -17,5 +17,5 @@ public class DataEntity {
     private int customCount;
     private int manOrderCount;
     private int orderCount;
-    private Map<String,Object> map=new HashMap<>(4);
+    public static Map<String,Object> map=new HashMap<>(8);
 }

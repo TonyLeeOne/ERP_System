@@ -7,9 +7,8 @@ import com.tony.erp.service.material.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 /**
@@ -31,7 +30,7 @@ public class MaterialPurchaseController {
     @RequestMapping("/getAll")
     public String getAll(ModelMap modelMap){
         modelMap.addAttribute("purchases",materialPurchaseService.getAll(1));
-        return "";
+        return "/purchase/list";
     }
 
     /**
@@ -54,7 +53,7 @@ public class MaterialPurchaseController {
     @RequestMapping("/add")
     @ResponseBody
     public String addPurchase(MaterialPurchase materialPurchase){
-        return materialPurchaseService.addMPurchase(materialPurchase)>1? Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
+        return materialPurchaseService.addMPurchase(materialPurchase)>0? Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
     }
 
 
@@ -77,7 +76,17 @@ public class MaterialPurchaseController {
     @RequestMapping("/delete")
     @ResponseBody
     public String delPurchase(String mpid){
-        return materialPurchaseService.delMPurchase(mpid)>1? Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
+        if(mpid.indexOf(Constant.SPLITTER)>0){
+            String[] mpids=mpid.split(Constant.SPLITTER);
+            for (String mphId:mpids
+                 ) {
+                if(materialPurchaseService.delMPurchase(mphId)<1){
+                    return Constant.DATA_DELETE_FAILED;
+                }
+            }
+            return Constant.DATA_UDELETE_SUCCESS;
+        }
+        return materialPurchaseService.delMPurchase(mpid)>0? Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
     }
 
 
@@ -91,6 +100,50 @@ public class MaterialPurchaseController {
     public List<MaterialPurchase> getByMsn(String msn){
         return materialPurchaseService.getByMphSn(msn);
     }
+
+
+
+    @GetMapping("/edit")
+    public String editMaterial(@RequestParam(defaultValue = "", required = false) String mphId, ModelMap modelMap) {
+        if (!StringUtils.isEmpty(mphId)) {
+            modelMap.addAttribute("purchase",materialPurchaseService.getMaterialPurchase(mphId));
+        }
+        return "/purchase/edit";
+    }
+
+
+    @GetMapping("/verify")
+    public String verifyMaterial(@RequestParam(defaultValue = "", required = false) String mphId, ModelMap modelMap) {
+        if (!StringUtils.isEmpty(mphId)) {
+            modelMap.addAttribute("purchase",materialPurchaseService.getMaterialPurchase(mphId));
+        }
+        return "/purchase/verify";
+    }
+
+
+    /**
+     * 审核
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/audit")
+    public String audit(MaterialPurchase purchase){
+        return materialPurchaseService.audit(purchase)>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+    }
+
+
+
+    /**
+     * 确认接口
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/confirm")
+    public String confirm(MaterialPurchase purchase){
+        return materialPurchaseService.confirm(purchase)>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+    }
+
+
 
 
 }

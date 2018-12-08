@@ -96,16 +96,23 @@ public class CustomController {
     /**
      * 删除客户信息
      *
-     * @param cid
+     * @param customIds
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String delCus(String cid) {
-        if (ObjectUtils.isEmpty(cid)) {
-            return Constant.ARG_EXCEPTION;
+    public String delCus(String customIds) {
+        if(customIds.indexOf(Constant.SPLITTER)>0){
+            String[] cids=customIds.split(Constant.SPLITTER);
+            for (String cId:cids
+                    ) {
+                if(customService.delCustom(cId)<1){
+                    return Constant.DATA_DELETE_FAILED;
+                }
+            }
+            return Constant.DATA_UDELETE_SUCCESS;
         }
-        return customService.delCustom(cid) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
+        return customService.delCustom(customIds)>0? Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
     }
 
     /**

@@ -23,6 +23,10 @@ public class Constant {
     public static final String MAN_ORDERS="orders_count";
     public static final String CUSTOM_COUNTS="cus_count";
 
+    public static final String ORDER_DATA_COLLECTION="order_data";
+    public static final String MATERIAL_DATA_COLLECTION="material_data";
+    public static final String PRODUCT_DATA_COLLECTION="product_data";
+
     /**
      * 数据加密参数
      */
@@ -50,7 +54,7 @@ public class Constant {
     public static final String NUMBER_BIG="表单数量不可大于仓库剩余数量";
     public static final String CANNOT_CHANGE="已出货记录不可更改";
     public static final String NEED_AUDIT="需要先审核通过";
-    public static final String PRO_SHORTAGE="库存数量不足";
+    public static final String PRO_SHORTAGE="审核通过，但库存数量不足";
 
     /**
      * 返回结果处理参数
@@ -64,6 +68,6 @@ public class Constant {
     public static final String STRING_THREE="3";
     public static final String STRING_FOUR="4";
 
-
+    public static final String SPLITTER=",";
 
 }

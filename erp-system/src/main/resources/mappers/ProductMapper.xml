@@ -146,4 +146,8 @@
   <select id="selectProCodes" resultType="java.lang.String">
     select concat(pro_name,'(',pro_code,')') from product where pro_status='1' order by pro_name
   </select>
+
+  <select id="dataCollection" resultType="java.lang.String">
+    select concat(pro_name,'(',pro_code,')',',',pro_count) from product
+  </select>
 </mapper>

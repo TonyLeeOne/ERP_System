@@ -5,8 +5,6 @@
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
-            <input class="layui-input" placeholder="开始日" name="start" id="start">
-            <input class="layui-input" placeholder="截止日" name="end" id="end">
             <div class="layui-input-inline">
                 <select name="contrller">
                     <option value="">客户状态</option>
@@ -14,8 +12,8 @@
                     <option value="2">无效</option>
                 </select>
             </div>
-            <input type="text" name="customName" placeholder="请输入姓名" autocomplete="off" class="layui-input">
-            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+            <input type="text" name="customName" placeholder="请输入客户名" autocomplete="off" class="layui-input">
+            <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
@@ -46,7 +44,7 @@
             <c:forEach items="${customs.rows}" var="custom">
                 <tr>
                     <td>
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${custom.customName}'><i
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${custom.customId}'><i
                                 class="layui-icon">&#xe605;</i></div>
                     </td>
                     <td>${custom.customCode}</td>
@@ -72,20 +70,6 @@
     <jsp:include page="../common/pagination.jsp"><jsp:param value="${customs.total}" name="total"/><jsp:param value="${customs.pageNum}" name="pageNum"/></jsp:include>
 </div>
 <script>
-    layui.use('laydate', function () {
-        var laydate = layui.laydate;
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#end' //指定元素
-        });
-    });
-
     /*用户-停用*/
     function member_stop(obj, id) {
         layer.confirm('确认要停用吗？', function (index) {
@@ -131,11 +115,17 @@
 
         var data = tableCheck.getData();
 
-        layer.confirm('确认要删除客户[' + data+"]吗？", function (index) {
+        if(data.length>0)
+        layer.confirm('确认要删除续订的' + data.length+"记录吗？", function (index) {
+            $.post('/custom/delete', {"customIds": data.toString()}, function (res) {
+                layer.msg(res, {icon: 1});
+                $(".layui-form-checked").not('.header').parents('tr').remove();
+            });
             //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
+
         });
+        else
+            layer.alert("请至少选择一行记录", {icon: 2});
     }
 </script>
 </body>

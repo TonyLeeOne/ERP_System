@@ -1,7 +1,9 @@
 package com.tony.erp.configuration.adapter;
 
+import com.tony.erp.interceptor.SessionInteceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class DefaultView implements WebMvcConfigurer {
 
-    @Value("{web.upload-path}")
+    @Value("${web.upload-path}")
     private String imgPath;
 
     /**
@@ -23,7 +25,7 @@ public class DefaultView implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("forward:/user/login");
+        registry.addViewController("/").setViewName("forward:/login");
     }
 
     /**
@@ -33,5 +35,15 @@ public class DefaultView implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/image/**").addResourceLocations("file:"+imgPath);
+    }
+
+    /**
+     * 配置拦截器
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SessionInteceptor()).addPathPatterns("/**").excludePathPatterns("/css/**")
+                .excludePathPatterns("/js/**").excludePathPatterns("/images/**").excludePathPatterns("/lib/**");
     }
 }
