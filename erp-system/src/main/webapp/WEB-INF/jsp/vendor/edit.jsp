@@ -25,7 +25,7 @@
                 <span class="x-red">*</span>联系方式
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="vTel" name="vTel" required="" lay-verify="required"
+                <input type="text" id="vTel" name="vTel" required="" lay-verify="phone"
                        value="${vendor.VTel}" autocomplete="off" class="layui-input">
             </div>
             <label for="vPublish" class="layui-form-label">

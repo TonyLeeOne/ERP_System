@@ -201,7 +201,6 @@ public class UserController {
             modelMap.addAttribute("user", user);
         }
         List<Role> roles = roleService.getAllRoles();
-        System.out.println(roles);
         modelMap.addAttribute("roles", roles);
         List<Department> departments = departmentService.getAllDeparts();
         modelMap.addAttribute("departments", departments);

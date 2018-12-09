@@ -8,10 +8,10 @@
                 <div class="layui-col-md6">
                     <input type="text" hidden name="customId" value="${custom.customId}">
                     <label for="customName" class="layui-form-label">
-                        客户名字
+                        <span class="x-red">*</span>客户名字
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customName" name="customName" value="${custom.customName}"
+                        <input type="text" id="customName" name="customName" value="${custom.customName}" required
                                autocomplete="off"
                                class="layui-input">
                     </div>
@@ -19,11 +19,11 @@
                 <div class="layui-col-md6">
 
                     <label for="customAddress" class="layui-form-label">
-                        客户地址
+                        <span class="x-red">*</span>客户地址
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="customAddress" name="customAddress" value="${custom.customAddress}"
-                               autocomplete="off"
+                               autocomplete="off" required
                                class="layui-input">
                     </div>
                 </div>
@@ -33,20 +33,20 @@
                 <div class="layui-col-md6">
 
                     <label for="customCode" class="layui-form-label">
-                        客户编号
+                        <span class="x-red">*</span>客户编号
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customCode" name="customCode"
+                        <input type="text" id="customCode" name="customCode" required=""
                                value="${custom.customCode}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-col-md6">
 
                     <label for="customTel" class="layui-form-label">
-                        客户电话
+                        <span class="x-red">*</span>客户电话
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customTel" name="customTel"
+                        <input type="text" id="customTel" name="customTel" required="" lay-verify="number"
                                value="${custom.customTel}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -56,27 +56,27 @@
                 <div class="layui-col-md6">
 
                     <label for="customPublish" class="layui-form-label">
-                        客户联系人
+                        <span class="x-red">*</span>客户联系人
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customPublish" name="customPublish"
+                        <input type="text" id="customPublish" name="customPublish" required=""
                                value="${custom.customPublish}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-col-md6">
 
                     <label for="customFullname" class="layui-form-label">
-                        客户全名
+                        <span class="x-red">*</span>客户全名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customFullname" name="customFullname"
+                        <input type="text" id="customFullname" name="customFullname" required
                                value="${custom.customFullname}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
             <div class="layui-row">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">客户状态</label>
+                    <label class="layui-form-label"><span class="x-red">*</span>客户状态</label>
                     <div class="layui-input-block" id="single" value="${custom.customStatus}">
                         <input type="radio" name="customStatus" value="1" title="有效" id="pro">
                         <input type="radio" name="customStatus" value="2" title="无效" id="stop">
