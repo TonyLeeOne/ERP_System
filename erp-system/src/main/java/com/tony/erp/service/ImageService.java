@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +28,8 @@ public class ImageService {
      * @param images
      * @return
      */
-    public Result upload(List<MultipartFile> images){
+    public Result upload(List<MultipartFile> images, HttpServletRequest request){
+        String realPath = request.getSession().getServletContext().getRealPath(imgPath);
         if(!CollectionUtils.isEmpty(images)){
             String[] paths=new String[images.size()];
             for (int i = 0; i <images.size() ; i++) {
@@ -35,7 +37,7 @@ public class ImageService {
                     String fileName = images.get(i).getOriginalFilename();
                     String filePostFixName = fileName.substring(fileName.lastIndexOf("."), fileName.length());
                     String realName = UUID.randomUUID() + filePostFixName;
-                    File f = new File(imgPath, realName);
+                    File f = new File(realPath, realName);
                     try {
                         images.get(i).transferTo(f);
                     } catch (IOException e) {
@@ -44,7 +46,6 @@ public class ImageService {
                     paths[i] = "/image/" + f.getName();
                 }
             }
-            System.out.println(ResultUtil.success(paths));
             return ResultUtil.success(paths);
         }
         return ResultUtil.fail();

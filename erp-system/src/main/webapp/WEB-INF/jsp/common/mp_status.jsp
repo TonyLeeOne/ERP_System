@@ -8,4 +8,4 @@
     <c:set target='${map6}' property='1' value='生产进行中'/>
     <c:set target='${map6}' property='2' value='已完成'/>
 </jsp:useBean>
-<c:out value="${map5[plan.mpStatus]}"/>
+<c:out value="${map6[plan.mpStatus]}"/>

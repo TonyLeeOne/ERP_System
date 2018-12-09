@@ -44,8 +44,8 @@ public class CustomController {
      */
     @RequestMapping("/getAllCustoms/{pageSize}")
     public String getAllCustom(@PathVariable int pageSize, ModelMap modelMap) {
-        modelMap.addAttribute("customs", customService.getAllCustoms(pageSize));
-        return "";
+        modelMap.addAttribute("page", customService.getAllCustoms(pageSize));
+        return "/custom/list";
     }
 
 

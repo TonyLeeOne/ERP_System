@@ -71,6 +71,6 @@
   <select id="getAllModules" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from module
+    from module order by mname
   </select>
 </mapper>

@@ -54,7 +54,7 @@
     from user u left join profile p on u.id=p.p_uid
     inner join user_role ur on u.id=ur.uid
     inner join role r on ur.rid=r.rid
-    inner join department d on d.d_id=u.departId
+    left join department d on d.d_id=u.departId
     order by p.p_indate
   </select>
 

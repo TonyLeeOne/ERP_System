@@ -88,7 +88,7 @@ public class UserService {
         pageHelperEntity.setRows(users);
         PageInfo<User> pageInfo = new PageInfo<>(users);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), 10));
+        pageHelperEntity.setPageNum(pageInfo.getPageNum());
         return pageHelperEntity;
     }
 

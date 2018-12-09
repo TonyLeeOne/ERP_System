@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -31,8 +32,8 @@ public class ImageController {
      */
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     @ResponseBody
-    public Result uploadFile(List<MultipartFile> files){
-        return imageService.upload(files);
+    public Result uploadFile(List<MultipartFile> files, HttpServletRequest request){
+        return imageService.upload(files,request);
     }
 
     /**

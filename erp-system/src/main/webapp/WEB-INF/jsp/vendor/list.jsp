@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@include file="../common/header.jsp" %>
 <body>
@@ -12,12 +13,16 @@
     <%--</form>--%>
     <%--</div>--%>
     <xblock>
-        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/vendor/batchDelete"><i
-                class="layui-icon"></i>批量删除
-        </button>
-        <button class="layui-btn" onclick="x_admin_show('添加供应商','/vendor/edit',700,500)"><i class="layui-icon"></i>添加
-        </button>
-        <span class="x-right" style="line-height:40px">共有数据：${vendors.total} 条</span>
+        <shiro:hasPermission name="vendor:delete">
+            <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/vendor/batchDelete"><i
+                    class="layui-icon"></i>批量删除
+            </button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="vendor:add">
+            <button class="layui-btn" onclick="x_admin_show('添加供应商','/vendor/edit',700,500)"><i class="layui-icon"></i>添加
+            </button>
+        </shiro:hasPermission>
+        <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -36,8 +41,8 @@
             <th>操作</th>
         </thead>
         <tbody>
-        <c:if test="${vendors.total > 0}">
-            <c:forEach items="${vendors.rows}" var="vendor">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="vendor">
                 <tr>
                     <td>
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-name="${vendor.VName}"
@@ -55,6 +60,7 @@
                     </td>
                         <%--<td>${vendor.VNote}</td>--%>
                     <td class="td-manage">
+                        <shiro:hasPermission name="vendor:update">
                         <a title="编辑" onclick="x_admin_show('编辑','/vendor/edit?vId=${vendor.VId}',700,500)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
@@ -62,6 +68,7 @@
                         <a title="删除" id="delete" href="/vendor/delete?vId=${vendor.VId}">
                             <i class="layui-icon">&#xe640;</i>
                         </a>
+                        </shiro:hasPermission>
                     </td>
                 </tr>
             </c:forEach>

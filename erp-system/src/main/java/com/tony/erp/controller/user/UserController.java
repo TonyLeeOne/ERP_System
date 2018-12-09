@@ -86,8 +86,8 @@ public class UserController {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUname(), user.getUpass());
             try {
                 subject.login(token);
-//                设置session超时时间30 mins
-//                subject.getSession().setTimeout(1800000);
+//                设置session超时时间10 mins
+                subject.getSession().setTimeout(600000);
                 User u = (User) subject.getPrincipal();
                 session.setAttribute("user", u);
             } catch (Exception e) {
@@ -197,7 +197,7 @@ public class UserController {
     public String editUser(@RequestParam(defaultValue = "", required = false) String userId, ModelMap modelMap) {
         if (userId != null && !"".equals(userId)) {
             User user = userService.getByPrimaryKey(userId);
-            modelMap.addAttribute("user", user);
+            modelMap.addAttribute("u", user);
         }
         List<Role> roles = roleService.getAllRoles();
         System.out.println(roles);

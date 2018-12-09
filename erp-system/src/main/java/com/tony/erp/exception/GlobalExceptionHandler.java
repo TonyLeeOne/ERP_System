@@ -24,13 +24,11 @@ public class GlobalExceptionHandler {
         return ResponseResult.serverError(e.getCause().getMessage(),null);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseBody
-    public ResponseResult defaultHandler(HttpServletRequest request, Exception e){
 
-        if(e instanceof java.lang.NullPointerException){
-            return ResponseResult.serverError(Constant.ARG_EXCEPTION,null);
-        }
+
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseBody
+    public ResponseResult defaultHandler(Exception e){
         return ResponseResult.serverError(e.getCause().getMessage(),null);
     }
 

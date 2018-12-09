@@ -28,14 +28,14 @@ public class DefaultView implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("forward:/login");
     }
 
-    /**
-     * 指定静态资源在磁盘的位置
-     * @param registry
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/image/**").addResourceLocations("file:"+imgPath);
-    }
+//    /**
+//     * 指定静态资源在磁盘的位置
+//     * @param registry
+//     */
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/image/**").addResourceLocations("file:"+imgPath);
+//    }
 
     /**
      * 配置拦截器
@@ -44,6 +44,6 @@ public class DefaultView implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SessionInteceptor()).addPathPatterns("/**").excludePathPatterns("/css/**")
-                .excludePathPatterns("/js/**").excludePathPatterns("/images/**").excludePathPatterns("/lib/**");
+                .excludePathPatterns("/js/**").excludePathPatterns("/images/**").excludePathPatterns("/lib/**").excludePathPatterns("/image/**");
     }
 }

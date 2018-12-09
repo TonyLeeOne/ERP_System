@@ -26,7 +26,7 @@
                 <span class="x-red">*</span>设备单价
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="devicePrice" name="devicePrice" required="" lay-verify="required"
+                <input type="number" id="devicePrice" name="devicePrice" required="" lay-verify="required"
                        value="${device.devicePrice}" autocomplete="off" class="layui-input">
             </div>
             <label for="deviceVendor" class="layui-form-label">

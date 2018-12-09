@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@include file="../common/header.jsp" %>
 <body>
@@ -18,9 +19,14 @@
         </form>
     </div>
     <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加新生产工单','/manOrder/edit',730,500)"><i class="layui-icon"></i>添加
-        </button>
+        <shiro:hasPermission name="manfactureOrde:delete">
+            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="manfactureOrde:add">
+            <button class="layui-btn" onclick="x_admin_show('添加新生产工单','/manOrder/edit',730,500)"><i
+                    class="layui-icon"></i>添加
+            </button>
+        </shiro:hasPermission>
         <span class="x-right" style="line-height:40px">共有数据: ${manOrders.total} 条</span>
     </xblock>
     <table class="layui-table">
@@ -47,8 +53,9 @@
                 <tr>
                     <td>
                         <c:if test="${mOrder.moStatus!='2'}">
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${mOrder.moId}'><i
-                                class="layui-icon">&#xe605;</i></div>
+                            <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${mOrder.moId}'>
+                                <i
+                                        class="layui-icon">&#xe605;</i></div>
                         </c:if>
                     </td>
                     <td>${mOrder.moSn}</td>
@@ -69,13 +76,18 @@
                         </c:if>
                     </td>
                     <td class="td-manage">
-                        <c:if test="${mOrder.moStatus=='1'}">
-                        <a title="编辑生产计划" onclick="x_admin_show('编辑生产计划','/manOrder/edit?moId=${mOrder.moId}',730,500)"
+                        <shiro:hasPermission name="manfactureOrde:update">
+                            <c:if test="${mOrder.moStatus=='1'}">
+                                <a title="编辑生产计划"
+                                   onclick="x_admin_show('编辑生产计划','/manOrder/edit?moId=${mOrder.moId}',730,500)"
+                                   href="javascript:;">
+                                    <i class="layui-icon">&#xe642;</i>
+                                </a>
+                            </c:if>
+                        </shiro:hasPermission>
+                        <a title="查看生产工单记录"
+                           onclick="x_admin_show('生产工单记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)"
                            href="javascript:;">
-                            <i class="layui-icon">&#xe642;</i>
-                        </a>
-                        </c:if>
-                        <a title="查看生产工单记录" onclick="x_admin_show('生产工单记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)" href="javascript:;">
                             <i class="layui-icon">&#xe60a;</i>
                         </a>
                             <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
@@ -161,7 +173,7 @@
         var data = tableCheck.getData();
 
         if (data.length > 0) {
-            layer.confirm('确认要删除选定的'+data.length+'记录吗？', function (index) {
+            layer.confirm('确认要删除选定的' + data.length + '记录吗？', function (index) {
                 //捉到所有被选中的，发异步进行删除
                 $.post('/manOrder/delete', {"moId": data.toString()}, function (res) {
                     layer.msg(res, {icon: 1});

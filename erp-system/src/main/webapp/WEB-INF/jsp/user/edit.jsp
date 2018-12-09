@@ -12,13 +12,13 @@
             <div class="layui-row">
                 <div class="layui-col-md10">
 
-                    <input type="hidden" name="id" value="${user.id}">
+                    <input type="hidden" name="id" value="${u.id}">
                     <label for="uname" class="layui-form-label">
                         <span class="x-red">*</span>用户名
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="uname" name="uname" required="" lay-verify="required"
-                               autocomplete="off" value="${user.uname}" class="layui-input">
+                               autocomplete="off" value="${u.uname}" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         将会成为您唯一的登入名
@@ -35,7 +35,7 @@
                             <option value="">请选择</option>
                             <c:forEach items="${departments}" var="department">
                                 <option
-                                        <c:if test="${user.departId == department.dId}">selected </c:if>
+                                        <c:if test="${u.departId == department.dId}">selected </c:if>
                                         value="${department.dId}">${department.dName}</option>
                             </c:forEach>
                         </select>
@@ -50,7 +50,7 @@
                         <c:forEach items="${roles}" var="role">
                             <input type="checkbox" value="${role.rid}" name="rid[]" lay-skin="primary"
                                    title="${role.rname}"
-                                    <c:forEach items="${user.roles}" var="urole"><c:if
+                                    <c:forEach items="${u.roles}" var="urole"><c:if
                                             test="${role.rid == urole.rid}"> checked </c:if></c:forEach> />
                         </c:forEach>
                     </div>
@@ -65,7 +65,7 @@
                         <a>密码设置</a>
                     </legend>
                 </fieldset>
-                <c:if test="${not empty user.id}">
+                <c:if test="${not empty u.id}">
                     <div class="layui-row">
                         <label for="upassOld" class="layui-form-label">
                             原始密码
@@ -82,7 +82,7 @@
 
                 <div class="layui-col-md6">
                     <label for="upass" class="layui-form-label">
-                        <c:if test="${empty user.id}"><span class="x-red">*</span></c:if>密码
+                        <c:if test="${empty u.id}"><span class="x-red">*</span></c:if>密码
                     </label>
                     <div class="layui-input-inline">
                         <input type="password" id="upass" name="upass" required=""<%-- lay-verify="pass"--%>
@@ -96,7 +96,7 @@
             <div class="layui-row">
                 <div class="layui-col-md6">
                     <label for="upass_re" class="layui-form-label">
-                        <c:if test="${empty user.id}"><span class="x-red">*</span></c:if>确认密码
+                        <c:if test="${empty u.id}"><span class="x-red">*</span></c:if>确认密码
                     </label>
                     <div class="layui-input-inline">
                         <input type="password" id="upass_re" name="upass_re" required="" lay-verify="repass"
@@ -108,12 +108,12 @@
         <div class="layui-form-item">
             <label for="upass_re" class="layui-form-label">
             </label>
-            <c:if test="${! empty user.id}">
+            <c:if test="${! empty u.id}">
                 <button class="layui-btn" lay-filter="add" lay-submit="">
                     更新
                 </button>
             </c:if>
-            <c:if test="${empty user.id}">
+            <c:if test="${empty u.id}">
                 <button class="layui-btn" lay-filter="add" lay-submit="">
                     新增
                 </button>
@@ -158,7 +158,7 @@
                 msg = "更新";
             }
             jQuery.ajax({
-                url: "/user/add",
+                url: "/add",
                 type: "POST",
                 data: JSON.stringify(param),
                 // dataType: "json",

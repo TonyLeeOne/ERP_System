@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@include file="../common/header.jsp" %>
 <body>
@@ -12,9 +13,14 @@
         </form>
     </div>
     <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加新生产计划','/manPlan/edit',730,500)"><i class="layui-icon"></i>添加
-        </button>
+        <shiro:hasPermission name="manfacturePlan:delete">
+            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="manfacturePlan:add">
+            <button class="layui-btn" onclick="x_admin_show('添加新生产计划','/manPlan/edit',730,500)"><i
+                    class="layui-icon"></i>添加
+            </button>
+        </shiro:hasPermission>
         <span class="x-right" style="line-height:40px">共有数据: ${plans.total} 条</span>
     </xblock>
     <table class="layui-table">
@@ -40,8 +46,8 @@
                 <tr>
                     <td>
                         <c:if test="${plan.mpStatus!='2'}">
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${plan.mpSn}'><i
-                                class="layui-icon">&#xe605;</i></div>
+                            <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${plan.mpSn}'><i
+                                    class="layui-icon">&#xe605;</i></div>
                         </c:if>
                     </td>
                     <td>${plan.mpSn}</td>
@@ -54,19 +60,23 @@
                         <%@include file="../common/mp_status.jsp" %>
                     </td>
                     <td class="td-manage">
+                        <shiro:hasPermission name="manfacturePlan:update">
                         <c:if test="${plan.mpStatus =='1'}">
                         <a title="编辑生产计划" onclick="x_admin_show('编辑生产计划','/manPlan/edit?mpSn=${plan.mpSn}',730,500)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
                         </c:if>
-                        <a title="查看生产工单记录" onclick="x_admin_show('当前生产计划【${plan.mpSn}】','/manOrder/getManOrdersByMpsn?mpsn=${plan.mpSn}',730)" href="javascript:;">
+                        </shiro:hasPermission>
+                        <a title="查看生产工单记录"
+                           onclick="x_admin_show('当前生产计划【${plan.mpSn}】','/manOrder/getManOrdersByMpsn?mpsn=${plan.mpSn}',730)"
+                           href="javascript:;">
                             <i class="layui-icon">&#xe60a;</i>
                         </a>
                             <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
                             <%--<i class="layui-icon">&#xe640;</i>--%>
                             <%--</a>--%>
-                    </td>
+                        </td>
                 </tr>
             </c:forEach>
 

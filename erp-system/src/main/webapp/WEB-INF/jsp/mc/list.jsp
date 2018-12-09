@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@include file="../common/header.jsp" %>
 <body>
@@ -12,9 +13,13 @@
         </form>
     </div>
     <xblock>
+        <shiro:hasPermission name="material:delete">
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="material:add">
         <button class="layui-btn" onclick="x_admin_show('添加新领料单','/materialConsume/edit',730,500)"><i class="layui-icon"></i>添加
         </button>
+        </shiro:hasPermission>
         <span class="x-right" style="line-height:40px">共有数据: ${consumes.total} 条</span>
     </xblock>
     <table class="layui-table">
@@ -58,6 +63,7 @@
                         <%@include file="../common/mc_status.jsp" %>
                     </td>
                     <td class="td-manage">
+                        <shiro:hasPermission name="material:update">
                         <c:if test="${consume.mcStatus=='1'||consume.mcStatus=='2'}">
                         <a title="编辑领料单" onclick="x_admin_show('编辑领料单','/materialConsume/edit?mcId=${consume.mcId}',730,300)"
                            href="javascript:;">
@@ -76,6 +82,7 @@
                                 <i class="layui-icon">&#xe605;</i>
                             </a>
                         </c:if>
+                        </shiro:hasPermission>
                     </td>
                 </tr>
             </c:forEach>
