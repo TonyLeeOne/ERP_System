@@ -93,12 +93,12 @@
         </fieldset>
 
         <fieldset class="layui-elem-field">
-            <legend>趋势</legend>
+            <legend>状态盘点</legend>
             <div class="layui-field-box">
-                <div id="order_chart" style="width: 48%;height:400px; float: left;"></div>
-                <div id="product_chart" style="width: 48%;height:400px;float: right;"></div>
-                <div id="plan_chart" style="width: 48%;height:400px;float: left;"></div>
-                <div id="material_chart" style="width: 48%;height:400px;float: right;"></div>
+                <div id="order_chart" style="width: 48%;height:400px; float: left;text-align: center;"></div>
+                <div id="product_chart" style="width: 48%;height:400px;float: right;text-align: center"></div>
+                <div id="plan_chart" style="width: 48%;height:400px;float: left;text-align: center"></div>
+                <div id="material_chart" style="width: 48%;height:400px;float: right;text-align: center"></div>
             </div>
         </fieldset>
         <fieldset class="layui-elem-field">
@@ -194,6 +194,8 @@
                             }
                         ]
                     };
+                   else
+                       $("#order_chart").text("暂无订单数据");
                    if(data.productCount)
                     // 指定图表的配置项和数据
                     var optionProduct = {
@@ -254,6 +256,8 @@
                             }
                         ]
                     };
+                   else
+                    $("#product_chart").text("暂无产品数据");
                    if(data.materialName)
                     // 指定图表的配置项和数据
                     var optionPlan = {
@@ -314,6 +318,8 @@
                             }
                         ]
                     };
+                   else
+                       $("#plan_chart").text("暂无物料数据");
 
                     // 指定图表的配置项和数据
                     var optionMaterial = {
@@ -377,7 +383,7 @@
 
                     // 使用刚指定的配置项和数据显示图表。
                     productChart.setOption(optionProduct);
-                    planChart.setOption(optionPlan);
+                    // planChart.setOption(optionPlan);
                     // materialChart.setOption(optionMaterial);
                     orderChart.setOption(optionOrder);
                 }

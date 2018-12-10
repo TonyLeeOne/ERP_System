@@ -4,8 +4,10 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <xblock>
-        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/role/batchDelete"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加角色','/role/edit',700,600)"><i class="layui-icon"></i>添加
+        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/role/batchDelete"><i
+                class="layui-icon"></i>批量删除
+        </button>
+        <button class="layui-btn" onclick="x_admin_show('添加角色信息','/role/edit',1000,600)"><i class="layui-icon"></i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：${roles.size()} 条</span>
     </xblock>
@@ -31,11 +33,18 @@
                             class="layui-icon">&#xe605;</i>
                     </div>
                 </td>
-                <td>${role.rname}</td>
+                <td style="width: 80px">${role.rname}</td>
                 <td>
-                    <c:forEach items="${role.modules}" var="module" varStatus="status">
-                        <c:if test="${status.index != 0}">，</c:if> ${module.remark}
-                    </c:forEach>
+                    <div class="layui-form">
+                            <c:forEach items="${role.modules}" var="module" varStatus="status">
+                                <input type="checkbox" title="${module.remark}" lay-skin="primary" checked>
+                            </c:forEach>
+                    </div>
+                        <%--<c:forEach items="${role.modules}" var="module" varStatus="status">--%>
+                        <%--<input lay-skin="primary" type="checkbox" checked value="${module.mid}"--%>
+                        <%--title="${module.remark}">--%>
+                        <%--&lt;%&ndash;<c:if test="${status.index != 0}">，</c:if> ${module.remark}&ndash;%&gt;--%>
+                        <%--</c:forEach>--%>
                 </td>
                     <%--<td>具有至高无上的权利</td>--%>
                     <%--<td class="td-status">--%>
@@ -45,19 +54,22 @@
                         <%--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">--%>
                         <%--<i class="layui-icon">&#xe601;</i>--%>
                         <%--</a>--%>
-                    <a title="编辑" onclick="x_admin_show('编辑','/role/edit?rid=${role.rid}',700,600)" href="javascript:;">
+                    <a title="编辑" onclick="x_admin_show('编辑角色信息','/role/edit?rid=${role.rid}',1000,600)"
+                       href="javascript:;">
                         <i class="layui-icon">&#xe642;</i>
                     </a>
-                    <a title="删除" id="delete" href="/role/delete?rid=${role.rid}">
-                        <i class="layui-icon">&#xe640;</i>
-                    </a>
+                        <%--<a title="删除" id="delete" href="/role/delete?rid=${role.rid}">--%>
+                        <%--<i class="layui-icon">&#xe640;</i>--%>
+                        <%--</a>--%>
                 </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-
 </div>
+<script>
+
+</script>
 </body>
 
 </html>

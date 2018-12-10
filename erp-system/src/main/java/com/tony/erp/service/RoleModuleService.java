@@ -78,7 +78,6 @@ public class RoleModuleService {
         modules.forEach(module -> {
             mids.add(module.getMid());
         });
-
         return mids;
     }
 

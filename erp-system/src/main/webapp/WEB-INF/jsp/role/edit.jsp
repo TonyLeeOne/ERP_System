@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@include file="../common/header.jsp" %>
 <body>
@@ -14,30 +15,45 @@
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">
-                拥有权限
-            </label>
             <table class="layui-table layui-input-block">
                 <tbody>
-                <tr>
-                    <%--<td>--%>
-                    <%--<input type="checkbox" name="like1[write]" lay-skin="primary" title="用户管理">--%>
-                    <%--</td>--%>
-                    <td>
-                        <div class="layui-input-block" id="mids">
-                            <c:forEach items="${modules}" var="module">
+                <div class="layui-input-block" id="mids">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>权限分配
+                    </label>
+                    <c:forEach items="${modules}" var="module" varStatus="status">
+                        <%--<c:if test="${fn:contains(module.remark,'模块')}">--%>
 
-                                <input name="mid[]" lay-skin="primary" type="checkbox"
-                                <c:forEach items="${roleModules}" var="roleModule">
-                                <c:if test="${module.mid == roleModule}"> checked </c:if>
-                                </c:forEach>
-                                       title="${module.remark}"
-                                       value="${module.mid}"
-                                >
+                        <c:if test="${status.count eq 1 || (status.count-1) % 5 eq 0}">
+                            <tr>
+                        </c:if>
+                        <td>
+                            <input name="mid[]" type="checkbox"
+                            <c:forEach items="${roleModules}" var="roleModule">
+                            <c:if test="${module.mid == roleModule}"> checked </c:if>
                             </c:forEach>
-                        </div>
-                    </td>
-                </tr>
+                                   title="${module.remark}"
+                                   value="${module.mid}"
+                            >
+
+                        </td>
+                        <c:if test="${status.count % 5 eq 0 || status.count eq 5}">
+                            </tr>
+                        </c:if>
+                        <%--<tr>--%>
+                        <%--<td>--%>
+                        <%--<input name="mid[]" lay-skin="primary" type="checkbox"--%>
+                        <%--<c:forEach items="${roleModules}" var="roleModule">--%>
+                        <%--<c:if test="${module.mid == roleModule}"> checked </c:if>--%>
+                        <%--</c:forEach>--%>
+                        <%--title="${module.remark}"--%>
+                        <%--value="${module.mid}"--%>
+                        <%-->--%>
+                        <%--</td>--%>
+                        <%--</tr>--%>
+                        <%--</c:if>--%>
+                    </c:forEach>
+                </div>
                 </tbody>
             </table>
         </div>
@@ -91,10 +107,12 @@
                         //发异步，把数据提交给php
                         layer.alert(msg + "成功", {icon: 6}, function () {
                             // 获得frame索引
+
                             var index = parent.layer.getFrameIndex(window.name);
                             //关闭当前frame
-                            window.parent.location.reload();
                             parent.layer.close(index);
+                            window.parent.location.reload();
+
 
                         });
                     } else {

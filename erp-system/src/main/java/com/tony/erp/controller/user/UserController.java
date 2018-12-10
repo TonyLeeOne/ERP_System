@@ -2,16 +2,12 @@ package com.tony.erp.controller.user;
 
 import com.google.gson.Gson;
 import com.tony.erp.constant.Constant;
-import com.tony.erp.dao.DepartmentMapper;
-import com.tony.erp.domain.Department;
 import com.tony.erp.domain.Profile;
-import com.tony.erp.domain.Role;
 import com.tony.erp.domain.User;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.service.*;
 import com.tony.erp.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.jdbc.Null;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
@@ -19,13 +15,11 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -86,9 +80,13 @@ public class UserController {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUname(), user.getUpass());
             try {
                 subject.login(token);
-//                设置session超时时间10 mins
-                subject.getSession().setTimeout(600000);
                 User u = (User) subject.getPrincipal();
+                if (Constant.STRING_TWO.equals(u.getStatus())) {
+                    subject.logout();
+                    return new Gson().toJson(ACOUNT_LOCAKED_ADMIN);
+                }
+                //设置session超时时间10 mins
+                subject.getSession().setTimeout(600000);
                 session.setAttribute("user", u);
             } catch (Exception e) {
                 AtomicInteger retry = cache.get(user.getUname());
@@ -127,51 +125,50 @@ public class UserController {
 
     /**
      * 添加新用户
-     * <p>
-     * //     * @param user 包含uname,upass,did
      *
      * @return
      */
     @PostMapping("/add")
     @ResponseBody
     public String addUser(@RequestBody Map<String, String> map) {
-        User user = null;
-        if (!"".equals(map.get("id"))) {//更新
-            user = userService.getByPrimaryKey(map.get("id"));
-        } else {//新增
-            user = new User();
-        }
-        user.setUname(map.get("uname"));
-        user.setDepartId(map.get("departId"));
-        //user.setStatus(map.get("status"));
-        User user1 = null;
-        if (!"".equals(map.get("id"))) {//更新
-            //TODO::更新密码？
-            Integer result = userService.updateUser(user);
-            if (result == 0) return DATA_ADD_FAILED;
-            user1 = user;
-        } else {
-            user.setUpass(map.get("upass"));
-            user.setUpass(SecurityUtils.getSecurityResult(user.getUname(), user.getUpass()));
-            if (ObjectUtils.isEmpty(user)) {
-                return ARG_EXCEPTION;
+        if (StringUtils.isEmpty(map.get("id"))) {
+            User user = new User();
+            user.setUname(map.get("uname"));
+            if (userService.checkExists(user.getUname())) {
+                return UNAME_EXISTS;
             }
-            user1 = userService.saveUser(user);
+            user.setDepartId(map.get("departId"));
+            user.setUpass(SecurityUtils.getSecurityResult(user.getUname(), map.get("upass")));
+            user = userService.saveUser(user);
+            String rids = map.get("rids");
+            String[] ridsArr = rids.split(",");
+            for (int i = 0; i < ridsArr.length; i++) {
+                if (!userRoleService.insertUserRole(user.getId(), ridsArr[i])) {
+                    return Constant.DATA_ADD_FAILED;
+                }
+            }
+            return Constant.DATA_ADD_SUCCESS;
+        } else {
+            User user = userService.getByPrimaryKey(map.get("id"));
+            user.setDepartId(map.get("departId"));
+            user.setStatus(map.get("status"));
+//            if(!user.getUpass().equals(SecurityUtils.getSecurityResult(user.getUname(), map.get("upassOld")))){
+//                return Constant.PASSWORD_INCORRECT;
+//            }
+//            user.setUpass(SecurityUtils.getSecurityResult(user.getUname(), map.get("upass")));
+            if (userService.updateUser(user) < 1) {
+                return Constant.DATA_UPDATE_FAILED;
+            }
+            userRoleService.deleteByUid(user.getId());
+            String rids = map.get("rids");
+            String[] ridsArr = rids.split(",");
+            for (int i = 0; i < ridsArr.length; i++) {
+                if (!userRoleService.insertUserRole(user.getId(), ridsArr[i])) {
+                    return Constant.DATA_UPDATE_FAILED;
+                }
+            }
+            return DATA_UPDATE_SUCCESS;
         }
-
-        String rids = map.get("rids");
-
-        String[] ridsArr = rids.split(",");
-
-        boolean result = false;
-        for (int i = 0; i < ridsArr.length; i++) {
-            result = userRoleService.insertUserRole(user1.getId(), ridsArr[i]);
-        }
-
-        if (result) {
-            return DATA_ADD_SUCCESS;
-        }
-        return DATA_ADD_FAILED;
     }
 
     /**
@@ -199,24 +196,9 @@ public class UserController {
             User user = userService.getByPrimaryKey(userId);
             modelMap.addAttribute("u", user);
         }
-        List<Role> roles = roleService.getAllRoles();
-        System.out.println(roles);
-        modelMap.addAttribute("roles", roles);
-        List<Department> departments = departmentService.getAllDeparts();
-        modelMap.addAttribute("departments", departments);
+        modelMap.addAttribute("roles", roleService.getAllRoles());
+        modelMap.addAttribute("departments", departmentService.getAllDeparts());
         return "/user/edit";
-    }
-
-    /**
-     * 删除用户
-     *
-     * @param uid
-     * @return
-     */
-    @RequestMapping("/delete")
-    @ResponseBody
-    public String deleteUser(String uid) {
-        return userService.deleteByPrimaryKey(uid) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
     /**
@@ -258,33 +240,34 @@ public class UserController {
     /**
      * 重置密码
      *
-     * @param user
+     * @param map
      * @return
      */
     @RequestMapping("/reset")
     @ResponseBody
-    public String resetPassword(User user) {
-        user.setUpass(SecurityUtils.getSecurityResult(user.getUname(), user.getUpass()));
+    public String resetPassword(@RequestBody Map<String, String> map) {
+        User user = userService.getByPrimaryKey(map.get("id"));
+        if (!user.getUpass().equals(SecurityUtils.getSecurityResult(user.getUname(), map.get("upassOld")))) {
+            return Constant.PASSWORD_INCORRECT;
+        }
+        user.setUpass(SecurityUtils.getSecurityResult(user.getUname(), map.get("upass")));
         return userService.updateUser(user) > 0 ? DATA_UPDATE_SUCCESS : DATA_UPDATE_FAILED;
     }
 
     /**
-     * 添加新用户时判断用户名是否重复
+     * 新增/编辑用户信息页面
      *
-     * @param uname
+     * @param userId
+     * @param modelMap
      * @return
      */
-    @RequestMapping("/asyncUname")
-    @ResponseBody
-    public String asyncGetUname(String uname) {
-        if (StringUtils.isEmpty(uname)) {
-            return ARG_EXCEPTION;
+    @GetMapping("/passwordReset")
+    public String reset(@RequestParam(defaultValue = "", required = false) String userId, ModelMap modelMap) {
+        if (userId != null && !"".equals(userId)) {
+            User user = userService.getByPrimaryKey(userId);
+            modelMap.addAttribute("u", user);
         }
-        if (userService.checkExists(uname)) {
-            return UNAME_EXISTS;
-        }
-        return UNAME_NOT_EXISTS;
-
+        return "/user/reset";
     }
 
     /**

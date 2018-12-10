@@ -19,7 +19,7 @@ public class UserRoleService {
     private UserRoleMapper userRoleMapper;
 
     public boolean insertUserRole(String uid, String rid) {
-        if (StringUtils.isEmpty(rid)) {
+        if (StringUtils.isEmpty(rid)||StringUtils.isEmpty(uid)) {
             return false;
         }
         UserRole userRole = new UserRole(uid, rid);
@@ -49,10 +49,17 @@ public class UserRoleService {
     /**
      * 根据rid删除角色
      *
-     * @param rid
+     * @param uid
      * @return
      */
-    public int deleteByRid(String rid) {
-        return userRoleMapper.delete(rid);
+    public int deleteByUid(String uid) {
+        return userRoleMapper.delete(uid);
     }
+
+    public int deleteByRid(String rid) {
+        return userRoleMapper.deleteByRid(rid);
+    }
+
+
+
 }

@@ -37,4 +37,8 @@ public class KeyGeneratorUtils {
         return keyTime();
     }
 
+    public static void main(String[] args) {
+        System.out.println(keyUUID());
+    }
+
 }
