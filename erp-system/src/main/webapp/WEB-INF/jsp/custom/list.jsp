@@ -62,15 +62,15 @@
                     <td>
                         <%@include file="../common/custom_status.jsp" %>
                     </td>
+                    <td class="td-manage">
                     <shiro:hasPermission name="custom:update">
-                        <td class="td-manage">
                             <a title="编辑"
                                onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customCode}',700,350)"
                                href="javascript:;">
                                 <i class="layui-icon">&#xe642;</i>
                             </a>
-                        </td>
                     </shiro:hasPermission>
+                    </td>
                 </tr>
             </c:forEach>
 

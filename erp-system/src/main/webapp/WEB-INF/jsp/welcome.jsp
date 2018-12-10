@@ -376,10 +376,16 @@
                     };
 
                     // 使用刚指定的配置项和数据显示图表。
-                    productChart.setOption(optionProduct);
-                    planChart.setOption(optionPlan);
-                    // materialChart.setOption(optionMaterial);
-                    orderChart.setOption(optionOrder);
+                    if(data.productCount) {
+                        productChart.setOption(optionProduct);
+                    }
+                    if(data.materialName){
+                        planChart.setOption(optionPlan);
+                    }
+                    if(data.order_data) {
+                        // materialChart.setOption(optionMaterial);
+                        orderChart.setOption(optionOrder);
+                    }
                 }
             });
 

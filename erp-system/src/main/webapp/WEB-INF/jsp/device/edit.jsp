@@ -26,8 +26,8 @@
                 <span class="x-red">*</span>设备单价
             </label>
             <div class="layui-input-inline">
-                <input type="number" id="devicePrice" name="devicePrice" required="" lay-verify="required"
-                       value="${device.devicePrice}" autocomplete="off" class="layui-input">
+                <input type="text" id="devicePrice" name="devicePrice" required="" lay-verify="number"
+                       value="${device.devicePrice}" autocomplete="off" class="layui-input" >
             </div>
             <label for="deviceVendor" class="layui-form-label">
                 <span class="x-red">*</span>设备供应商
@@ -76,11 +76,11 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label for="vNote" class="layui-form-label">
+            <label for="deviceNote" class="layui-form-label">
                 备注
             </label>
             <div class="layui-input-inline">
-                <textarea name="vNote" id="vNote" cols="69" rows="9">${device.vNote}</textarea>
+                <textarea name="deviceNote" id="deviceNote" cols="69" rows="9">${device.deviceNote}</textarea>
             </div>
         </div>
         <div class="layui-form-item">
