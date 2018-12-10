@@ -1,5 +1,6 @@
 package com.tony.erp.configuration.shiro;
 
+import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.Module;
 import com.tony.erp.domain.Role;
 import com.tony.erp.domain.User;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import javax.security.auth.login.AccountLockedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

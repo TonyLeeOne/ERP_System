@@ -43,7 +43,6 @@ public class RoleController {
      * @return
      */
     @GetMapping("/getAllRoles")
-//    @ResponseBody
     public String getAllRoles(ModelMap modelMap) {
         modelMap.addAttribute("roles", caffeineService.getAllRoles());
         return "/role/list";
@@ -59,13 +58,15 @@ public class RoleController {
     public String addRole(@RequestBody List<String> mids,
                           @RequestParam String roleName,
                           @RequestParam(defaultValue = "", required = false) String rid) {
-        if (rid != null && !"".equals(rid)) {//更新
+        if (rid != null && !"".equals(rid)) {
+            //更新
             Role role = roleService.selectByPrimaryKey(rid);
             if (role.getRname() != roleName) {
                 role.setRname(roleName);
                 Integer result = roleService.updateRole(role);
             }
-        } else {//新增
+        } else {
+            //新增
             Role role = roleService.addRole(roleName);
             if (ObjectUtils.isEmpty(role) || CollectionUtils.isEmpty(mids)) {
                 return Constant.ARG_EXCEPTION;
@@ -116,7 +117,6 @@ public class RoleController {
 
     /**
      * 批量删除
-     *
      * @param ids
      * @return
      */

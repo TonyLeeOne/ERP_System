@@ -24,13 +24,4 @@ public class ModuleController {
         return "/module/list";
     }
 
-    /**
-     * @return
-     */
-//    @GetMapping("/getAllModules")
-//    @ResponseBody
-//    public List<Module> getAllModules(){
-//        return caffeineService.getAllModules();
-//    }
-
 }

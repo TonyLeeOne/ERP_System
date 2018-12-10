@@ -29,6 +29,10 @@
     </select>
 
     <delete id="delete" parameterType="java.lang.String">
+    delete from user_role where uid=#{uid,jdbcType=VARCHAR}
+  </delete>
+
+    <delete id="deleteByRid" parameterType="java.lang.String">
     delete from user_role where rid=#{rid,jdbcType=VARCHAR}
   </delete>
 

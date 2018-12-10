@@ -46,6 +46,7 @@ public class Constant {
     public static final String RESPONSE_SUCCESS="请求成功";
     public static final String CHECK_INFO="当前角色因被用户使用，不可删除";
     public static final String ACOUNT_LOCAKED="你的账号已被锁定，请10分钟后重试！";
+    public static final String ACOUNT_LOCAKED_ADMIN="你的账号已被锁定，请联系管理员解锁！";
     public static final String LOGIN_SUCCESS="登陆成功";
     public static final String UNAME_EXISTS="用户名已被占用";
     public static final String DEVICE_CODE_EXISTS="当前设备编号已被占用";
@@ -55,7 +56,7 @@ public class Constant {
     public static final String CANNOT_CHANGE="已出货记录不可更改";
     public static final String NEED_AUDIT="需要先审核通过";
     public static final String PRO_SHORTAGE="审核通过，但库存数量不足";
-
+    public static final String PASSWORD_INCORRECT="原始密码错误";
     /**
      * 返回结果处理参数
      */

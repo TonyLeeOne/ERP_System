@@ -18,10 +18,11 @@
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="uname" name="uname" required="" lay-verify="required"
+                               <c:if test="${ ! empty u.id}">readonly="readonly"</c:if>
                                autocomplete="off" value="${u.uname}" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
-                        将会成为您唯一的登入名
+                        用户唯一的登入名
                     </div>
                 </div>
             </div>
@@ -45,7 +46,7 @@
             <div class="layui-row">
 
                 <div class="layui-col-md6">
-                    <label class="layui-form-label"><span class="x-red">*</span>角色</label>
+                    <label class="layui-form-label"><span class="x-red">*</span>角色选择</label>
                     <div class="layui-input-block">
                         <c:forEach items="${roles}" var="role">
                             <input type="checkbox" value="${role.rid}" name="rid[]" lay-skin="primary"
@@ -56,55 +57,67 @@
                     </div>
                 </div>
             </div>
+            <c:if test="${!empty u.status}">
+                <div class="layui-row">
+                    <div class="layui-col-md6">
+                        <label class="layui-form-label"><span class="x-red">*</span>状态</label>
+                        <div class="layui-input-block" value="${u.status}" id="single">
+                            <input type="radio" value="1" name="status" title="正常" id="pro"/>
+                            <input type="radio" value="2" name="status" title="锁定" id="stop"/>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
         </div>
 
-        <div class="layui-form-item">
-            <div class="layui-col-md6">
-                <fieldset class="layui-elem-field layui-field-title site-title">
-                    <legend>
-                        <a>密码设置</a>
-                    </legend>
-                </fieldset>
-                <c:if test="${not empty u.id}">
-                    <div class="layui-row">
-                        <label for="upassOld" class="layui-form-label">
-                            原始密码
+        <c:if test="${ empty u.id}">
+            <div class="layui-form-item">
+                <div class="layui-col-md6">
+                    <fieldset class="layui-elem-field layui-field-title site-title">
+                        <legend>
+                            <a>密码设置</a>
+                        </legend>
+                    </fieldset>
+                        <%--<c:if test="${not empty u.id}">--%>
+                        <%--<div class="layui-row">--%>
+                        <%--<label for="upassOld" class="layui-form-label">--%>
+                        <%--原始密码--%>
+                        <%--</label>--%>
+                        <%--<div class="layui-input-inline">--%>
+                        <%--<input type="password" id="upassOld" name="upassOld" required=""&lt;%&ndash; lay-verify="pass"&ndash;%&gt;--%>
+                        <%--value="" autocomplete="off" class="layui-input">--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
+                        <%--</c:if>--%>
+
+                </div>
+                <div class="layui-row">
+                    <div class="layui-col-md6">
+                        <label for="upass" class="layui-form-label">
+                            <c:if test="${empty u.id}"><span class="x-red">*</span></c:if>密码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="password" id="upassOld" name="upassOld" required=""<%-- lay-verify="pass"--%>
+                            <input type="password" id="upass" name="upass" required=""<%-- lay-verify="pass"--%>
+                                   value="" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            6到16个字符
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <div class="layui-col-md6">
+                        <label for="upass_re" class="layui-form-label">
+                            <c:if test="${empty u.id}"><span class="x-red">*</span></c:if>确认密码
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="password" id="upass_re" name="upass_re" required="" lay-verify="repass"
                                    value="" autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                </c:if>
-
-            </div>
-            <div class="layui-row">
-
-                <div class="layui-col-md6">
-                    <label for="upass" class="layui-form-label">
-                        <c:if test="${empty u.id}"><span class="x-red">*</span></c:if>密码
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="password" id="upass" name="upass" required=""<%-- lay-verify="pass"--%>
-                               value="" autocomplete="off" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">
-                        6到16个字符
-                    </div>
                 </div>
             </div>
-            <div class="layui-row">
-                <div class="layui-col-md6">
-                    <label for="upass_re" class="layui-form-label">
-                        <c:if test="${empty u.id}"><span class="x-red">*</span></c:if>确认密码
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="password" id="upass_re" name="upass_re" required="" lay-verify="repass"
-                               value="" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-            </div>
-        </div>
+        </c:if>
         <div class="layui-form-item">
             <label for="upass_re" class="layui-form-label">
             </label>
@@ -122,6 +135,16 @@
     </form>
 </div>
 <script>
+    $(function () {
+        if($("#single").attr('value')) {
+            if ($("#single").attr('value') == '1') {
+                $("#pro").attr('checked', true);
+            }
+            if ($("#single").attr('value') == '2') {
+                $("#stop").attr('checked', true);
+            }
+        }
+    });
     layui.use(['form', 'layer'], function () {
         // $ = layui.jquery;
         var form = layui.form
@@ -174,7 +197,7 @@
                             parent.layer.close(index);
                         });
                     } else {
-                        layer.alert(msg + "失败")
+                        layer.alert(res, {icon: 2})
                     }
                 }
             });

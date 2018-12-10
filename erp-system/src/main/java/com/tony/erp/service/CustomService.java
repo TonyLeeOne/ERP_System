@@ -29,9 +29,10 @@ public class CustomService {
         List<Custom> customs = customMapper.getAllCustoms();
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(customs);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<Custom> pageInfo = new PageInfo<>(customs);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(pageInfo.getPageNum());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), 10));
         return pageHelperEntity;
     }
 

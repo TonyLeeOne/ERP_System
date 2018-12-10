@@ -19,5 +19,8 @@ public interface UserRoleMapper {
 
     int selectByRids(@Param("rids") String[] rids);
 
-    int delete(String rid);
+    int delete(String uid);
+
+    int deleteByRid(String rid);
+
 }

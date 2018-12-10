@@ -38,9 +38,10 @@
     <%--</ul>--%>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
-            <a href="javascript:;">${sessionScope.user.uname}</a>
+            <a href="javascript:;">${user.uname}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onclick="x_admin_show('个人信息','admin-edit.html',600)">个人信息</a></dd>
+                <dd><a onclick="x_admin_show('密码重置','/passwordReset?userId=${user.id}',600,500)">修改密码</a></dd>
                 <dd><a href="/logout">退出</a></dd>
             </dl>
         </li>
