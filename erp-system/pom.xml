@@ -172,17 +172,17 @@
         <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/ma.glasnost.orika/orika-core -->
-        <dependency>
-            <groupId>ma.glasnost.orika</groupId>
-            <artifactId>orika-core</artifactId>
-            <version>1.5.2</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>ma.glasnost.orika</groupId>-->
+            <!--<artifactId>orika-core</artifactId>-->
+            <!--<version>1.5.2</version>-->
+        <!--</dependency>-->
         <!--&lt;!&ndash; 热部署模块 &ndash;&gt;-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional> <!-- 这个需要为 true 热部署才有效 -->
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-devtools</artifactId>-->
+            <!--<optional>true</optional> &lt;!&ndash; 这个需要为 true 热部署才有效 &ndash;&gt;-->
+        <!--</dependency>-->
 
     </dependencies>
 
