@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.ShipmentMapper">
+    <resultMap id="BaseResultMap" type="com.tony.erp.domain.Shipment">
+        <id column="s_id" jdbcType="VARCHAR" property="sId"/>
+        <result column="s_order_no" jdbcType="VARCHAR" property="sOrderNo"/>
+        <result column="s_pro_code" jdbcType="VARCHAR" property="sProCode"/>
+        <result column="s_ship_count" jdbcType="INTEGER" property="sShipCount"/>
+        <result column="s_auditor" jdbcType="VARCHAR" property="sAuditor"/>
+        <result column="s_surer" jdbcType="VARCHAR" property="sSurer"/>
+        <result column="s_audit_date" jdbcType="VARCHAR" property="sAuditDate"/>
+        <result column="s_ship_date" jdbcType="VARCHAR" property="sShipDate"/>
+        <result column="s_status" jdbcType="CHAR" property="sStatus"/>
+        <association property="order" javaType="com.tony.erp.domain.Order">
+            <id column="o_id" jdbcType="VARCHAR" property="oId"/>
+            <result column="o_no" jdbcType="VARCHAR" property="oNo"/>
+            <result column="o_count" jdbcType="INTEGER" property="oCount"/>
+            <result column="o_custom_name" jdbcType="VARCHAR" property="oCustomName"/>
+            <result column="o_shipment_method" jdbcType="VARCHAR" property="oShipmentMethod"/>
+            <result column="o_contacts" jdbcType="VARCHAR" property="oContacts"/>
+        </association>
+        <association property="product" javaType="com.tony.erp.domain.Product">
+            <id column="pro_id" jdbcType="VARCHAR" property="proId"/>
+            <result column="pro_code" jdbcType="VARCHAR" property="proCode"/>
+            <result column="pro_name" jdbcType="VARCHAR" property="proName"/>
+            <result column="pro_count" jdbcType="INTEGER" property="proCount"/>
+            <result column="pro_price" jdbcType="REAL" property="proPrice"/>
+            <result column="pro_image" jdbcType="VARCHAR" property="proImage"/>
+            <result column="pro_note" jdbcType="VARCHAR" property="proNote"/>
+            <result column="pro_status" jdbcType="CHAR" property="proStatus"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    s_id, s_order_no, s_pro_code, s_ship_count, s_auditor, s_surer, s_audit_date, s_ship_date, 
+    s_status
+  </sql>
+
+    <select id="find" parameterType="map" resultMap="BaseResultMap">
+        select
+        s.s_id,
+        s.s_order_no,
+        s.s_pro_code,
+        s.s_ship_count,
+        s.s_order_no,
+        s.s_status,
+        s.s_auditor,
+        s.s_audit_date,
+        s.s_surer,
+        s.s_ship_date,
+        s.s_ship_count,
+        o.o_count,
+        o.o_custom_name,
+        p.pro_name
+        from shipment s
+        inner join orders o on s.s_order_no=o.o_no
+        left join product p on s.s_pro_code=p.pro_code
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="sId != null">
+                s.s_id=#{sId}
+            </if>
+            <if test="sOrderNo != null">
+                s.s_order_no=#{sOrderNo}
+            </if>
+            <if test="sProCode != null">
+                s.s_pro_code=#{sProCode}
+            </if>
+            <if test="sShipDate != null">
+                s.s_ship_date=#{s_ship_date}
+            </if>
+            <if test="sStatus != null">
+                s.s_status=#{sStatus}
+            </if>
+        </trim>
+        order by s.s_status ASC
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from shipment
+        where s_id = #{sId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shipment
+    where s_id = #{sId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.tony.erp.domain.Shipment">
+    insert into shipment (s_id, s_order_no, s_pro_code, 
+      s_ship_count, s_auditor, s_surer, 
+      s_audit_date, s_ship_date, s_status
+      )
+    values (#{sId,jdbcType=VARCHAR}, #{sOrderNo,jdbcType=VARCHAR}, #{sProCode,jdbcType=VARCHAR}, 
+      #{sShipCount,jdbcType=INTEGER}, #{sAuditor,jdbcType=VARCHAR}, #{sSurer,jdbcType=VARCHAR}, 
+      #{sAuditDate,jdbcType=VARCHAR}, #{sShipDate,jdbcType=VARCHAR}, #{sStatus,jdbcType=CHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.tony.erp.domain.Shipment">
+        insert into shipment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sId != null">
+                s_id,
+            </if>
+            <if test="sOrderNo != null">
+                s_order_no,
+            </if>
+            <if test="sProCode != null">
+                s_pro_code,
+            </if>
+            <if test="sShipCount != null">
+                s_ship_count,
+            </if>
+            <if test="sAuditor != null">
+                s_auditor,
+            </if>
+            <if test="sSurer != null">
+                s_surer,
+            </if>
+            <if test="sAuditDate != null">
+                s_audit_date,
+            </if>
+            <if test="sShipDate != null">
+                s_ship_date,
+            </if>
+            <if test="sStatus != null">
+                s_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sId != null">
+                #{sId,jdbcType=VARCHAR},
+            </if>
+            <if test="sOrderNo != null">
+                #{sOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sProCode != null">
+                #{sProCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sShipCount != null">
+                #{sShipCount,jdbcType=INTEGER},
+            </if>
+            <if test="sAuditor != null">
+                #{sAuditor,jdbcType=VARCHAR},
+            </if>
+            <if test="sSurer != null">
+                #{sSurer,jdbcType=VARCHAR},
+            </if>
+            <if test="sAuditDate != null">
+                #{sAuditDate,jdbcType=VARCHAR},
+            </if>
+            <if test="sShipDate != null">
+                #{sShipDate,jdbcType=VARCHAR},
+            </if>
+            <if test="sStatus != null">
+                #{sStatus,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Shipment">
+        update shipment
+        <set>
+            <if test="sOrderNo != null">
+                s_order_no = #{sOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sProCode != null">
+                s_pro_code = #{sProCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sShipCount != null">
+                s_ship_count = #{sShipCount,jdbcType=INTEGER},
+            </if>
+            <if test="sAuditor != null">
+                s_auditor = #{sAuditor,jdbcType=VARCHAR},
+            </if>
+            <if test="sSurer != null">
+                s_surer = #{sSurer,jdbcType=VARCHAR},
+            </if>
+            <if test="sAuditDate != null">
+                s_audit_date = #{sAuditDate,jdbcType=VARCHAR},
+            </if>
+            <if test="sShipDate != null">
+                s_ship_date = #{sShipDate,jdbcType=VARCHAR},
+            </if>
+            <if test="sStatus != null">
+                s_status = #{sStatus,jdbcType=CHAR},
+            </if>
+        </set>
+        where s_id = #{sId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Shipment">
+    update shipment
+    set s_order_no = #{sOrderNo,jdbcType=VARCHAR},
+      s_pro_code = #{sProCode,jdbcType=VARCHAR},
+      s_ship_count = #{sShipCount,jdbcType=INTEGER},
+      s_auditor = #{sAuditor,jdbcType=VARCHAR},
+      s_surer = #{sSurer,jdbcType=VARCHAR},
+      s_audit_date = #{sAuditDate,jdbcType=VARCHAR},
+      s_ship_date = #{sShipDate,jdbcType=VARCHAR},
+      s_status = #{sStatus,jdbcType=CHAR}
+    where s_id = #{sId,jdbcType=VARCHAR}
+  </update>
+</mapper>

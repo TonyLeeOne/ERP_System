@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.PurchaseOrderMapper">
+    <resultMap id="BaseResultMap" type="com.tony.erp.domain.PurchaseOrder">
+        <id column="po_id" jdbcType="VARCHAR" property="poId"/>
+        <result column="po_cDate" jdbcType="VARCHAR" property="poCdate"/>
+        <result column="po_ono" jdbcType="VARCHAR" property="poOno"/>
+        <result column="po_count" jdbcType="INTEGER" property="poCount"/>
+        <result column="po_bCode" jdbcType="VARCHAR" property="poBcode"/>
+        <result column="po_verifier" jdbcType="VARCHAR" property="poVerifier"/>
+        <result column="po_date" jdbcType="VARCHAR" property="poDate"/>
+        <result column="po_status" jdbcType="CHAR" property="poStatus"/>
+        <collection property="purchases" javaType="com.tony.erp.domain.MaterialPurchase">
+            <result column="mph_id" jdbcType="VARCHAR" property="mphId"/>
+            <result column="mph_name" jdbcType="VARCHAR" property="mphName"/>
+            <result column="mph_sn" jdbcType="VARCHAR" property="mphSn"/>
+            <result column="mph_price" jdbcType="REAL" property="mphPrice"/>
+            <result column="mph_count" jdbcType="INTEGER" property="mphCount"/>
+            <result column="mph_vendor_id" jdbcType="VARCHAR" property="mphVendorId"/>
+            <result column="mph_po_id" jdbcType="VARCHAR" property="mphPoId"/>
+            <result column="mph_sender" jdbcType="VARCHAR" property="mphSender"/>
+            <result column="mph_operator" jdbcType="VARCHAR" property="mphOperator"/>
+            <result column="mph_date" jdbcType="VARCHAR" property="mphDate"/>
+            <result column="mph_status" jdbcType="CHAR" property="mphStatus"/>
+            <association property="vendor" javaType="com.tony.erp.domain.Vendor">
+                <id column="v_id" jdbcType="VARCHAR" property="vId"/>
+                <result column="v_name" jdbcType="VARCHAR" property="vName"/>
+            </association>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+    po_id, po_cDate, po_ono, po_count, po_bCode, po_verifier, po_date, po_status
+  </sql>
+
+    <select id="selectByOno" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        purchase_order
+        where
+        po_ono=#{poOno,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+       select
+        po.*,mp.* from
+        purchase_order po
+        left join material_purchase mp
+        on mp.mph_po_id=po.po_id
+        where po.po_id = #{poId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        po.*,mp.*,v.v_name from
+        purchase_order po
+        left join material_purchase mp
+        on mp.mph_po_id=po.po_id
+        left join
+        vendor v
+        on v.v_id=mp.mph_vendor_id
+        order by po.po_cDate DESC,po.po_status ASC
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from purchase_order
+    where po_id = #{poId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.tony.erp.domain.PurchaseOrder">
+    insert into purchase_order (po_id, po_cDate, po_ono, 
+      po_count, po_bCode, po_verifier, 
+      po_date, po_status)
+    values (#{poId,jdbcType=VARCHAR}, #{poCdate,jdbcType=VARCHAR}, #{poOno,jdbcType=VARCHAR}, 
+      #{poCount,jdbcType=INTEGER}, #{poBcode,jdbcType=VARCHAR}, #{poVerifier,jdbcType=VARCHAR}, 
+      #{poDate,jdbcType=VARCHAR}, #{poStatus,jdbcType=CHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.tony.erp.domain.PurchaseOrder">
+        insert into purchase_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="poId != null">
+                po_id,
+            </if>
+            <if test="poCdate != null">
+                po_cDate,
+            </if>
+            <if test="poOno != null">
+                po_ono,
+            </if>
+            <if test="poCount != null">
+                po_count,
+            </if>
+            <if test="poBcode != null">
+                po_bCode,
+            </if>
+            <if test="poVerifier != null">
+                po_verifier,
+            </if>
+            <if test="poDate != null">
+                po_date,
+            </if>
+            <if test="poStatus != null">
+                po_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="poId != null">
+                #{poId,jdbcType=VARCHAR},
+            </if>
+            <if test="poCdate != null">
+                #{poCdate,jdbcType=VARCHAR},
+            </if>
+            <if test="poOno != null">
+                #{poOno,jdbcType=VARCHAR},
+            </if>
+            <if test="poCount != null">
+                #{poCount,jdbcType=INTEGER},
+            </if>
+            <if test="poBcode != null">
+                #{poBcode,jdbcType=VARCHAR},
+            </if>
+            <if test="poVerifier != null">
+                #{poVerifier,jdbcType=VARCHAR},
+            </if>
+            <if test="poDate != null">
+                #{poDate,jdbcType=VARCHAR},
+            </if>
+            <if test="poStatus != null">
+                #{poStatus,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.PurchaseOrder">
+        update purchase_order
+        <set>
+            <if test="poCdate != null">
+                po_cDate = #{poCdate,jdbcType=VARCHAR},
+            </if>
+            <if test="poOno != null">
+                po_ono = #{poOno,jdbcType=VARCHAR},
+            </if>
+            <if test="poCount != null">
+                po_count = #{poCount,jdbcType=INTEGER},
+            </if>
+            <if test="poBcode != null">
+                po_bCode = #{poBcode,jdbcType=VARCHAR},
+            </if>
+            <if test="poVerifier != null">
+                po_verifier = #{poVerifier,jdbcType=VARCHAR},
+            </if>
+            <if test="poDate != null">
+                po_date = #{poDate,jdbcType=VARCHAR},
+            </if>
+            <if test="poStatus != null">
+                po_status = #{poStatus,jdbcType=CHAR},
+            </if>
+        </set>
+        where po_id = #{poId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.PurchaseOrder">
+    update purchase_order
+    set po_cDate = #{poCdate,jdbcType=VARCHAR},
+      po_ono = #{poOno,jdbcType=VARCHAR},
+      po_count = #{poCount,jdbcType=INTEGER},
+      po_bCode = #{poBcode,jdbcType=VARCHAR},
+      po_verifier = #{poVerifier,jdbcType=VARCHAR},
+      po_date = #{poDate,jdbcType=VARCHAR},
+      po_status = #{poStatus,jdbcType=CHAR}
+    where po_id = #{poId,jdbcType=VARCHAR}
+  </update>
+</mapper>

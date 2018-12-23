@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.BomDetailMapper">
+    <resultMap id="BaseResultMap" type="com.tony.erp.domain.BomDetail">
+        <id column="bd_id" jdbcType="VARCHAR" property="bdId"/>
+        <result column="bd_bcode" jdbcType="VARCHAR" property="bdBcode"/>
+        <result column="bd_msn" jdbcType="VARCHAR" property="bdMsn"/>
+        <result column="bd_num" jdbcType="INTEGER" property="bdNum"/>
+        <result column="bd_rate" jdbcType="REAL" property="bdRate"/>
+        <association property="material" javaType="com.tony.erp.domain.Material">
+            <result column="m_name" jdbcType="VARCHAR" property="mName"/>
+            <result column="m_sn" jdbcType="VARCHAR" property="mSn"/>
+            <result column="m_unit" jdbcType="VARCHAR" property="mUnit"/>
+            <result column="m_count" jdbcType="INTEGER" property="mCount"/>
+            <result column="m_price" jdbcType="FLOAT" property="mPrice"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    bd_id, bd_bcode, bd_msn, bd_num,bd_rate
+  </sql>
+
+    <select id="find" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select bd.*,m.m_name,m.m_sn,m.m_unit,m.m_count,m.m_price from bom_detail bd inner join material m on bd.bd_msn=m.m_sn
+        <if test="bCode != null">
+            where bd.bd_bcode=#{bCode} and m.m_status='1'
+        </if>
+        order by m.m_name
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        bom_detail
+        where
+        bd_id=#{bdId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bom_detail
+    where bd_id = #{bdId,jdbcType=VARCHAR}
+  </delete>
+
+    <insert id="insert" parameterType="com.tony.erp.domain.BomDetail">
+    insert into bom_detail (bd_id, bd_bcode, bd_msn, 
+      bd_num,bd_rate)
+    values (#{bdId,jdbcType=VARCHAR}, #{bdBcode,jdbcType=VARCHAR}, #{bdMsn,jdbcType=VARCHAR}, 
+      #{bdNum,jdbcType=INTEGER},
+      #{bdRate,jdbcType=REAL})
+  </insert>
+    <insert id="insertSelective" parameterType="com.tony.erp.domain.BomDetail">
+        insert into bom_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bdId != null">
+                bd_id,
+            </if>
+            <if test="bdBcode != null">
+                bd_bcode,
+            </if>
+            <if test="bdMsn != null">
+                bd_msn,
+            </if>
+            <if test="bdNum != null">
+                bd_num,
+            </if>
+            <if test="bdRate != null">
+                bd_rate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bdId != null">
+                #{bdId,jdbcType=VARCHAR},
+            </if>
+            <if test="bdBcode != null">
+                #{bdBcode,jdbcType=VARCHAR},
+            </if>
+            <if test="bdMsn != null">
+                #{bdMsn,jdbcType=VARCHAR},
+            </if>
+            <if test="bdNum != null">
+                #{bdNum,jdbcType=INTEGER},
+            </if>
+            <if test="bdRate != null">
+                #{bdRate,jdbcType=REAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.BomDetail">
+        update bom_detail
+        <set>
+            <if test="bdBcode != null">
+                bd_bcode = #{bdBcode,jdbcType=VARCHAR},
+            </if>
+            <if test="bdMsn != null">
+                bd_msn = #{bdMsn,jdbcType=VARCHAR},
+            </if>
+            <if test="bdNum != null">
+                bd_num = #{bdNum,jdbcType=INTEGER},
+            </if>
+            <if test="bdRate != null">
+                bd_rate = #{bdRate,jdbcType=REAL},
+            </if>
+        </set>
+        where bd_id = #{bdId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.BomDetail">
+    update bom_detail
+    set bd_bcode = #{bdBcode,jdbcType=VARCHAR},
+      bd_msn = #{bdMsn,jdbcType=VARCHAR},
+      bd_num = #{bdNum,jdbcType=INTEGER},
+      bd_rate = #{bdRate,jdbcType=REAL}
+    where bd_id = #{bdId,jdbcType=VARCHAR}
+  </update>
+</mapper>

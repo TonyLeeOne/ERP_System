@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.ManPlanMapper">
+    <resultMap id="BaseResultMap" type="com.tony.erp.domain.ManPlan">
+        <id column="mp_id" jdbcType="VARCHAR" property="mpId"/>
+        <result column="mp_sn" jdbcType="VARCHAR" property="mpSn"/>
+        <result column="mp_pro_code" jdbcType="VARCHAR" property="mpProCode"/>
+        <result column="mp_start_date" jdbcType="VARCHAR" property="mpStartDate"/>
+        <result column="mp_end_date" jdbcType="VARCHAR" property="mpEndDate"/>
+        <result column="mp_count" jdbcType="INTEGER" property="mpCount"/>
+        <result column="mp_order_id" jdbcType="VARCHAR" property="mpOrderId"/>
+        <result column="mp_status" jdbcType="CHAR" property="mpStatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    mp_id, mp_sn, mp_pro_code, mp_start_date, mp_end_date, mp_count, mp_order_id, mp_status
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from manufacture_plan
+        where mp_id = #{mpId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getTotal"  resultType="java.lang.Integer">
+        select
+        count(1)
+        from manufacture_plan
+        where mp_status='1'
+    </select>
+
+    <select id="find" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from manufacture_plan
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="mpProCode != null">
+                mp_pro_code=#{mpProCode}
+            </if>
+            <if test="mpSn != null">
+                mp_sn=#{mpSn}
+            </if>
+            <if test="mpStartDate != null">
+                mp_start_date=#{mpStartDate}
+            </if>
+            <if test="mpEndDate != null">
+                mp_end_date=#{mpEndDate}
+            </if>
+            <if test="mpOrderId != null">
+                mp_order_id=#{mpOrderId}
+            </if>
+            <if test="mpStatus != null">
+                mp_status=#{mpStatus}
+            </if>
+        </trim>
+        order by mp_status ASC
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from manufacture_plan
+    where mp_id = #{mpId,jdbcType=VARCHAR}
+  </delete>
+
+    <insert id="insert" parameterType="com.tony.erp.domain.ManPlan">
+    insert into manufacture_plan (mp_id, mp_sn, mp_pro_code, 
+      mp_start_date, mp_end_date, mp_count, 
+      mp_order_id, mp_status)
+    values (#{mpId,jdbcType=VARCHAR}, #{mpSn,jdbcType=VARCHAR}, #{mpProCode,jdbcType=VARCHAR}, 
+      #{mpStartDate,jdbcType=VARCHAR}, #{mpEndDate,jdbcType=VARCHAR}, #{mpCount,jdbcType=INTEGER}, 
+      #{mpOrderId,jdbcType=VARCHAR}, #{mpStatus,jdbcType=CHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.tony.erp.domain.ManPlan">
+        insert into manufacture_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mpId != null">
+                mp_id,
+            </if>
+            <if test="mpSn != null">
+                mp_sn,
+            </if>
+            <if test="mpProCode != null">
+                mp_pro_code,
+            </if>
+            <if test="mpStartDate != null">
+                mp_start_date,
+            </if>
+            <if test="mpEndDate != null">
+                mp_end_date,
+            </if>
+            <if test="mpCount != null">
+                mp_count,
+            </if>
+            <if test="mpOrderId != null">
+                mp_order_id,
+            </if>
+            <if test="mpStatus != null">
+                mp_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mpId != null">
+                #{mpId,jdbcType=VARCHAR},
+            </if>
+            <if test="mpSn != null">
+                #{mpSn,jdbcType=VARCHAR},
+            </if>
+            <if test="mpProCode != null">
+                #{mpProCode,jdbcType=VARCHAR},
+            </if>
+            <if test="mpStartDate != null">
+                #{mpStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="mpEndDate != null">
+                #{mpEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="mpCount != null">
+                #{mpCount,jdbcType=INTEGER},
+            </if>
+            <if test="mpOrderId != null">
+                #{mpOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="mpStatus != null">
+                #{mpStatus,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.ManPlan">
+        update manufacture_plan
+        <set>
+            <if test="mpSn != null">
+                mp_sn = #{mpSn,jdbcType=VARCHAR},
+            </if>
+            <if test="mpProCode != null">
+                mp_pro_code = #{mpProCode,jdbcType=VARCHAR},
+            </if>
+            <if test="mpStartDate != null">
+                mp_start_date = #{mpStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="mpEndDate != null">
+                mp_end_date = #{mpEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="mpCount != null">
+                mp_count = #{mpCount,jdbcType=INTEGER},
+            </if>
+            <if test="mpOrderId != null">
+                mp_order_id = #{mpOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="mpStatus != null">
+                mp_status = #{mpStatus,jdbcType=CHAR},
+            </if>
+        </set>
+        where mp_id = #{mpId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.ManPlan">
+    update manufacture_plan
+    set mp_sn = #{mpSn,jdbcType=VARCHAR},
+      mp_pro_code = #{mpProCode,jdbcType=VARCHAR},
+      mp_start_date = #{mpStartDate,jdbcType=VARCHAR},
+      mp_end_date = #{mpEndDate,jdbcType=VARCHAR},
+      mp_count = #{mpCount,jdbcType=INTEGER},
+      mp_order_id = #{mpOrderId,jdbcType=VARCHAR},
+      mp_status = #{mpStatus,jdbcType=CHAR}
+    where mp_id = #{mpId,jdbcType=VARCHAR}
+  </update>
+
+    <delete id="batchDeleteByMpSn" parameterType="java.lang.String">
+        delete from manufacture_plan where mp_sn in
+        <foreach collection="mpSns" item="mpSn" index="index" open="(" close=")" separator=",">
+            #{mpSn}
+        </foreach>
+    </delete>
+
+    <select id="selectMpSns" resultType="java.lang.String">
+        select distinct(mp_sn) from manufacture_plan where mp_status='1'
+    </select>
+</mapper>

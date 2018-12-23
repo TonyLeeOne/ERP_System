@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.MaterialMapper">
+  <resultMap id="BaseResultMap" type="com.tony.erp.domain.Material">
+    <id column="m_id" jdbcType="VARCHAR" property="mId" />
+    <result column="m_name" jdbcType="VARCHAR" property="mName" />
+    <result column="m_sn" jdbcType="VARCHAR" property="mSn" />
+    <result column="m_count" jdbcType="INTEGER" property="mCount" />
+    <result column="m_unit" jdbcType="VARCHAR" property="mUnit" />
+    <result column="m_note" jdbcType="VARCHAR" property="mNote" />
+    <result column="m_status" jdbcType="CHAR" property="mStatus" />
+    <result column="m_price" jdbcType="REAL" property="mPrice" />
+    <result column="m_locked" jdbcType="CHAR" property="mLocked" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    m_id, m_name, m_sn, m_count, m_unit,m_note, m_status,m_price,m_locked
+  </sql>
+  <select id="checkBySn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from material
+    where m_sn = #{m_sn,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAllMaterials" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from material
+    order by m_sn
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from material
+    where m_id = #{mId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tony.erp.domain.Material">
+    insert into material (m_id, m_name, m_sn, 
+      m_count, m_unit,m_note, m_status,m_price,m_locked
+      )
+    values (#{mId,jdbcType=VARCHAR}, #{mName,jdbcType=VARCHAR}, #{mSn,jdbcType=VARCHAR}, 
+      #{mCount,jdbcType=INTEGER},#{mUnit,jdbcType=VARCHAR}, #{mNote,jdbcType=VARCHAR}, #{mStatus,jdbcType=CHAR}
+      , #{mPrice,jdbcType=REAL} , #{mLocked,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tony.erp.domain.Material">
+    insert into material
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="mName != null">
+        m_name,
+      </if>
+      <if test="mSn != null">
+        m_sn,
+      </if>
+      <if test="mCount != null">
+        m_count,
+      </if>
+      <if test="mUnit != null">
+        m_unit,
+      </if>
+      <if test="mNote != null">
+        m_note,
+      </if>
+      <if test="mStatus != null">
+        m_status,
+      </if>
+      <if test="mPrice != null">
+        m_price,
+      </if>
+      <if test="mLocked != null">
+        m_locked,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=VARCHAR},
+      </if>
+      <if test="mName != null">
+        #{mName,jdbcType=VARCHAR},
+      </if>
+      <if test="mSn != null">
+        #{mSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mCount != null">
+        #{mCount,jdbcType=INTEGER},
+      </if>
+      <if test="mUnit != null">
+        #{mUnit,jdbcType=INTEGER},
+      </if>
+      <if test="mNote != null">
+        #{mNote,jdbcType=VARCHAR},
+      </if>
+      <if test="mStatus != null">
+        #{mStatus,jdbcType=CHAR},
+      </if>
+      <if test="mPrice != null">
+        #{mPrice,jdbcType=REAL},
+      </if>
+      <if test="mLocked != null">
+        #{m_locked,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Material">
+    update material
+    <set>
+      <if test="mName != null">
+        m_name = #{mName,jdbcType=VARCHAR},
+      </if>
+      <if test="mSn != null">
+        m_sn = #{mSn,jdbcType=VARCHAR},
+      </if>
+      <if test="mCount != null">
+        m_count = #{mCount,jdbcType=INTEGER},
+      </if>
+      <if test="mUnit != null">
+        m_unit = #{mUnit,jdbcType=INTEGER},
+      </if>
+      <if test="mNote != null">
+        m_note = #{mNote,jdbcType=VARCHAR},
+      </if>
+      <if test="mStatus != null">
+        m_status = #{mStatus,jdbcType=CHAR},
+      </if>
+      <if test="mPrice != null">
+        m_price = #{mPrice,jdbcType=CHAR},
+      </if>
+      <if test="mLocked != null">
+        m_locked = #{mLocked,jdbcType=CHAR},
+      </if>
+    </set>
+    where m_id = #{mId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Material">
+    update material
+    set m_name = #{mName,jdbcType=VARCHAR},
+      m_sn = #{mSn,jdbcType=VARCHAR},
+      m_count = #{mCount,jdbcType=INTEGER},
+      m_unit = #{mUnit,jdbcType=VARCHAR},
+      m_note = #{mNote,jdbcType=VARCHAR},
+      m_status = #{mStatus,jdbcType=CHAR},
+      m_price = #{mPrice,jdbcType=REAL},
+      m_locked = #{mLocked,jdbcType=CHAR}
+    where m_id = #{mId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getAvailableMaterials" resultType="java.lang.String">
+    select concat(m_name,'(',m_sn,')') from material where m_status='1' and m_count >0 order by m_name
+  </select>
+
+  <select id="dataCollection" resultType="java.lang.String">
+      select concat(m_name,'(',m_sn,')',',',m_count) from material
+
+  </select>
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.erp.dao.BOMMapper">
+    <resultMap id="BaseResultMap" type="com.tony.erp.domain.BOM">
+        <id column="b_id" jdbcType="VARCHAR" property="bId"/>
+        <result column="b_pcode" jdbcType="VARCHAR" property="bPcode"/>
+        <result column="b_code" jdbcType="VARCHAR" property="bCode"/>
+        <result column="b_name" jdbcType="VARCHAR" property="bName"/>
+        <association property="product" javaType="com.tony.erp.domain.Product">
+            <result column="pro_code" jdbcType="VARCHAR" property="proCode"/>
+            <result column="pro_name" jdbcType="VARCHAR" property="proName"/>
+        </association>
+        <collection property="details" javaType="com.tony.erp.domain.BomDetail">
+            <result column="bd_id" jdbcType="VARCHAR" property="bdId"/>
+            <result column="bd_bcode" jdbcType="VARCHAR" property="bdBcode"/>
+            <result column="bd_msn" jdbcType="VARCHAR" property="bdMsn"/>
+            <result column="bd_num" jdbcType="INTEGER" property="bdNum"/>
+            <association property="material" javaType="com.tony.erp.domain.Material">
+                <result column="m_name" jdbcType="VARCHAR" property="mName"/>
+                <result column="m_sn" jdbcType="VARCHAR" property="mSn"/>
+                <result column="m_unit" jdbcType="VARCHAR" property="mUnit"/>
+            </association>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        b_id, b_pcode, b_code, b_name
+    </sql>
+
+    <select id="find" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        b.*,p.pro_name,bd.*,m.m_sn,m.m_name,m.m_unit
+        from bom b
+        inner join product p on b.b_pcode=p.pro_code
+        left join bom_detail bd on b.b_code=bd.bd_bcode
+        left join material m on bd.bd_msn=m.m_sn
+        <if test="bCode != null">
+            where b_code=#{bCode}
+        </if>
+        order by b.b_code
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        b.*,bd.*
+        from bom b
+        left join bom_detail bd on b.b_code=bd.bd_bcode
+        where b.b_id = #{bId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from bom
+        where b_pcode = #{bpCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="checkExistByBCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) from bom where b_code=#{bCode,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from bom
+        where b_id = #{bId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.tony.erp.domain.BOM">
+        insert into bom (b_id, b_pcode, b_code,
+        b_name)
+        values (#{bId,jdbcType=VARCHAR}, #{bPcode,jdbcType=VARCHAR}, #{bCode,jdbcType=VARCHAR},
+        #{bName,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.tony.erp.domain.BOM">
+        insert into bom
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bId != null">
+                b_id,
+            </if>
+            <if test="bPcode != null">
+                b_pcode,
+            </if>
+            <if test="bCode != null">
+                b_code,
+            </if>
+            <if test="bName != null">
+                b_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bId != null">
+                #{bId,jdbcType=VARCHAR},
+            </if>
+            <if test="bPcode != null">
+                #{bPcode,jdbcType=VARCHAR},
+            </if>
+            <if test="bCode != null">
+                #{bCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bName != null">
+                #{bName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.BOM">
+        update bom
+        <set>
+            <if test="bPcode != null">
+                b_pcode = #{bPcode,jdbcType=VARCHAR},
+            </if>
+            <if test="bCode != null">
+                b_code = #{bCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bName != null">
+                b_name = #{bName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where b_id = #{bId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.BOM">
+        update bom
+        set b_pcode = #{bPcode,jdbcType=VARCHAR},
+        b_code = #{bCode,jdbcType=VARCHAR},
+        b_name = #{bName,jdbcType=VARCHAR}
+        where b_id = #{bId,jdbcType=VARCHAR}
+    </update>
+</mapper>
