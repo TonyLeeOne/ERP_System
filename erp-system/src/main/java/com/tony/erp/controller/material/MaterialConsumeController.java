@@ -56,12 +56,11 @@ public class MaterialConsumeController {
     @RequestMapping("/add")
     @ResponseBody
     public String addConsume(MaterialConsume consume){
-        System.out.println(consume.toString());
-        int i=materialConsumService.addMConsume(consume);
-        if(Constant.STATUS_CANNOT_CHANGED==i){
+        int res=materialConsumService.addMConsume(consume);
+        if(Constant.NUMBER_TOO_BIG==res){
             return Constant.NUMBER_BIG;
         }
-        return i>1? Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
+        return res>0? Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
     }
 
 
@@ -73,12 +72,7 @@ public class MaterialConsumeController {
     @RequestMapping("/update")
     @ResponseBody
     public String upConsume(MaterialConsume consume){
-        System.out.println(consume);
-        int i=materialConsumService.upMConsum(consume);
-        if(Constant.STATUS_CANNOT_CHANGED==i){
-            return Constant.NUMBER_BIG;
-        }
-        return i>1? Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+        return materialConsumService.upMConsum(consume)>0? Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
     }
 
     /**
@@ -93,8 +87,7 @@ public class MaterialConsumeController {
         if(mcIds.length>1){
             for (String mcid:mcIds
                  ) {
-               int res= materialConsumService.delMConsume(mcid);
-               if(res<0){
+               if( materialConsumService.delMConsume(mcid)<0){
                    return Constant.DATA_DELETE_FAILED;
                }
             }
@@ -123,6 +116,9 @@ public class MaterialConsumeController {
         int res=materialConsumService.sureConsume(consume);
         if(Constant.STATUS_NEED_AUDIT==res){
             return Constant.NEED_AUDIT;
+        }
+        if(Constant.NUMBER_TOO_BIG==res){
+            return Constant.PRO_SHORTAGE;
         }
         return res>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
     }

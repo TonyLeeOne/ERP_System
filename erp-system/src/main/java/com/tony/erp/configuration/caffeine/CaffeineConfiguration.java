@@ -124,6 +124,9 @@ public class CaffeineConfiguration {
         if (Constant.PRODUCT_DATA_COLLECTION.equals(key)) {
             return productService.dataCollection();
         }
+        if (Constant.ALL_UNAMES.equals(key)) {
+            return userService.selectAllUnames();
+        }
         return null;
     }
 

@@ -8,6 +8,10 @@
     table {
         background-color: #3add3f;
     }
+
+    table td {
+        width: 15%;
+    }
 </style>
 <body>
 <div class="x-body">
@@ -16,7 +20,7 @@
             <a>订单信息</a>
         </legend>
     </fieldset>
-    <table class="layui-table">
+    <table class="layui-table" style="background-color: rgba(30,159,255,0.07)">
         <tr>
             <td>【订单号】</td>
             <td>${order.ONo}</td>
@@ -39,7 +43,7 @@
             <a>产品信息</a>
         </legend>
     </fieldset>
-    <table class="layui-table">
+    <table class="layui-table" style="background-color: rgba(26,160,147,0.21)">
         <tr>
             <td>【产品编号】</td>
             <td>${order.OProductCode}</td>
@@ -58,7 +62,7 @@
             <a>客户信息</a>
         </legend>
     </fieldset>
-    <table class="layui-table">
+    <table class="layui-table" style="background-color: rgba(58,221,63,0.21)">
         <tr>
             <td>【客户】</td>
             <td>${order.OCustomName}</td>
@@ -79,11 +83,12 @@
     </fieldset>
     <div class="layui-row">
         <c:if test="${! empty order.plans}">
-            <div class="layui-collapse">
+            <div class="layui-collapse" lay-accordion>
                 <c:forEach items="${order.plans}" var="plan">
                     <div class="layui-colla-item">
                         <c:if test="${plan.mpStatus=='1'}">
-                            <h2 class="layui-colla-title" style="background-color: rgba(42,137,249,0.58)">【生产计划编号】:${plan.mpSn}
+                            <h2 class="layui-colla-title" style="background-color: rgba(42,137,249,0.16)">
+                                【生产计划编号】:${plan.mpSn}
                                 【产品编号】:${plan.mpProCode}
                                 【计划开始日期】:${plan.mpStartDate} 【计划结束日期】:${plan.mpEndDate} 【当前状态】:
                                 生产中
@@ -91,7 +96,8 @@
                             </h2>
                         </c:if>
                         <c:if test="${plan.mpStatus=='2'}">
-                            <h2 class="layui-colla-title" style="background-color: rgba(58,221,63,0.7)">【生产计划编号】:${plan.mpSn}
+                            <h2 class="layui-colla-title" style="background-color: rgba(58,221,63,0.7)">
+                                【生产计划编号】:${plan.mpSn}
                                 【产品编号】:${plan.mpProCode}
                                 【计划开始日期】:${plan.mpStartDate} 【计划结束日期】:${plan.mpEndDate} 【当前状态】:
                                 已完工
@@ -149,7 +155,7 @@
             <a>出货信息</a>
         </legend>
     </fieldset>
-    <table class="layui-table">
+    <table class="layui-table" style="background-color: rgba(121,93,163,0.2)">
         <tr>
             <td>【出货数量】</td>
             <td>${order.OIndeedCount}</td>
@@ -164,7 +170,7 @@
             <a>业务员信息</a>
         </legend>
     </fieldset>
-    <table class="layui-table">
+    <table class="layui-table" style="background-color: rgba(99,163,92,0.46)">
         <tr>
             <td>【业务员名称】</td>
             <td>${order.OSalesman}</td>
@@ -179,7 +185,7 @@
             <a>其他信息</a>
         </legend>
     </fieldset>
-    <table class="layui-table">
+    <table class="layui-table" style="background-color: rgba(189,44,0,0.21)">
         <tr>
             <td>【创建人】</td>
             <td>${order.OCreator}</td>
@@ -199,60 +205,60 @@
             </td>
         </tr>
     </table>
-    <fieldset class="layui-elem-field layui-field-title site-title">
-        <legend>
-            <a>审核结果</a>
-        </legend>
-    </fieldset>
-    <div class="layui-row">
-        <div class="layui-col-md-8">
-            <textarea name="oNote" class="layui-textarea" readonly="readonly">${order.ONote}</textarea>
-        </div>
-    </div>
-</div>
-
-<c:if test="${order.OStatus=='1'||order.OStatus=='2'}">
-    <form class="layui-form">
+    <c:if test="${! empty order.ONote}">
         <fieldset class="layui-elem-field layui-field-title site-title">
             <legend>
-                <a>审核信息填写区</a>
+                <a>审核结果</a>
             </legend>
         </fieldset>
         <div class="layui-row">
-            <div class="layui-col-md6">
-                <label for="oStatus" class="layui-form-label">
-                    审核结果
-                </label>
-                <div class="layui-input-inline" id="oStatus">
-                    <input type="radio" value="3" name="oStatus" title="核实订单信息通过">
-                    <input type="radio" value="2" name="oStatus" title="核实订单信息不符">
-                </div>
+            <div class="layui-col-md-8">
+                <textarea name="oNote" class="layui-textarea" readonly="readonly">${order.ONote}</textarea>
             </div>
         </div>
-        <div class="layui-row">
-            <div class="layui-col-md6">
+    </c:if>
+    <c:if test="${order.OStatus=='1'||order.OStatus=='2'}">
+        <form class="layui-form">
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend>
+                    <a>审核信息填写区</a>
+                </legend>
+            </fieldset>
+            <div class="layui-row">
+                <div class="layui-col-md6">
+                    <label for="oStatus" class="layui-form-label">
+                        审核结果
+                    </label>
+                    <div class="layui-input-inline" id="oStatus">
+                        <input type="radio" value="3" name="oStatus" title="核实订单信息通过">
+                        <input type="radio" value="2" name="oStatus" title="核实订单信息不符">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md6">
+                    <label class="layui-form-label">
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea name="oNote" placeholder="备注" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row">
                 <label class="layui-form-label">
                 </label>
-                <div class="layui-input-block">
-                    <textarea name="oNote" placeholder="备注" class="layui-textarea"></textarea>
-                </div>
+                <input type="hidden" value="${order.OId}" name="oId"
+                       autocomplete="off" class="layui-input">
             </div>
-        </div>
-        <div class="layui-row">
-            <label class="layui-form-label">
-            </label>
-            <input type="hidden" value="${order.OId}" name="oId"
-                   autocomplete="off" class="layui-input">
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-            </label>
-            <button class="layui-btn" lay-filter="add" lay-submit="">
-                审核
-            </button>
-        </div>
-    </form>
-</c:if>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                </label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">
+                    审核
+                </button>
+            </div>
+        </form>
+    </c:if>
 </div>
 <script>
 

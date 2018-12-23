@@ -36,6 +36,19 @@
             <result column="m_sn" jdbcType="VARCHAR" property="mSn"/>
             <result column="m_count" jdbcType="INTEGER" property="mCount"/>
         </association>
+        <collection property="details" javaType="com.tony.erp.domain.BomDetail">
+            <id column="bd_id" jdbcType="VARCHAR" property="bdId"/>
+            <result column="bd_bcode" jdbcType="VARCHAR" property="bdBcode"/>
+            <result column="bd_msn" jdbcType="VARCHAR" property="bdMsn"/>
+            <result column="bd_num" jdbcType="INTEGER" property="bdNum"/>
+            <result column="bd_rate" jdbcType="REAL" property="bdRate"/>
+            <association property="material" javaType="com.tony.erp.domain.Material">
+                <result column="m_name" jdbcType="VARCHAR" property="mName"/>
+                <result column="m_sn" jdbcType="VARCHAR" property="mSn"/>
+                <result column="m_unit" jdbcType="VARCHAR" property="mUnit"/>
+                <result column="m_count" jdbcType="VARCHAR" property="mCount"/>
+            </association>
+        </collection>
     </resultMap>
     <sql id="Base_Column_List">
     mc_id, mc_mp_sn, mc_mo_sn, mc_m_sn, mc_count_needed, mc_count_indeed, mc_requestor, 
@@ -44,12 +57,13 @@
 
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
-    mc.*,mo.*,mp.*,p.pro_code,p.pro_name,m.m_count,m.m_name
+    mc.*,mo.*,mp.*,bd.*,p.pro_code,p.pro_name,m.*
     from material_consume mc
     left join manufacture_order mo on mc.mc_mo_sn=mo.mo_sn
     left join manufacture_plan mp on mp.mp_sn=mc.mc_mp_sn
     left join product p on mp.mp_pro_code=p.pro_code
-    left join material m on mc.mc_m_sn=m.m_sn
+    left join bom_detail bd on mc.mc_m_sn = bd.bd_bcode
+    inner join material m on m.m_sn=bd.bd_msn
     where mc.mc_id = #{mcId,jdbcType=VARCHAR}
   </select>
 
@@ -69,9 +83,11 @@
 
     <select id="selectAll" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from material_consume
-        order by mc_date desc
+        mc.*,bd.*,m.*
+        from material_consume mc left join bom_detail bd
+        on mc.mc_m_sn = bd.bd_bcode
+        inner join material m on m.m_sn=bd.bd_msn
+        order by mc.mc_status asc,mc.mc_date DESC
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

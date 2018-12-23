@@ -35,6 +35,16 @@ public class ProfileService {
     public int upProfile(Profile profile){
         return profileMapper.updateByPrimaryKeySelective(profile);
     }
+
+
+    /**
+     * 根据pname获取用户资料
+     * @param pname
+     * @return
+     */
+    public Profile getProfileByPname(String pname){
+        return profileMapper.selectByPname(pname);
+    }
     
     
     

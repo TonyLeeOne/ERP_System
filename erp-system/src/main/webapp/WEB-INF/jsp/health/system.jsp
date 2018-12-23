@@ -92,25 +92,6 @@
                 console.log("拉取数据失败");
             }
         });
-        $.get({
-            url:'/actuator/env',
-            success:function(data){
-                var jvm=data.propertySources[2].properties;
-                if(data){
-                    $("#jvm").append(" <table class=\"layui-table\">\n" +
-                        "            <tr>\n" +
-                        "            <td>虚拟机类型</td>\n" +
-                        "            <td>"+jvm[9].value+"</td>\n" +
-                        "            <td>版本</td>\n" +
-                        "            <td>1.8</td>\n" +
-                        "            </tr>\n" +
-                        "            <tr>\n" +
-                        "\n" +
-                        "            </tr>\n" +
-                        "            </table>");
-                }
-            }
-        });
     })
 
     function transfer(value) {

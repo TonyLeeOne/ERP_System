@@ -26,7 +26,7 @@
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="mpSn" name="mpSn" value="${plan.mpSn}" lay-verify="required"
-                               autocomplete="off"
+                               autocomplete="off" <c:if test="${! empty plan.mpSn}">readonly</c:if>
                                class="layui-input">
                     </div>
                 </div>
@@ -218,7 +218,7 @@
 
                             });
                         else
-                            layer.alert(res, {icon: 6});
+                            layer.alert(res, {icon: 2});
 
                         return false;
                     },

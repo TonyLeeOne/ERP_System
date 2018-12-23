@@ -10,9 +10,11 @@
     <result column="pro_image" jdbcType="VARCHAR" property="proImage" />
     <result column="pro_note" jdbcType="VARCHAR" property="proNote" />
     <result column="pro_status" jdbcType="CHAR" property="proStatus" />
+    <result column="pro_unit" jdbcType="VARCHAR" property="proUnit" />
+    <result column="pro_locked" jdbcType="CHAR" property="proLocked" />
   </resultMap>
   <sql id="Base_Column_List">
-    pro_id, pro_code, pro_name, pro_count, pro_price, pro_image, pro_note, pro_status
+    pro_id, pro_code, pro_name, pro_count, pro_price, pro_image, pro_note, pro_status,pro_unit,pro_locked
   </sql>
   <select id="selectByProCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -34,10 +36,10 @@
   <insert id="insert" parameterType="com.tony.erp.domain.Product">
     insert into product (pro_id, pro_code, pro_name, 
       pro_count, pro_price, pro_image, 
-      pro_note, pro_status)
+      pro_note, pro_status,pro_unit,pro_locked)
     values (#{proId,jdbcType=VARCHAR}, #{proCode,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, 
       #{proCount,jdbcType=INTEGER}, #{proPrice,jdbcType=REAL}, #{proImage,jdbcType=VARCHAR}, 
-      #{proNote,jdbcType=VARCHAR}, #{proStatus,jdbcType=CHAR})
+      #{proNote,jdbcType=VARCHAR}, #{proStatus,jdbcType=CHAR}, #{proUnit,jdbcType=VARCHAR}, #{proLocked,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.tony.erp.domain.Product">
     insert into product
@@ -66,6 +68,12 @@
       <if test="proStatus != null">
         pro_status,
       </if>
+      <if test="proUnit != null">
+        pro_unit,
+      </if>
+      <if test="proLocked != null">
+        pro_locked,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="proId != null">
@@ -89,8 +97,11 @@
       <if test="proNote != null">
         #{proNote,jdbcType=VARCHAR},
       </if>
-      <if test="proStatus != null">
-        #{proStatus,jdbcType=CHAR},
+      <if test="proUnit != null">
+        #{proUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="proLocked != null">
+        #{proLocked,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -118,6 +129,12 @@
       <if test="proStatus != null">
         pro_status = #{proStatus,jdbcType=CHAR},
       </if>
+      <if test="proUnit != null">
+        pro_unit = #{proUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="proLocked != null">
+        pro_locked = #{proLocked,jdbcType=CHAR},
+      </if>
     </set>
     where pro_id = #{proId,jdbcType=VARCHAR}
   </update>
@@ -129,7 +146,9 @@
       pro_price = #{proPrice,jdbcType=REAL},
       pro_image = #{proImage,jdbcType=VARCHAR},
       pro_note = #{proNote,jdbcType=VARCHAR},
-      pro_status = #{proStatus,jdbcType=CHAR}
+      pro_status = #{proStatus,jdbcType=CHAR},
+      pro_unit = #{proUnit,jdbcType=VARCHAR},
+      pro_locked = #{proLocked,jdbcType=CHAR}
     where pro_id = #{proId,jdbcType=VARCHAR}
   </update>
   <select id="getTotal" resultType="java.lang.Integer">

@@ -173,4 +173,14 @@ public class ManOrderService {
     public ManOrder selectByMoSn(String moSn){
         return manOrderMapper.selectByMoSn(moSn);
     }
+
+
+    /**
+     * 判断工单号是否被占用
+     * @param moSn
+     * @return
+     */
+    public boolean checkMoExist(String moSn){
+        return !ObjectUtils.isEmpty(selectByMoSn(moSn));
+    }
 }

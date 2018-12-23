@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+import static com.tony.erp.constant.Constant.MPSN_EXISTS;
+
 /**
  * @author jli2
  * @date 11/12/2018 10:34 AM
@@ -28,6 +30,9 @@ public class ManPlanController {
     @RequestMapping("/add")
     @ResponseBody
     public String addManPlan(ManPlan manPlan){
+        if(manPlanService.checkMpExist(manPlan.getMpSn())){
+            return MPSN_EXISTS;
+        }
         return manPlanService.addManPlan(manPlan)>0?Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
     }
 

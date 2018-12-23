@@ -49,22 +49,22 @@
             <div class="layui-row">
                 <div class="layui-col-md6">
                     <label for="customName" class="layui-form-label">
-                        产品编号
+                        产品编号<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="customName" name="proCode" value="${product.proCode}"
-                               autocomplete="off"
+                               autocomplete="off" lay-verify="required"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-col-md6">
 
                     <label for="customAddress" class="layui-form-label">
-                        产品名称
+                        产品名称<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="customAddress" name="proName" value="${product.proName}"
-                               autocomplete="off"
+                               autocomplete="off" lay-verify="required"
                                class="layui-input">
                     </div>
                 </div>
@@ -73,20 +73,20 @@
                 <div class="layui-col-md6">
 
                     <label for="customCode" class="layui-form-label">
-                        库存数量
+                        库存数量<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customCode" name="proCount"
+                        <input type="number" id="customCode" name="proCount" lay-verify="required"
                                value="${product.proCount}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-col-md6">
 
                     <label for="customTel" class="layui-form-label">
-                        单价
+                        单价<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customTel" name="proPrice"
+                        <input type="number" id="customTel" name="proPrice" lay-verify="required"
                                value="${product.proPrice}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -123,6 +123,33 @@
                         <span class="tip">点击上传图片</span>
                     </div>
                 </div>
+
+                <div class="layui-col-md6">
+
+                    <label for="proUnit" class="layui-form-label">
+                        单位 <span class="x-red">*</span>
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="proUnit" lay-verify="required" lay-search id="proUnit" lay-verify="required"
+                                value="${product.proUnit}">
+                            <c:if test="${! empty product.proUnit}">
+                                <option value="${product.proUnit}">${product.proUnit}</option>
+                            </c:if>
+                            <option value="PCS">PCS</option>
+                            <option value="m">m</option>
+                            <option value="m&sup2;">m&sup2;</option>
+                            <option value="kg">kg</option>
+                            <option value="瓶">瓶</option>
+                            <option value="盒">盒</option>
+                            <option value="包">包</option>
+                            <option value="条">条</option>
+                            <option value="卷">卷</option>
+                            <option value="本">本</option>
+                            <option value="台">台</option>
+                        </select>
+                        <%--<input type="number" id="mUnit" name="mUnit"--%>
+                        <%--value="${material.mUnit}" autocomplete="off" class="layui-input">--%>
+                    </div>
 
                 <div class="layui-col-md6">
                         <input type="hidden" class="input-file" value="${product.proImage}" name="proImage" id="proImage">

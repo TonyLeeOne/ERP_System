@@ -5,7 +5,17 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
+        <div class="layui-col-md2">
+            <shiro:hasPermission name="order:delete">
+                <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="order:add">
+                <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit',730,700)"><i
+                        class="layui-icon"></i>添加
+                </button>
+            </shiro:hasPermission>
+        </div>
+        <form class="layui-form layui-col-md6 x-so">
             <input class="layui-input" placeholder="下单日期" name="oCreateDate" id="start">
             <div class="layui-input-inline">
                 <select name="oStatus">
@@ -19,19 +29,8 @@
             <input type="text" name="oNo" placeholder="请输入订单号" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
-    </div>
-    <xblock>
-<shiro:hasPermission name="order:delete">
-
-<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-</shiro:hasPermission>
-<shiro:hasPermission name="order:add">
-
-<button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit',730,750)"><i class="layui-icon"></i>添加
-        </button>
-</shiro:hasPermission>
         <span class="x-right" style="line-height:40px">共有数据: ${orders.total} 条</span>
-    </xblock>
+    </div>
     <table class="layui-table">
         <thead>
         <tr>
@@ -46,6 +45,8 @@
             <th>下单日期</th>
             <th>产品名称</th>
             <th>订单数量</th>
+            <th>库存数量</th>
+            <th>单位</th>
             <th>成交单价</th>
             <th>产品单价</th>
             <th>订单状态</th>
@@ -59,8 +60,8 @@
                 <tr>
                     <td>
                         <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${order.ONo}'><i
-                                class="layui-icon">&#xe605;</i></div>
+                            <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${order.ONo}'><i
+                                    class="layui-icon">&#xe605;</i></div>
                         </c:if>
                     </td>
                     <td>${order.ONo}</td>
@@ -70,6 +71,8 @@
                     <td>${order.OCreateDate}</td>
                     <td>${order.product.proName}</td>
                     <td>${order.OCount}</td>
+                    <td>${order.product.proCount}</td>
+                    <td>${order.product.proUnit}</td>
                     <td>${order.OPay}</td>
                     <td>${order.product.proPrice}</td>
                     <td>
@@ -85,19 +88,22 @@
                     </td>
                     <td class="td-manage">
                         <shiro:hasPermission name="order:update">
-                        <a title="查看订单详情"
-                           onclick="x_admin_show('查看订单信息，当前订单号【${order.ONo}】','/order/show?oId=${order.OId}')"
-                           href="javascript:;">
-                            <i class="layui-icon">&#xe63c;</i>
-                        </a>
-                        <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
-                        <a title="编辑订单信息" onclick="x_admin_show('编辑订单信息','/order/edit?oId=${order.OId}',730,750)"
-                           href="javascript:;">
-                            <i class="layui-icon">&#xe642;</i>
-                        </a>
-                        </c:if>
+                            <a title="查看订单详情"
+                               onclick="x_admin_show('查看订单信息，当前订单号【${order.ONo}】','/order/show?oId=${order.OId}')"
+                               href="javascript:;">
+                                <i class="layui-icon">&#xe63c;</i>
+                            </a>
+                            <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
+                                <a title="编辑订单信息"
+                                   onclick="x_admin_show('编辑订单信息','/order/edit?oId=${order.OId}',730,700)"
+                                   href="javascript:;">
+                                    <i class="layui-icon">&#xe642;</i>
+                                </a>
+                            </c:if>
                         </shiro:hasPermission>
-                        <a title="查看出货记录" onclick="x_admin_show('查看出货记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)" href="javascript:;">
+                        <a title="查看出货记录"
+                           onclick="x_admin_show('查看出货记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)"
+                           href="javascript:;">
                             <i class="layui-icon">&#xe60e;</i>
                         </a>
                     </td>

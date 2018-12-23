@@ -6,11 +6,14 @@
     <result column="m_name" jdbcType="VARCHAR" property="mName" />
     <result column="m_sn" jdbcType="VARCHAR" property="mSn" />
     <result column="m_count" jdbcType="INTEGER" property="mCount" />
+    <result column="m_unit" jdbcType="VARCHAR" property="mUnit" />
     <result column="m_note" jdbcType="VARCHAR" property="mNote" />
     <result column="m_status" jdbcType="CHAR" property="mStatus" />
+    <result column="m_price" jdbcType="REAL" property="mPrice" />
+    <result column="m_locked" jdbcType="CHAR" property="mLocked" />
   </resultMap>
   <sql id="Base_Column_List">
-    m_id, m_name, m_sn, m_count, m_note, m_status
+    m_id, m_name, m_sn, m_count, m_unit,m_note, m_status,m_price,m_locked
   </sql>
   <select id="checkBySn" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -32,10 +35,11 @@
   </delete>
   <insert id="insert" parameterType="com.tony.erp.domain.Material">
     insert into material (m_id, m_name, m_sn, 
-      m_count, m_note, m_status
+      m_count, m_unit,m_note, m_status,m_price,m_locked
       )
     values (#{mId,jdbcType=VARCHAR}, #{mName,jdbcType=VARCHAR}, #{mSn,jdbcType=VARCHAR}, 
-      #{mCount,jdbcType=INTEGER}, #{mNote,jdbcType=VARCHAR}, #{mStatus,jdbcType=CHAR}
+      #{mCount,jdbcType=INTEGER},#{mUnit,jdbcType=VARCHAR}, #{mNote,jdbcType=VARCHAR}, #{mStatus,jdbcType=CHAR}
+      , #{mPrice,jdbcType=REAL} , #{mLocked,jdbcType=CHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.tony.erp.domain.Material">
@@ -53,11 +57,20 @@
       <if test="mCount != null">
         m_count,
       </if>
+      <if test="mUnit != null">
+        m_unit,
+      </if>
       <if test="mNote != null">
         m_note,
       </if>
       <if test="mStatus != null">
         m_status,
+      </if>
+      <if test="mPrice != null">
+        m_price,
+      </if>
+      <if test="mLocked != null">
+        m_locked,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -73,11 +86,20 @@
       <if test="mCount != null">
         #{mCount,jdbcType=INTEGER},
       </if>
+      <if test="mUnit != null">
+        #{mUnit,jdbcType=INTEGER},
+      </if>
       <if test="mNote != null">
         #{mNote,jdbcType=VARCHAR},
       </if>
       <if test="mStatus != null">
         #{mStatus,jdbcType=CHAR},
+      </if>
+      <if test="mPrice != null">
+        #{mPrice,jdbcType=REAL},
+      </if>
+      <if test="mLocked != null">
+        #{m_locked,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -93,11 +115,20 @@
       <if test="mCount != null">
         m_count = #{mCount,jdbcType=INTEGER},
       </if>
+      <if test="mUnit != null">
+        m_unit = #{mUnit,jdbcType=INTEGER},
+      </if>
       <if test="mNote != null">
         m_note = #{mNote,jdbcType=VARCHAR},
       </if>
       <if test="mStatus != null">
         m_status = #{mStatus,jdbcType=CHAR},
+      </if>
+      <if test="mPrice != null">
+        m_price = #{mPrice,jdbcType=CHAR},
+      </if>
+      <if test="mLocked != null">
+        m_locked = #{mLocked,jdbcType=CHAR},
       </if>
     </set>
     where m_id = #{mId,jdbcType=VARCHAR}
@@ -107,8 +138,11 @@
     set m_name = #{mName,jdbcType=VARCHAR},
       m_sn = #{mSn,jdbcType=VARCHAR},
       m_count = #{mCount,jdbcType=INTEGER},
+      m_unit = #{mUnit,jdbcType=VARCHAR},
       m_note = #{mNote,jdbcType=VARCHAR},
-      m_status = #{mStatus,jdbcType=CHAR}
+      m_status = #{mStatus,jdbcType=CHAR},
+      m_price = #{mPrice,jdbcType=REAL},
+      m_locked = #{mLocked,jdbcType=CHAR}
     where m_id = #{mId,jdbcType=VARCHAR}
   </update>
 

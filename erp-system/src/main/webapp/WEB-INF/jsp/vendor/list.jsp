@@ -12,18 +12,18 @@
     <%--<button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>--%>
     <%--</form>--%>
     <%--</div>--%>
-    <xblock>
-        <shiro:hasPermission name="vendor:delete">
-            <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/vendor/batchDelete"><i
-                    class="layui-icon"></i>批量删除
-            </button>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="vendor:add">
-            <button class="layui-btn" onclick="x_admin_show('添加供应商','/vendor/edit',700,500)"><i class="layui-icon"></i>添加
-            </button>
-        </shiro:hasPermission>
-        <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
-    </xblock>
+    <%--<xblock>--%>
+    <shiro:hasPermission name="vendor:delete">
+        <button class="layui-btn layui-btn-danger" id="batch_delete" data-batch-url="/vendor/batchDelete"><i
+                class="layui-icon"></i>批量删除
+        </button>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="vendor:add">
+        <button class="layui-btn" onclick="x_admin_show('添加供应商','/vendor/edit',700,500)"><i class="layui-icon"></i>添加
+        </button>
+    </shiro:hasPermission>
+    <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
+    <%--</xblock>--%>
     <table class="layui-table">
         <thead>
         <tr>
@@ -32,12 +32,11 @@
                         class="layui-icon">&#xe605;</i></div>
             </th>
             <th>供应商名字</th>
-            <th>供应商地址</th>
+            <th>联系人</th>
             <th>供应商联系方式</th>
-            <th>供应商法人代表</th>
             <th>供应商全名</th>
+            <th>供应商地址</th>
             <th>供应商状态</th>
-            <%--<th>备注</th>--%>
             <th>操作</th>
         </thead>
         <tbody>
@@ -49,25 +48,31 @@
                              data-id='${vendor.VId}'><i
                                 class="layui-icon">&#xe605;</i></div>
                     </td>
-                        <%--<td>${vendor.id}</td>--%>
                     <td>${vendor.VName}</td>
-                    <td>${vendor.VAddress}</td>
-                    <td>${vendor.VTel}</td>
                     <td>${vendor.VPublish}</td>
+                    <td>${vendor.VTel}</td>
                     <td>${vendor.VFullname}</td>
+                    <td>${vendor.VAddress}</td>
                     <td>
-                        <%@include file="../common/vendor_status.jsp" %>
+                        <div class="layui-form">
+                            <c:if test="${vendor.VStatus=='1'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="合作|解约" checked>
+                            </c:if>
+                            <c:if test="${vendor.VStatus =='2'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="合作|解约">
+                            </c:if>
+                        </div>
                     </td>
                         <%--<td>${vendor.VNote}</td>--%>
                     <td class="td-manage">
                         <shiro:hasPermission name="vendor:update">
-                        <a title="编辑" onclick="x_admin_show('编辑','/vendor/edit?vId=${vendor.VId}',700,500)"
-                           href="javascript:;">
-                            <i class="layui-icon">&#xe642;</i>
-                        </a>
-                        <a title="删除" id="delete" href="/vendor/delete?vId=${vendor.VId}">
-                            <i class="layui-icon">&#xe640;</i>
-                        </a>
+                            <a title="编辑" onclick="x_admin_show('编辑','/vendor/edit?vId=${vendor.VId}',700,500)"
+                               href="javascript:;">
+                                <i class="layui-icon">&#xe642;</i>
+                            </a>
+                            <a title="删除" id="delete" href="/vendor/delete?vId=${vendor.VId}">
+                                <i class="layui-icon">&#xe640;</i>
+                            </a>
                         </shiro:hasPermission>
                     </td>
                 </tr>

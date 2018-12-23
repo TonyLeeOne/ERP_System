@@ -5,7 +5,16 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
+        <div class="layui-col-md2">
+            <shiro:hasPermission name="custom:delete">
+                <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="custom:add">
+                <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit',700,350)"><i class="layui-icon"></i>添加
+                </button>
+            </shiro:hasPermission>
+        </div>
+        <form class="layui-form layui-col-md4 x-so">
             <div class="layui-input-inline">
                 <select name="contrller">
                     <option value="">客户状态</option>
@@ -16,17 +25,8 @@
             <input type="text" name="customName" placeholder="请输入客户名" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
-    </div>
-    <xblock>
-        <shiro:hasPermission name="custom:delete">
-            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="custom:add">
-            <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit',700,350)"><i class="layui-icon"></i>添加
-            </button>
-        </shiro:hasPermission>
         <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
-    </xblock>
+    </div>
     <table class="layui-table">
         <thead>
         <tr>
@@ -60,7 +60,14 @@
                     <td>${custom.customPublish}</td>
                     <td>${custom.customFullname}</td>
                     <td>
-                        <%@include file="../common/custom_status.jsp" %>
+                        <div class="layui-form">
+                            <c:if test="${custom.customStatus=='1'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="有效|无效" checked>
+                            </c:if>
+                            <c:if test="${custom.customStatus=='2'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="有效|无效">
+                            </c:if>
+                        </div>
                     </td>
                     <shiro:hasPermission name="custom:update">
                         <td class="td-manage">

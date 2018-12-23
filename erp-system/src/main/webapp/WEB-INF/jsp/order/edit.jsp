@@ -26,6 +26,7 @@
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="oNo" name="oNo" value="${order.ONo}" autocomplete="off"
+                        <c:if test="${! empty order.ONo}">readonly</c:if>
                                class="layui-input">
                     </div>
                 </div>
@@ -45,7 +46,8 @@
                         产品编号<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <select name="oProductCode" lay-verify="" val="${order.OProductCode}" lay-search id="oProductCode" lay-verify="required">
+                        <select name="oProductCode" lay-verify="" val="${order.OProductCode}" lay-search
+                                id="oProductCode" lay-verify="required">
                         </select>
                     </div>
                 </div>
@@ -55,7 +57,7 @@
                         订单数量<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="oCount" name="oCount"
+                        <input type="number" id="oCount" name="oCount"
                                value="${order.OCount}" autocomplete="off" class="layui-input"
                                lay-verify="number|required">
                     </div>
@@ -79,6 +81,15 @@
                     <div class="layui-input-inline">
                         <input type="text" id="oPayCategory" name="oPayCategory"
                                value="${order.OPayCategory}" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <label for="oExchangeRate" class="layui-form-label">
+                        汇率
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="oExchangeRate" name="oExchangeRate"
+                               value="${order.OExchangeRate}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -148,9 +159,15 @@
                     <label for="oSalesman" class="layui-form-label">
                         业务员<span>*</span>
                     </label>
+
+
                     <div class="layui-input-inline">
-                        <input type="text" id="oSalesman" name="oSalesman"
-                               value="${order.OSalesman}" autocomplete="off" class="layui-input" lay-verify="required">
+                        <select name="oSalesman" lay-verify="" lay-search id="oSalesman" lay-filter="sales"
+                                val="${order.OSalesman}" lay-verify="required">
+                            <option>请选择</option>
+                        </select>
+                        <%--<input type="text" id="oSalesman" name="oSalesman"--%>
+                        <%--value="${order.OSalesman}" autocomplete="off" class="layui-input" lay-verify="required">--%>
                     </div>
                 </div>
                 <div class="layui-col-md6">
@@ -242,7 +259,7 @@
                     if (data) {
                         if ($("#oCustomName").attr('val')) {
                             $.each(data, function (index, pro) {
-                                if ($("#oCustomName").attr('val') == pro.substring(0,pro.indexOf("("))) {
+                                if ($("#oCustomName").attr('val') == pro.substring(0, pro.indexOf("("))) {
                                     $("#oCustomName").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "' selected='selected'>" + pro + "</option>");
                                 } else
                                     $("#oCustomName").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "'>" + pro + "</option>");
@@ -255,7 +272,7 @@
                     renderForm();
                 },
                 error: function () {
-                    layer.alert("获取数据失败");
+                    layer.alert("获取数据失败", {icon: 2});
                 }
             });
 
@@ -280,6 +297,50 @@
 
             });
 
+            $.ajax({
+                url: "/getAllUnames",
+                method: "get",
+                success: function (data) {
+                    if (data) {
+                        if ($("#oSalesman").attr('val')) {
+                            $.each(data, function (index, pro) {
+                                if ($("#oSalesman").attr('val') == pro) {
+                                    $("#oSalesman").append("<option value='" + pro + "' selected='selected'>" + pro + "</option>");
+                                } else
+                                    $("#oSalesman").append("<option value='" + pro + "'>" + pro + "</option>");
+                            });
+                        } else
+                            $.each(data, function (index, pro) {
+                                $("#oSalesman").append("<option value='" + pro + "'>" + pro + "</option>");
+                            });
+                    }
+                    renderForm();
+                },
+                error: function () {
+                    layer.alert("获取数据失败");
+                }
+            });
+
+
+            form.on('select(sales)', function (data) {
+                $.ajax({
+                    url: "/getProfile",
+                    method: "post",
+                    data: {uname: data.elem[data.elem.selectedIndex].value},
+                    dataType: 'json',
+                    success: function (profile) {
+                        if (profile) {
+                            $("#oSalesmanContact").val(profile.pTel);
+                        }
+
+                    },
+                    error: function () {
+                        layer.alert("你选择的业务员信息可能不存在");
+                    }
+                });
+
+            });
+
 
             layui.use(['form', 'layer'], function () {
                 // $ = layui.jquery;
@@ -295,15 +356,18 @@
                         // contentType: "application/json",
                         async: false,
                         success: function (res) {
+                            if (res == "数据新增成功")
                             //发异步，把数据提交给php
-                            layer.alert(res, {icon: 6}, function () {
-                                // 获得frame索引
-                                var index = parent.layer.getFrameIndex(window.name);
-                                //关闭当前frame
-                                window.parent.location.reload();
-                                parent.layer.close(index);
+                                layer.alert(res, {icon: 6}, function () {
+                                    // 获得frame索引
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    //关闭当前frame
+                                    window.parent.location.reload();
+                                    parent.layer.close(index);
 
-                            });
+                                });
+                            else
+                                layer.alert(res, {icon: 2});
                             return false;
                         },
                         error: function (res) {
@@ -335,7 +399,7 @@
 
                                 });
                             } else {
-                                layer.alert("更新失败");
+                                layer.alert("更新失败",{icon:2});
                             }
 
                             return false;

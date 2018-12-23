@@ -38,7 +38,7 @@ public class KeyGeneratorUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(keyUUID());
+        System.out.println(1+0.02);
     }
 
 }

@@ -2,24 +2,36 @@ package com.tony.erp.service.material;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.regexp.internal.RE;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.dao.MaterialPurchaseMapper;
 import com.tony.erp.domain.Material;
 import com.tony.erp.domain.MaterialPurchase;
+import com.tony.erp.domain.Order;
+import com.tony.erp.domain.PurchaseOrder;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
+import com.tony.erp.service.OrderService;
+import com.tony.erp.service.PurchaseOrderService;
 import com.tony.erp.utils.CurrentUser;
 import com.tony.erp.utils.KeyGeneratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.tony.erp.constant.Constant.STRING_FIVE;
+import static com.tony.erp.constant.Constant.STRING_FOUR;
+import static com.tony.erp.constant.Constant.STRING_TWO;
+
 /**
  * @author jli2
  * @date  2018/11/12
  */
+
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MaterialPurchaseService {
@@ -30,18 +42,21 @@ public class MaterialPurchaseService {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private PurchaseOrderService purchaseOrderService;
+
+    @Autowired
+    private OrderService orderService;
+
     /**
      * 添加采购记录
      * @param materialPurchase
      * @return
      */
     public int addMPurchase(MaterialPurchase materialPurchase) {
+        Material material=materialService.checkSnExist(materialPurchase.getMphSn());
         materialPurchase.setMphId(KeyGeneratorUtils.keyUUID());
-        String mph=materialPurchase.getMphSn();
-        materialPurchase.setMphName(mph.substring(0,mph.indexOf("(")));
-        materialPurchase.setMphSn(mph.substring(mph.indexOf("(")+1,mph.indexOf(")")));
-        materialPurchase.setMphVendorId(Constant.STRING_ONE);
-        System.out.println(materialPurchase.toString());
+        materialPurchase.setMphName(material.getmName());
         return materialPurchaseMapper.insertSelective(materialPurchase);
     }
 
@@ -52,12 +67,10 @@ public class MaterialPurchaseService {
      */
     public int upMPurchase(MaterialPurchase materialPurchase) {
         return materialPurchaseMapper.updateByPrimaryKeySelective(materialPurchase);
-
     }
 
     /**
      * 获取所有采购记录
-     *
      * @return
      */
     public PageHelperEntity getAll(int pageNum) {
@@ -72,7 +85,6 @@ public class MaterialPurchaseService {
 
     /**
      * 根据mphSn查找所有采购记录
-     *
      * @param mphSn 料号
      * @return
      */
@@ -87,15 +99,11 @@ public class MaterialPurchaseService {
      */
     public int delMPurchase(String mpid) {
         MaterialPurchase materialPurchase = materialPurchaseMapper.selectByPrimaryKey(mpid);
-        if (ObjectUtils.isEmpty(materialPurchase)) {
-            return -1;
-        }
-        if(Constant.STRING_FOUR.equals(materialPurchase.getMphVendorId())||Constant.STRING_THREE.equals(materialPurchase.getMphVendorId())){
-            return Constant.STATUS_CANNOT_CHANGED;
+        if(ObjectUtils.isEmpty(materialPurchase)||materialPurchase.getMphStatus().equals(STRING_TWO)){
+            return Constant.ARG_NOT_MATCHED;
         }
         return materialPurchaseMapper.deleteByPrimaryKey(mpid);
     }
-
 
     /**
      * 根据主键查找采购记录
@@ -105,7 +113,6 @@ public class MaterialPurchaseService {
     public MaterialPurchase getMaterialPurchase(String mpId){
         return materialPurchaseMapper.selectByPrimaryKey(mpId);
     }
-
 
     /**
      * 审核采购申请
@@ -117,16 +124,32 @@ public class MaterialPurchaseService {
         return materialPurchaseMapper.updateByPrimaryKeySelective(purchase);
     }
 
-
     /**
      * 确认采购入库
      * @param purchase
      * @return
      */
     public int confirm(MaterialPurchase purchase){
+        MaterialPurchase materialPurchase=materialPurchaseMapper.selectByPrimaryKey(purchase.getMphId());
         purchase.setMphOperator(CurrentUser.getCurrentUser().getUname());
         purchase.setMphDate(KeyGeneratorUtils.dateGenerator());
-        return materialPurchaseMapper.updateByPrimaryKeySelective(purchase);
+        purchase.setMphStatus(STRING_TWO);
+        Material material=materialService.checkSnExist(materialPurchase.getMphSn());
+        material.setmCount(material.getmCount()+materialPurchase.getMphCount());
+        materialPurchaseMapper.updateByPrimaryKeySelective(purchase);
+        materialService.upMaterial(material);
+        String status=materialPurchaseMapper.selectStatusByMpoId(materialPurchase.getMphPoId()).toString();
+        PurchaseOrder purchaseOrder=purchaseOrderService.getPoByPrimaryKey(materialPurchase.getMphPoId());
+        if(!status.contains(Constant.STRING_ONE)){
+            Map<String,String> map=new HashMap<>(1);
+            map.put("oNo",purchaseOrder.getPoOno());
+            Order order=orderService.getByCriteria(map).get(0);
+            order.setOStatus(STRING_FIVE);
+            System.out.println(order.toString());
+            purchaseOrder.setPoStatus(Constant.STRING_FOUR);
+            return purchaseOrderService.updatePo(purchaseOrder)+orderService.upOrderByPurchase(order);
+        }
+        return Constant.OK;
     }
 
 }

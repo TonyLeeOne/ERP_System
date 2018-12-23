@@ -14,6 +14,11 @@
       <result column="mp_sn" jdbcType="VARCHAR" property="mpSn"/>
       <result column="mp_pro_code" jdbcType="VARCHAR" property="mpProCode"/>
     </association>
+    <association property="mBom" javaType="com.tony.erp.domain.BOM">
+      <result column="b_pcode" jdbcType="VARCHAR" property="bPcode"/>
+      <result column="b_code" jdbcType="VARCHAR" property="bCode"/>
+      <result column="b_name" jdbcType="VARCHAR" property="bName"/>
+    </association>
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -163,21 +168,20 @@
   <select id="selectByMoSn" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
     *
-    from manufacture_order mo inner join manufacture_plan mp
-    on mo.mo_mp_sn=mp.mp_sn
+    from manufacture_order mo
+    inner join manufacture_plan mp on mo.mo_mp_sn=mp.mp_sn
+    inner join bom b on mp.mp_pro_code=b.b_pcode
     where mo.mo_sn = #{moSn,jdbcType=VARCHAR}
   </select>
 
-
-
   <select id="selectAllMoSn" parameterType="java.lang.String" resultType="java.lang.String">
     select
-    distinct (mo_sn)
+    distinct(mo_sn)
     from manufacture_order
     <if test="moStatus != null">
-      where mo_status=#{moStatus}
+      where mo_status=#{moStatus} and mo_sn not in (select distinct(sto_mo_sn) from storage)
     </if>
-
+    order by mo_sn ASC
   </select>
 
 </mapper>

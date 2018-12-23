@@ -20,7 +20,7 @@ public class MaterialPurchase {
 
     private String mphVendorId;
 
-    private String mphVendorCode;
+    private String mphPoId;
 
     private String mphSender;
 
@@ -28,7 +28,7 @@ public class MaterialPurchase {
 
     private String mphDate;
 
-    private String mphNote;
+    private String mphStatus;
 
     private Vendor vendor=new Vendor();
 
@@ -80,13 +80,6 @@ public class MaterialPurchase {
         this.mphVendorId = mphVendorId == null ? null : mphVendorId.trim();
     }
 
-    public String getMphVendorCode() {
-        return mphVendorCode;
-    }
-
-    public void setMphVendorCode(String mphVendorCode) {
-        this.mphVendorCode = mphVendorCode == null ? null : mphVendorCode.trim();
-    }
 
     public String getMphSender() {
         return mphSender;
@@ -112,12 +105,20 @@ public class MaterialPurchase {
         this.mphDate = mphDate == null ? null : mphDate.trim();
     }
 
-    public String getMphNote() {
-        return mphNote;
+    public String getMphPoId() {
+        return mphPoId;
     }
 
-    public void setMphNote(String mphNote) {
-        this.mphNote = mphNote == null ? null : mphNote.trim();
+    public void setMphPoId(String mphPoId) {
+        this.mphPoId = mphPoId;
+    }
+
+    public String getMphStatus() {
+        return mphStatus;
+    }
+
+    public void setMphStatus(String mphStatus) {
+        this.mphStatus = mphStatus;
     }
 
     public Vendor getVendor() {
@@ -137,11 +138,11 @@ public class MaterialPurchase {
                 ", mphPrice=" + mphPrice +
                 ", mphCount=" + mphCount +
                 ", mphVendorId='" + mphVendorId + '\'' +
-                ", mphVendorCode='" + mphVendorCode + '\'' +
+                ", mphPoId='" + mphPoId + '\'' +
                 ", mphSender='" + mphSender + '\'' +
                 ", mphOperator='" + mphOperator + '\'' +
                 ", mphDate='" + mphDate + '\'' +
-                ", mphNote='" + mphNote + '\'' +
+                ", mphStatus='" + mphStatus + '\'' +
                 '}';
     }
 }

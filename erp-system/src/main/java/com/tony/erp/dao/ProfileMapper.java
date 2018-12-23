@@ -1,6 +1,7 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.Profile;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 /**
  * @author jli2
@@ -15,6 +16,8 @@ public interface ProfileMapper {
     int insertSelective(Profile record);
 
     Profile selectByPrimaryKey(String pid);
+
+    Profile selectByPname(@Param("pname") String pname);
 
     int updateByPrimaryKeySelective(Profile record);
 

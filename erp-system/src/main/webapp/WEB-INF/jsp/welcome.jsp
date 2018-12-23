@@ -14,26 +14,43 @@
     <body>
     <div class="x-body layui-anim layui-anim-up">
         <fieldset class="layui-elem-field">
-            <legend>系统通知</legend>
+            <legend>系统状态</legend>
             <div class="layui-field-box">
-                <table class="layui-table" lay-skin="line">
-                    <tbody>
-                    <tr>
-                        <td >
-                            <a class="x-a" href="#" target="_blank">新版ERP管理系统1.0上线了</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td >
-                            <a class="x-a" href="#" target="_blank">xxxxx</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <div class="layui-carousel x-admin-carousel x-admin-backlog" lay-anim="" lay-indicator="inside"
+                                 lay-arrow="none" style="width: 100%; height: 90px;">
+                                <div carousel-item="">
+                                    <ul class="layui-row layui-col-space10 layui-this">
+                                        <li class="layui-col-xs4">
+                                            <a href="javascript:;" class="x-admin-backlog-body">
+                                                <h2>总体状态</h2>
+                                                <cite id="status"></cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs4">
+                                            <a href="javascript:;" class="x-admin-backlog-body">
+                                                <h2>磁盘状态</h2>
+                                                <cite id="disk"></cite>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs4">
+                                            <a href="javascript:;" class="x-admin-backlog-body">
+                                                <h2>数据库状态</h2>
+                                                <cite id="db"></cite>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </fieldset>
         <fieldset class="layui-elem-field">
-            <legend>总计</legend>
+            <legend>数据统计</legend>
             <div class="layui-field-box">
                 <div class="layui-col-md12">
                     <div class="layui-card">
@@ -101,24 +118,24 @@
                 <div id="material_chart" style="width: 48%;height:400px;float: right;text-align: center"></div>
             </div>
         </fieldset>
-        <fieldset class="layui-elem-field">
-            <legend>开发团队</legend>
-            <div class="layui-field-box">
-                <table class="layui-table">
-                    <tbody>
-                        <tr>
-                            <th>版权所有</th>
-                            <td>xxxxx(xxxx)
-                                <a href="http://www.xxx.com/" class='x-a' target="_blank">访问官网</a></td>
-                        </tr>
-                        <tr>
-                            <th>开发者</th>
-                            <td>马志斌(113664000@qq.com)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </fieldset>
-        <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由x-admin提供技术支持。</blockquote>
+        <%--<fieldset class="layui-elem-field">--%>
+            <%--<legend>开发团队</legend>--%>
+            <%--<div class="layui-field-box">--%>
+                <%--<table class="layui-table">--%>
+                    <%--<tbody>--%>
+                        <%--<tr>--%>
+                            <%--<th>版权所有</th>--%>
+                            <%--<td>xxxxx(xxxx)--%>
+                                <%--<a href="http://www.xxx.com/" class='x-a' target="_blank">访问官网</a></td>--%>
+                        <%--</tr>--%>
+                        <%--<tr>--%>
+                            <%--<th>开发者</th>--%>
+                            <%--<td>马志斌(113664000@qq.com)</td></tr>--%>
+                    <%--</tbody>--%>
+                <%--</table>--%>
+            <%--</div>--%>
+        <%--</fieldset>--%>
+        <%--<blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由x-admin提供技术支持。</blockquote>--%>
     </div>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/echarts/3.3.2/echarts.min.js" charset="utf-8"></script>
@@ -383,13 +400,45 @@
 
                     // 使用刚指定的配置项和数据显示图表。
                     productChart.setOption(optionProduct);
-                    // planChart.setOption(optionPlan);
+                    planChart.setOption(optionPlan);
                     // materialChart.setOption(optionMaterial);
                     orderChart.setOption(optionOrder);
                 }
             });
 
+
+            $.get({
+                url: '/actuator/health',
+                async: false,
+                success: function (data) {
+                    if (data) {
+                        if (data.status == 'UP')
+                            $("#status").html("<i class='layui-icon' style='color: green'>" + "&#xe619;   运行中" + "</i>");
+                        else
+                            $("#status").html("<i class='layui-icon' style='color: red'>" + "&#xe61a;   异常 " + "</i>");
+
+                        if (data.details.diskSpace.status == 'UP') {
+                            $("#disk").html("<i class='layui-icon' style='color: green'>" + "&#xe619;   正常  <span style='color: #2372dd'>总空间:" + transfer(data.details.diskSpace.details.total) + "  未使用:" + transfer(data.details.diskSpace.details.free) + "</span></i>");
+                        } else
+                            $("#disk").html("<i class='layui-icon' style='color: red'>" + "&#xe619;   异常  <span style='color: #e4554a'>总空间:" + transfer(data.details.diskSpace.details.total) + "  未使用:" + transfer(data.details.diskSpace.details.free) + "</span></i>");
+
+                        if (data.details.db.status == 'UP')
+                            $("#db").html("<i class='layui-icon' style='color: green'>" + "&#xe619;   运行中 <span style='color: #2372dd'>数据库类型:" + data.details.db.details.database + "</span></i>");
+                        else
+                            $("#db").html("<i class='layui-icon' style='color: green'>" + "&#xe619;   异常 <span style='color: #2372dd'>数据库类型:" + data.details.db.details.database + "</span></i>");
+
+                    }
+                },
+                error:function(){
+                    console.log("拉取数据失败");
+                }
+            });
+
         });
+
+        function transfer(value) {
+            return (value / (1024 * 1024 * 1024)).toFixed(2) + "GB";
+        }
 
         </script>
     </body>

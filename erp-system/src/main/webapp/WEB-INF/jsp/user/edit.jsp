@@ -93,11 +93,11 @@
                 </div>
                 <div class="layui-row">
                     <div class="layui-col-md6">
-                        <label for="upass" class="layui-form-label">
+                        <label for="L_pass" class="layui-form-label">
                             <c:if test="${empty u.id}"><span class="x-red">*</span></c:if>密码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="password" id="upass" name="upass" required=""<%-- lay-verify="pass"--%>
+                            <input type="password" id="L_pass" name="upass" required="" lay-verify="upass"<%-- lay-verify="pass"--%>
                                    value="" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-form-mid layui-word-aux">
@@ -107,11 +107,11 @@
                 </div>
                 <div class="layui-row">
                     <div class="layui-col-md6">
-                        <label for="upass_re" class="layui-form-label">
+                        <label for="L_repass" class="layui-form-label">
                             <c:if test="${empty u.id}"><span class="x-red">*</span></c:if>确认密码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="password" id="upass_re" name="upass_re" required="" lay-verify="repass"
+                            <input type="password" id="L_repass" name="upass_re" required="" lay-verify="repass"
                                    value="" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -119,7 +119,7 @@
             </div>
         </c:if>
         <div class="layui-form-item">
-            <label for="upass_re" class="layui-form-label">
+            <label for="L_repass" class="layui-form-label">
             </label>
             <c:if test="${! empty u.id}">
                 <button class="layui-btn" lay-filter="add" lay-submit="">
@@ -157,7 +157,7 @@
                     return '昵称至少得5个字符啊';
                 }
             }
-            , pass: [/(.+){6,12}$/, '密码必须6到12位']
+            , upass: [/(.+){6,12}$/, '密码必须6到12位']
             , repass: function (value) {
                 if ($('#L_pass').val() != $('#L_repass').val()) {
                     return '两次密码不一致';

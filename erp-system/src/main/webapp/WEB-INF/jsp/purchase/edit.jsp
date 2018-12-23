@@ -9,11 +9,36 @@
                 <div class="layui-col-md6">
                     <div class="layui-col-md6">
                         <label for="mphSn" class="layui-form-label">
-                            物料编号
+                            物料<span class="x-red">*</span>
                         </label>
                         <div class="layui-input-inline">
                             <select name="mphSn" lay-verify="required" lay-search id="mphSn" lay-filter="orders"
                                     val="${purchase.mphSn}">
+                                <c:if test="${! empty details}">
+                                    <c:forEach items="${details}" var="detail">
+                                            <option value="${detail.material.mSn}"
+                                        <c:if test="${purchase.mphSn==detail.material.mSn}"> selected </c:if> >${detail.material.mName}</option>
+
+                                        <%--<c:if test="${purchase.mphSn!=detail.material.mSn}">--%>
+                                            <%--<option value="${detail.material.mSn}">${detail.material.mName}</option>--%>
+                                        <%--</c:if>--%>
+                                    </c:forEach>
+                                </c:if>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <label for="mphVendorId" class="layui-form-label">
+                            供应商<span class="x-red">*</span>
+                        </label>
+                        <div class="layui-input-inline">
+                            <select name="mphVendorId" lay-verify="required" lay-search id="mphVendorId"
+                                    lay-filter="orders">
+                                <c:if test="${! empty vendors}">
+                                    <c:forEach items="${vendors}" var="vendor">
+                                            <option value="${vendor.VId}" <c:if test="${purchase.mphVendorId==vendor.VId}"> selected   </c:if>>${vendor.VName}</option>
+                                    </c:forEach>
+                                </c:if>
                             </select>
                         </div>
                     </div>
@@ -22,42 +47,33 @@
                             <input type="hidden" id="mphId" name="mphId"
                                    value="${purchase.mphId}" autocomplete="off" class="layui-input">
                         </div>
+                        <div class="layui-input-inline">
+                            <input type="hidden" id="mphPoId" name="mphPoId"
+                                   value="${poId}" autocomplete="off" class="layui-input">
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="layui-row">
                 <div class="layui-col-md6">
                     <label for="mphPrice" class="layui-form-label">
-                        采购单价
+                        采购单价<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="number" id="mphPrice" name="mphPrice"
+                        <input type="number" id="mphPrice" name="mphPrice" lay-verify="required"
                                value="${purchase.mphPrice}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-col-md6">
                     <label for="mphCount" class="layui-form-label">
-                        采购数量
+                        采购数量<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="number" id="mphCount" name="mphCount"
+                        <input type="number" id="mphCount" name="mphCount" lay-verify="required"
                                value="${purchase.mphCount}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
-            <div class="layui-row">
-                <div class="layui-col-md6">
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">备注</label>
-                        <div class="layui-input-block">
-                            <textarea name="mphNote" placeholder="请输入内容"
-                                      class="layui-textarea">${purchase.mphNote}</textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
             <div class="layui-form-item">
                 <div class="layui-col-md12" style="margin-top: 2%">
                     <label class="layui-form-label">
@@ -69,7 +85,7 @@
                     </c:if>
                     <c:if test="${empty purchase.mphId}">
                         <button class="layui-btn layui-btn-normal" lay-filter="add" lay-submit="">
-                            提交申请
+                            确定
                         </button>
                     </c:if>
                 </div>
@@ -87,32 +103,32 @@
     }
 
     $(function () {
-        /**
-         * 填充物料编号
-         */
-        $.ajax({
-            url: "/material/getAvailableMaterials",
-            method: "get",
-            success: function (data) {
-                if (data) {
-                    if ($("#mphSn").attr('val')) {
-                        $.each(data, function (index, pro) {
-                            if ($("#mphSn").attr('val') == pro.substring(pro.indexOf("(") + 1, pro.indexOf(")"))) {
-                                $("#mphSn").append("<option value='" + pro + "' selected='selected'>" + pro + "</option>");
-                            } else
-                                $("#mphSn").append("<option value='" + pro + "'>" + pro + "</option>");
-                        });
-                    } else
-                        $.each(data, function (index, pro) {
-                            $("#mphSn").append("<option value='" + pro + "'>" + pro + "</option>");
-                        });
-                }
-                renderForm();
-            },
-            error: function () {
-                alert("获取数据失败");
-            }
-        });
+        //     /**
+        //      * 填充物料编号
+        //      */
+        //     $.ajax({
+        //         url: "/material/getAvailableMaterials",
+        //         method: "get",
+        //         success: function (data) {
+        //             if (data) {
+        //                 if ($("#mphSn").attr('val')) {
+        //                     $.each(data, function (index, pro) {
+        //                         if ($("#mphSn").attr('val') == pro.substring(pro.indexOf("(") + 1, pro.indexOf(")"))) {
+        //                             $("#mphSn").append("<option value='" + pro + "' selected='selected'>" + pro + "</option>");
+        //                         } else
+        //                             $("#mphSn").append("<option value='" + pro + "'>" + pro + "</option>");
+        //                     });
+        //                 } else
+        //                     $.each(data, function (index, pro) {
+        //                         $("#mphSn").append("<option value='" + pro + "'>" + pro + "</option>");
+        //                     });
+        //             }
+        //             renderForm();
+        //         },
+        //         error: function () {
+        //             alert("获取数据失败");
+        //         }
+        //     });
 
 
         layui.use(['form', 'layer'], function () {
@@ -152,7 +168,7 @@
             //监听提交
             form.on('submit(edit)', function (data) {
                 $.ajax({
-                    url: "/material/update",
+                    url: "/materialPurchase/update",
                     data: data.field,
                     type: "POST",
                     // dataType: "json",
@@ -170,7 +186,7 @@
 
                             });
                         } else {
-                            layer.alert("更新失败");
+                            layer.alert(res);
                         }
 
                         return false;

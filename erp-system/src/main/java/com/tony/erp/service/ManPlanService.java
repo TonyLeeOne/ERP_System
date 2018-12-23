@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -123,5 +124,14 @@ public class ManPlanService {
      */
     public List<String> selectMpSns(){
         return manPlanMapper.selectMpSns();
+    }
+
+    /**
+     * 查看mpsn是否重复
+     * @param mpSn
+     * @return
+     */
+    public boolean checkMpExist(String mpSn){
+        return !ObjectUtils.isEmpty(getManPlanByMpSn(mpSn));
     }
 }

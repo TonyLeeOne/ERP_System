@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -132,6 +133,10 @@ public class UserController {
     @ResponseBody
     public String addUser(@RequestBody Map<String, String> map) {
         if (StringUtils.isEmpty(map.get("id"))) {
+            String rids = map.get("rids");
+            if(StringUtils.isEmpty(rids)){
+                return NEED_SELECTED_ROLES;
+            }
             User user = new User();
             user.setUname(map.get("uname"));
             if (userService.checkExists(user.getUname())) {
@@ -140,7 +145,6 @@ public class UserController {
             user.setDepartId(map.get("departId"));
             user.setUpass(SecurityUtils.getSecurityResult(user.getUname(), map.get("upass")));
             user = userService.saveUser(user);
-            String rids = map.get("rids");
             String[] ridsArr = rids.split(",");
             for (int i = 0; i < ridsArr.length; i++) {
                 if (!userRoleService.insertUserRole(user.getId(), ridsArr[i])) {
@@ -152,10 +156,6 @@ public class UserController {
             User user = userService.getByPrimaryKey(map.get("id"));
             user.setDepartId(map.get("departId"));
             user.setStatus(map.get("status"));
-//            if(!user.getUpass().equals(SecurityUtils.getSecurityResult(user.getUname(), map.get("upassOld")))){
-//                return Constant.PASSWORD_INCORRECT;
-//            }
-//            user.setUpass(SecurityUtils.getSecurityResult(user.getUname(), map.get("upass")));
             if (userService.updateUser(user) < 1) {
                 return Constant.DATA_UPDATE_FAILED;
             }
@@ -255,8 +255,7 @@ public class UserController {
     }
 
     /**
-     * 新增/编辑用户信息页面
-     *
+     * 密码重置
      * @param userId
      * @param modelMap
      * @return
@@ -269,6 +268,30 @@ public class UserController {
         }
         return "/user/reset";
     }
+
+    /**
+     * 用户资料页面
+     * @param uname
+     * @param modelMap
+     * @return
+     */
+    @GetMapping("/profile")
+    public String profile(@RequestParam(defaultValue = "", required = false) String uname, ModelMap modelMap) {
+        if (!StringUtils.isEmpty(uname)) {
+            modelMap.addAttribute("profile", profileService.getProfileByPname(uname));
+        }
+        return "/profile/edit";
+    }
+
+
+    @PostMapping("/getProfile")
+    @ResponseBody
+    public Profile getProfile(String uname){
+       return profileService.getProfileByPname(uname);
+    }
+
+
+
 
     /**
      * 批量删除
@@ -285,6 +308,36 @@ public class UserController {
         int res = userService.batchDeleteByIds(ids);
         return res > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
+
+    /**
+     * 获取所有用户名
+     * @return
+     */
+    @GetMapping("/getAllUnames")
+    @ResponseBody
+    public List<String> getAllUnames(){
+        return userService.selectAllUnames();
+    }
+
+
+    /**
+     * 新增/编辑用户信息页面
+     *
+     * @param userId
+     * @return
+     */
+    @GetMapping("/pReset")
+    @ResponseBody
+    public String pReset(@RequestParam(defaultValue = "", required = false) String userId) {
+        if (StringUtils.isEmpty(userId)) {
+            return PASS_RESET_FAILED;
+        }
+        User user = userService.getByPrimaryKey(userId);
+        user.setUpass(SecurityUtils.getSecurityResult(user.getUname(),TRANTIONAL_PASSWORD));
+        return userService.updateUser(user)>0?PASS_RESET_SUCCESS+TRANTIONAL_PASSWORD:PASS_RESET_FAILED;
+    }
+
+
 
 }
 

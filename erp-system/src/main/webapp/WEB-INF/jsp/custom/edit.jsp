@@ -7,13 +7,13 @@
             <div class="layui-row">
                 <div class="layui-col-md6">
                     <input type="text" hidden name="customId" value="${custom.customId}">
-                    <label for="customName" class="layui-form-label">
-                        客户名字
+
+                    <label for="customCode" class="layui-form-label">
+                        客户编号<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customName" name="customName" value="${custom.customName}"
-                               autocomplete="off"
-                               class="layui-input">
+                        <input type="text" id="customCode" name="customCode" lay-verify="required"
+                               value="${custom.customCode}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-col-md6">
@@ -31,22 +31,22 @@
             <div class="layui-row">
 
                 <div class="layui-col-md6">
-
-                    <label for="customCode" class="layui-form-label">
-                        客户编号
+                    <label for="customName" class="layui-form-label">
+                        客户名字
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customCode" name="customCode"
-                               value="${custom.customCode}" autocomplete="off" class="layui-input">
+                        <input type="text" id="customName" name="customName" value="${custom.customName}"
+                               autocomplete="off"
+                               class="layui-input">
                     </div>
                 </div>
                 <div class="layui-col-md6">
 
                     <label for="customTel" class="layui-form-label">
-                        客户电话
+                        客户电话 <span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="customTel" name="customTel"
+                        <input type="number" id="customTel" name="customTel" lay-verify="phone"
                                value="${custom.customTel}" autocomplete="off" class="layui-input">
                     </div>
                 </div>

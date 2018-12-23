@@ -13,9 +13,31 @@ public class Material {
 
     private Integer mCount;
 
+    private String mUnit;
+
     private String mNote;
 
     private String mStatus;
+
+    private Float mPrice;
+
+    private String mLocked;
+
+    public Float getmPrice() {
+        return mPrice;
+    }
+
+    public void setmPrice(Float mPrice) {
+        this.mPrice = mPrice;
+    }
+
+    public String getmUnit() {
+        return mUnit;
+    }
+
+    public void setmUnit(String mUnit) {
+        this.mUnit = mUnit;
+    }
 
     public String getmId() {
         return mId;
@@ -65,6 +87,14 @@ public class Material {
         this.mStatus = mStatus == null ? null : mStatus.trim();
     }
 
+    public String getmLocked() {
+        return mLocked;
+    }
+
+    public void setmLocked(String mLocked) {
+        this.mLocked = mLocked;
+    }
+
     @Override
     public String toString() {
         return "Material{" +
@@ -72,8 +102,11 @@ public class Material {
                 ", mName='" + mName + '\'' +
                 ", mSn='" + mSn + '\'' +
                 ", mCount=" + mCount +
+                ", mUnit='" + mUnit + '\'' +
                 ", mNote='" + mNote + '\'' +
                 ", mStatus='" + mStatus + '\'' +
+                ", mPrice=" + mPrice +
+                ", mLocked='" + mLocked + '\'' +
                 '}';
     }
 }

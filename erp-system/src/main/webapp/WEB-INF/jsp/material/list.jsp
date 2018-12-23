@@ -4,18 +4,20 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
+        <div class="layui-col-md2">
+            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+            <button class="layui-btn" onclick="x_admin_show('添加物料信息','/material/edit',730,500)"><i
+                    class="layui-icon"></i>添加
+            </button>
+        </div>
+        <form class="layui-form layui-col-md4 x-so">
             <input type="text" name="oNo" placeholder="请输入物料号" autocomplete="off" class="layui-input">
             <input type="text" name="oNo" placeholder="请输入物料名" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
-    </div>
-    <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加物料信息','/material/edit',730,500)"><i class="layui-icon"></i>添加
-        </button>
         <span class="x-right" style="line-height:40px">共有数据: ${materials.total} 条</span>
-    </xblock>
+    </div>
+
     <table class="layui-table">
         <thead>
         <tr>
@@ -25,8 +27,11 @@
             </th>
             <th>物料名</th>
             <th>物料编号</th>
-            <th>剩余数量</th>
+            <th>库存数量</th>
+            <th>单位</th>
+            <th>单价</th>
             <th>状态</th>
+            <%--<th>锁定</th>--%>
             <th>备注</th>
             <th>操作</th>
         </tr>
@@ -42,16 +47,27 @@
                     <td>${material.mName}</td>
                     <td>${material.mSn}</td>
                     <td>${material.mCount}</td>
+                    <td>${material.mUnit}</td>
+                    <td>${material.mPrice}</td>
                     <td>
-                        <%@include file="../common/material_status.jsp" %>
+                        <div class="layui-form">
+                            <c:if test="${material.mStatus=='1'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="可用|禁用" checked>
+                            </c:if>
+                            <c:if test="${material.mStatus=='2'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="可用|禁用">
+                            </c:if>
+                        </div>
+                        <%--<%@include file="../common/material_status.jsp" %>--%>
                     </td>
+                    <%--<td>${material.mLocked}</td>--%>
                     <td>${material.mNote}</td>
                     <td class="td-manage">
-                            <a title="编辑物料信息"
-                               onclick="x_admin_show('编辑物料信息','/material/edit?mSn=${material.mSn}',730,500)"
-                               href="javascript:;">
-                                <i class="layui-icon">&#xe642;</i>
-                            </a>
+                        <a title="编辑物料信息"
+                           onclick="x_admin_show('编辑物料信息','/material/edit?mSn=${material.mSn}',730,500)"
+                           href="javascript:;">
+                            <i class="layui-icon">&#xe642;</i>
+                        </a>
                     </td>
                 </tr>
             </c:forEach>

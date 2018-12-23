@@ -50,13 +50,19 @@
             <div class="layui-row">
                 <div class="layui-col-md6">
                     <label for="mcMSn" class="layui-form-label">
-                        物料编号<span>*</span>
+                        BOM编号<span>*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <select name="mcMSn" lay-verify="required" lay-search id="mcMSn"
-                                val="${consume.mcMSn}">
-                        </select>
+                        <input type="text" id="mcMSn" name="mcMSn" value="${consume.mcMSn}" lay-verify="required"
+                               autocomplete="off"
+                               readonly="readonly"
+                               class="layui-input">
                     </div>
+                    <%--<div class="layui-input-inline">--%>
+                        <%--<select name="mcMSn" lay-verify="required" lay-search id="mcMSn"--%>
+                                <%--val="${consume.mcMSn}">--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
                 </div>
 
                 <div class="layui-col-md6">
@@ -121,31 +127,31 @@
             var form = layui.form, layer = layui.layer;
 
             /**
-             * 填充订单编号
-             */
-            $.ajax({
-                url: "/material/getAvailableMaterials",
-                method: "get",
-                success: function (data) {
-                    if (data) {
-                        if ($("#mcMSn").attr('val')) {
-                            $.each(data, function (index, pro) {
-                                if ($("#mcMSn").attr('val') == pro.substring(pro.indexOf("(") + 1, pro.indexOf(")"))) {
-                                    $("#mcMSn").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "' selected='selected'>" + pro + "</option>");
-                                } else
-                                    $("#mcMSn").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "'>" + pro + "</option>");
-                            });
-                        } else
-                            $.each(data, function (index, pro) {
-                                $("#mcMSn").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "'>" + pro + "</option>");
-                            });
-                    }
-                    renderForm();
-                },
-                error: function () {
-                    alert("获取数据失败");
-                }
-            });
+             * 填充物料编号
+            //  */
+            // $.ajax({
+            //     url: "/material/getAvailableMaterials",
+            //     method: "get",
+            //     success: function (data) {
+            //         if (data) {
+            //             if ($("#mcMSn").attr('val')) {
+            //                 $.each(data, function (index, pro) {
+            //                     if ($("#mcMSn").attr('val') == pro.substring(pro.indexOf("(") + 1, pro.indexOf(")"))) {
+            //                         $("#mcMSn").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "' selected='selected'>" + pro + "</option>");
+            //                     } else
+            //                         $("#mcMSn").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "'>" + pro + "</option>");
+            //                 });
+            //             } else
+            //                 $.each(data, function (index, pro) {
+            //                     $("#mcMSn").append("<option value='" + pro.substring(pro.indexOf("(") + 1, pro.indexOf(")")) + "'>" + pro + "</option>");
+            //                 });
+            //         }
+            //         renderForm();
+            //     },
+            //     error: function () {
+            //         alert("获取数据失败");
+            //     }
+            // });
 
             $.ajax({
                 url: "/manOrder/getAllMoSn",
@@ -180,6 +186,7 @@
                     success: function (manOrder) {
                         if (manOrder) {
                             $("#mcMpSn").val(manOrder.moMpSn);
+                            $("#mcMSn").val(manOrder.mbom.bcode);
                         }
 
                     },

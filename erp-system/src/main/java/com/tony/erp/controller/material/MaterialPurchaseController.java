@@ -2,6 +2,8 @@ package com.tony.erp.controller.material;
 
 import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.MaterialPurchase;
+import com.tony.erp.service.DetailService;
+import com.tony.erp.service.VendorService;
 import com.tony.erp.service.material.MaterialPurchaseService;
 import com.tony.erp.service.material.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,12 @@ public class MaterialPurchaseController {
 
     @Autowired
     private MaterialPurchaseService materialPurchaseService;
+
+    @Autowired
+    private DetailService detailService;
+
+    @Autowired
+    private VendorService vendorService;
 
     /**
      * 查询首页采购记录
@@ -65,7 +73,7 @@ public class MaterialPurchaseController {
     @RequestMapping("/update")
     @ResponseBody
     public String upPurchase(MaterialPurchase materialPurchase){
-        return materialPurchaseService.upMPurchase(materialPurchase)>1? Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+        return materialPurchaseService.upMPurchase(materialPurchase)>0? Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
     }
 
     /**
@@ -103,11 +111,14 @@ public class MaterialPurchaseController {
 
 
 
-    @GetMapping("/edit")
-    public String editMaterial(@RequestParam(defaultValue = "", required = false) String mphId, ModelMap modelMap) {
+    @GetMapping("/edit/{bCode}/{poId}")
+    public String editMaterial(@PathVariable String bCode,@PathVariable String poId, @RequestParam(defaultValue = "", required = false) String mphId,ModelMap modelMap) {
         if (!StringUtils.isEmpty(mphId)) {
             modelMap.addAttribute("purchase",materialPurchaseService.getMaterialPurchase(mphId));
         }
+        modelMap.addAttribute("details",detailService.selectByBCode(bCode));
+        modelMap.addAttribute("vendors",vendorService.getAll());
+        modelMap.addAttribute("poId",poId);
         return "/purchase/edit";
     }
 

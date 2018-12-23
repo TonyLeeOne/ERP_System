@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tony.erp.constant.Constant.ONO_EXISTS;
+
 /**
  * @author jli2
  * @date 2018/11/12
@@ -45,6 +47,9 @@ public class OrderController {
     @PostMapping("/add")
     @ResponseBody
     public String addOrders(Order order) {
+        if(orderService.checkOnoExists(order.getONo())){
+            return ONO_EXISTS;
+        }
         return orderService.addOrder(order) > 0 ? Constant.DATA_ADD_SUCCESS : Constant.DATA_ADD_FAILED;
     }
 

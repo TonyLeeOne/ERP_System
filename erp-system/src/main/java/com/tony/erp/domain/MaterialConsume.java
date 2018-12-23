@@ -2,6 +2,9 @@ package com.tony.erp.domain;
 
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author jli2
  * @date  2018/11/12
@@ -35,6 +38,8 @@ public class MaterialConsume {
     private Product product=new Product();
 
     private Material material=new Material();
+
+    private Set<BomDetail> details=new HashSet<>();
 
 
 

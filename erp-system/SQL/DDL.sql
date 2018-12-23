@@ -1,4 +1,29 @@
 -- we don't know how to generate schema erp_system (class Schema) :(
+create table bom
+(
+	b_id varchar(50) not null comment '主键'
+		primary key,
+	b_pcode varchar(50) not null comment '产品编号',
+	b_code varchar(50) not null comment 'bom编号',
+	b_name varchar(50) not null comment 'bom名',
+	constraint b_code
+		unique (b_code)
+)
+comment 'BOM表'
+;
+
+create table bom_detail
+(
+	bd_id varchar(50) not null comment '主键'
+		primary key,
+	bd_bcode varchar(50) not null comment 'bom编号',
+	bd_msn varchar(50) not null comment '物料编号',
+	bd_num int not null comment '数量',
+	bd_rate float null comment '损耗率'
+)
+comment 'BOM明细表'
+;
+
 create table custom
 (
 	custom_id varchar(50) not null comment '主键'
@@ -83,7 +108,7 @@ create table manufacture_plan
 	mp_start_date varchar(50) null comment '生产计划开始日期',
 	mp_end_date varchar(50) null comment '生产计划结束日期',
 	mp_count int default '0' null comment '计划生产数量',
-	mp_order_id varchar(50) null comment '订单id',
+	mp_order_id varchar(50) null comment '订单号',
 	mp_status char null comment '1代表生成进行中，2代表生产完成',
 	constraint manufacture_plan_mp_sn_uindex
 		unique (mp_sn)
@@ -100,6 +125,9 @@ create table material
 	m_count int null comment '仓库物料剩余数量',
 	m_note varchar(200) null comment '备注',
 	m_status char null comment '物料状态，1 ,充足  2,短缺',
+	m_unit varchar(10) null,
+	m_price float null,
+	m_locked char default '1' null comment '1 正常，2 锁定',
 	constraint material_m_sn_uindex
 		unique (m_sn)
 )
@@ -118,7 +146,7 @@ create table material_consume
 	mc_requestor varchar(20) null comment '领料员',
 	mc_operator varchar(20) null comment '发料员',
 	mc_date varchar(20) null comment '领料时间',
-	mc_status char null comment '领料状态 1,可领料 2,已领料'
+	mc_status char null comment '领料状态 1,待审核 2,审核不通过  3 待确认  4 已领料'
 )
 comment '领料表'
 ;
@@ -131,21 +159,22 @@ create table material_purchase
 	mph_sn varchar(50) null comment '物料编号',
 	mph_price float null comment '物料单价',
 	mph_count int null comment '物料入库数量',
-	mph_vendor_id varchar(50) null comment '供应商id',
-	mph_vendor_code varchar(50) null comment '供应商物料编号',
-	mph_sender varchar(100) null comment '送货人',
+	mph_vendor_id varchar(50) null comment '当前状态 1待审核  2 审核不通过  3 待入库  4 已入库',
+	mph_po_id varchar(50) null comment '采购订单id',
+	mph_sender varchar(100) null comment '审核人',
 	mph_operator varchar(10) null comment '入库员',
 	mph_date varchar(20) null comment '入库日期',
-	mph_note varchar(200) null comment '备注'
+	mph_status char default '1' null comment '当前状态  1 待入库  2 已入库'
 )
-comment '采购表'
+comment '采购记录表'
 ;
 
 create table module
 (
 	mid varchar(50) not null comment '主键'
 		primary key,
-	mname varchar(255) null comment '权限名称'
+	mname varchar(255) null comment '权限名称',
+	remark varchar(50) null
 )
 comment '权限表'
 ;
@@ -158,7 +187,7 @@ create table orders
 	o_creator varchar(20) null comment '创建人',
 	o_no varchar(50) null comment '订单号',
 	o_com_no varchar(50) null comment '公司单号',
-	o_product_code varchar(10) null comment '产品编号',
+	o_product_code varchar(100) null comment '产品编号',
 	o_count int null comment '订单数量',
 	o_indeed_count int null comment '实际出货数量',
 	o_create_date varchar(50) null comment '下单日期',
@@ -177,7 +206,7 @@ create table orders
 	o_auditor varchar(20) null comment '审核人',
 	o_audit_date varchar(20) null comment '审核日期',
 	o_note varchar(100) null comment '备注',
-	o_status char null comment '订单状态 1代表待审核 2代表审核未通过  3代表待出货 4代表已安排出货',
+	o_status char null comment '订单状态 1代表待审核 2代表审核未通过  3代表待出货 4代表已安排出货 5待生产  6 待采购',
 	constraint orders_o_no_uindex
 		unique (o_no)
 )
@@ -195,6 +224,8 @@ create table product
 	pro_image varchar(200) null comment '产品图片的url',
 	pro_note varchar(200) null comment '产品介绍',
 	pro_status char null comment '产品状态，1代表已量产，2代表已停产',
+	pro_unit varchar(10) null,
+	pro_locked char default '1' null comment '1 正常  2 锁定',
 	constraint pro_code
 		unique (pro_code)
 )
@@ -205,18 +236,35 @@ create table profile
 (
 	pid varchar(50) not null comment '主键'
 		primary key,
-	p_uid varchar(50) not null comment '用户id',
-	p_indate varchar(20) not null comment '入职日期',
-	p_faredate varchar(20) not null comment '离职日期',
+	p_uid varchar(50) null comment '用户名',
+	p_indate varchar(20) null comment '入职日期',
+	p_faredate varchar(20) null comment '离职日期',
 	p_major varchar(50) null comment '专业',
 	p_id varchar(20) null comment '身份证号',
 	p_sex char null comment '性别',
 	p_edu varchar(10) null comment '教育程度',
 	p_tel varchar(15) null comment '联系方式',
 	p_name varchar(20) null comment '中文名或别名',
-	p_wechat varchar(50) null comment '微信'
+	p_wechat varchar(50) null comment '微信',
+	constraint profile_p_name_uindex
+		unique (p_name)
 )
 comment '用户信息表'
+;
+
+create table purchase_order
+(
+	po_id varchar(50) not null comment '主键'
+		primary key,
+	po_cDate varchar(20) null comment '创建日期',
+	po_ono varchar(50) null comment '订单号',
+	po_count int null comment '采购数量',
+	po_bCode varchar(50) null comment 'bom编号',
+	po_verifier varchar(50) null comment '审核人',
+	po_date varchar(20) null comment '审核日期',
+	po_status char null comment '当前状态 1,待审核  2 审核不通过  3 待入库 4 已入库'
+)
+comment '采购订单表'
 ;
 
 create table role
@@ -271,7 +319,7 @@ create table storage
 	sto_real_date varchar(20) null comment '入库日期',
 	sto_surer varchar(10) null comment '确认人',
 	sto_sender varchar(10) null comment '送料员',
-	sto_status char null comment '1,待确认 2,入库失败 3,入库成功 '
+	sto_status char null comment '1,待确认 2,入库失败 3,入库成功'
 )
 comment '成品入库表'
 ;
@@ -330,6 +378,7 @@ create table vendor
 )
 comment '供应商管理表'
 ;
+
 
 
 

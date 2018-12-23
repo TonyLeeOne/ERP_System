@@ -36,6 +36,7 @@
             <result column="pro_image" jdbcType="VARCHAR" property="proImage"/>
             <result column="pro_note" jdbcType="VARCHAR" property="proNote"/>
             <result column="pro_status" jdbcType="CHAR" property="proStatus"/>
+            <result column="pro_unit" jdbcType="CHAR" property="proUnit"/>
         </association>
         <collection property="plans" ofType="com.tony.erp.domain.ManPlan">
             <id column="mp_id" jdbcType="VARCHAR" property="mpId"/>
@@ -93,7 +94,9 @@
         o.o_product_code,
         o.o_indeed_count,
         p.pro_price,
-        p.pro_name
+        p.pro_name,
+        p.pro_unit,
+        p.pro_count
         from orders o
         left join product p
         on o.o_product_code=p.pro_code
@@ -108,7 +111,7 @@
                 o.o_no=#{oNo}
             </if>
         </trim>
-        order by o.o_create_date DESC
+        order by o.o_create_date DESC,o.o_status ASC
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

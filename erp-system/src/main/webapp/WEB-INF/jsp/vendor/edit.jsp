@@ -21,20 +21,22 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label for="vTel" class="layui-form-label">
-                <span class="x-red">*</span>联系方式
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="vTel" name="vTel" required="" lay-verify="required"
-                       value="${vendor.VTel}" autocomplete="off" class="layui-input">
-            </div>
             <label for="vPublish" class="layui-form-label">
-                <span class="x-red">*</span>法人代表
+                <span class="x-red">*</span>联系人
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="vPublish" name="vPublish" required="" lay-verify="required"
                        value="${vendor.VPublish}" autocomplete="off" class="layui-input">
             </div>
+
+            <label for="vTel" class="layui-form-label">
+                <span class="x-red">*</span>联系方式
+            </label>
+            <div class="layui-input-inline">
+                <input type="number" id="vTel" name="vTel" required="" lay-verify="required|phone"
+                       value="${vendor.VTel}" autocomplete="off" class="layui-input">
+            </div>
+
         </div>
         <div class="layui-form-item">
             <label for="vFullname" class="layui-form-label">

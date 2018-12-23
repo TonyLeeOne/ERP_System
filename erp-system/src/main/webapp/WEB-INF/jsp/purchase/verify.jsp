@@ -15,16 +15,16 @@
                 <div class="layui-col-md6">
                     <label class="layui-form-label">审核结果</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="mphVendorId" value="2" title="拒绝采购">
-                        <input type="radio" name="mphVendorId" value="3" title="同意采购">
+                        <input type="radio" name="poStatus" value="2" title="拒绝采购">
+                        <input type="radio" name="poStatus" value="3" title="同意采购">
                     </div>
                 </div>
             </div>
             <div class="layui-row">
                 <div class="layui-col-md6">
-                    <c:if test="${!empty purchase.mphId}">
+                    <c:if test="${!empty po.poId}">
                         <div class="layui-input-inline">
-                            <input type="hidden" value="${purchase.mphId}" name="mphId">
+                            <input type="hidden" value="${po.poId}" name="poId">
                         </div>
                     </c:if>
                 </div>
@@ -49,7 +49,7 @@
 
            form.on('submit(edit)', function (data) {
                $.ajax({
-                   url: "/materialPurchase/audit",
+                   url: "/pO/audit",
                    data: data.field,
                    type: "POST",
                    async: false,

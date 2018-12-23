@@ -28,10 +28,12 @@ public interface UserMapper {
 
     List<User> getAllUsers();
 
-    int selectByUname(String uname);
+    int selectByUname(@Param("uname") String uname);
 
     int selecTotalByDepartId(@Param("departId") String departId);
 
     int batchDeleteByIds(@Param("ids") String[] ids);
+
+    List<String> selectAllUnames();
 
 }

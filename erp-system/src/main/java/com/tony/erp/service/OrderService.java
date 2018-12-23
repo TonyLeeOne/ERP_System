@@ -4,11 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.dao.OrderMapper;
-import com.tony.erp.domain.Custom;
-import com.tony.erp.domain.ManPlan;
-import com.tony.erp.domain.Order;
-import com.tony.erp.domain.Shipment;
+import com.tony.erp.domain.*;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
+import com.tony.erp.service.material.MaterialPurchaseService;
 import com.tony.erp.service.product.ShipmentService;
 import com.tony.erp.utils.CurrentUser;
 import com.tony.erp.utils.KeyGeneratorUtils;
@@ -17,8 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,18 @@ public class OrderService {
 
     @Autowired
     private CustomService customService;
+
+    @Autowired
+    private BomService bomService;
+
+    @Autowired
+    private DetailService detailService;
+
+    @Autowired
+    private PurchaseOrderService purchaseOrderService;
+
+    @Autowired
+    private MaterialPurchaseService purchaseService;
 
     /**
      * 分页查询订单数据
@@ -98,19 +111,60 @@ public class OrderService {
      * @return
      */
     public int confirmOrder(String oId, String status, String notes) {
+        int res=0;
         Order order = this.getByOid(oId);
         order.setOAuditor(CurrentUser.getCurrentUser().getUname());
         order.setOAuditDate(KeyGeneratorUtils.dateGenerator());
+        if(notes!=null){
+            order.setONote(notes);
+        }
         if (Constant.STRING_ONE.equals(order.getOStatus()) || Constant.STRING_TWO.equals(order.getOStatus())) {
-            if (order.getOCount() > order.getProduct().getProCount()) {
-                order.setOStatus(Constant.STRING_FIVE);
-                order.setONote(Constant.PRO_SHORTAGE);
+            order.setOStatus(status);
+            if(Constant.STRING_TWO.equals(status)){
                 return orderMapper.updateByPrimaryKeySelective(order);
             }
-            order.setOStatus(status);
-            if(notes!=null){
-                order.setONote(notes);
+            //订单数量大于库存数量
+            if (order.getOCount() > order.getProduct().getProCount()) {
+                BOM bom=bomService.selectByPCode(order.getOProductCode());
+                //存库物料不足，创建采购订单,获取当前产品的所有bom清单
+                if(ObjectUtils.isEmpty(bom)){
+                    return Constant.ARG_NOT_MATCHED;
+                }
+                List<BomDetail> details=detailService.selectByBCode(bom.getBCode());
+                if(CollectionUtils.isEmpty(details)){
+                    return Constant.ARG_NOT_MATCHED;
+                }
+                List<MaterialPurchase> purchaseList=new ArrayList<>(details.size());
+                for (BomDetail d :details) {
+                    int needed=(int)Math.ceil(d.getBdNum()*(1+d.getBdRate())*order.getOCount());
+                    if(d.getMaterial().getmCount()<needed){
+                        res++;
+                    }
+                    MaterialPurchase materialPurchase=new MaterialPurchase();
+                    materialPurchase.setMphCount(needed);
+                    materialPurchase.setMphSn(d.getMaterial().getmSn());
+                    materialPurchase.setMphPrice(d.getMaterial().getmPrice());
+                    purchaseList.add(materialPurchase);
+                }
+                if(res>0){
+                    PurchaseOrder purchaseOrder=new PurchaseOrder();
+                    purchaseOrder.setPoId(KeyGeneratorUtils.keyUUID());
+                    purchaseOrder.setPoCdate(KeyGeneratorUtils.dateGenerator());
+                    purchaseOrder.setPoCount(order.getOCount());
+                    purchaseOrder.setPoBcode(bom.getBCode());
+                    purchaseOrder.setPoOno(order.getONo());
+                    order.setOStatus(Constant.STRING_SIX);
+                    purchaseList.forEach(purchase -> {
+                        purchase.setMphPoId(purchaseOrder.getPoId());
+                        purchaseService.addMPurchase(purchase);
+                    });
+                    return purchaseOrderService.addPo(purchaseOrder)+orderMapper.updateByPrimaryKeySelective(order);
+                }
+                order.setOStatus(Constant.STRING_FIVE);
+                order.setONote(order.getONote()+Constant.PRO_SHORTAGE);
+                return orderMapper.updateByPrimaryKeySelective(order);
             }
+            //库存产品充足，创建出货记录，并更新订单状态
             Shipment shipment = new Shipment();
             shipment.setSOrderNo(order.getONo());
             shipment.setSProCode(order.getOProductCode());
@@ -130,13 +184,20 @@ public class OrderService {
             order.setOCustomName(custom.getCustomName());
         }
         Order exist = this.getByOid(order.getOId());
-        if (Constant.STRING_FOUR.equals(exist.getOStatus())||Constant.STRING_THREE.equals(exist.getOStatus())||Constant.STRING_FIVE.equals(exist.getOStatus())) {
+        if (Constant.STRING_FOUR.equals(exist.getOStatus())||Constant.STRING_THREE.equals(exist.getOStatus())||Constant.STRING_SIX.equals(exist.getOStatus())||Constant.STRING_FIVE.equals(exist.getOStatus())) {
             return Constant.STATUS_CANNOT_CHANGED;
         }
         order.setOModifier(CurrentUser.getCurrentUser().getUname());
         if (Constant.STRING_TWO.equals(exist.getOStatus())) {
             order.setOStatus(Constant.STRING_ONE);
         }
+        return orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    /**
+     * 修改订单信息状态为生产5
+     */
+    public int upOrderByPurchase(Order order) {
         return orderMapper.updateByPrimaryKeySelective(order);
     }
 
@@ -178,6 +239,16 @@ public class OrderService {
 
 
     /**
+     * 检查订单标号是否被占用
+     * @param oNo
+     * @return
+     */
+    public boolean checkOnoExists(String oNo){
+        Map<String,String> map=new HashMap<>();
+        map.put("oNo",oNo);
+        return !CollectionUtils.isEmpty(getByCriteria(map));
+    }
+    /**
      * 获取进行中的订单总数量
      *
      * @return
@@ -198,7 +269,7 @@ public class OrderService {
 
 
     /**
-     * 获取所有待出货的状态为订单
+     * 获取所有待出货状态的订单
      * @return
      */
     public List<String> getONos(String oStatus) {

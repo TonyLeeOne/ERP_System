@@ -87,7 +87,7 @@ public class UserService {
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(users);
         PageInfo<User> pageInfo = new PageInfo<>(users);
-        pageHelperEntity.setTotal(pageInfo.getTotal());
+        pageHelperEntity.setTotal(getTotal());
         pageHelperEntity.setPageNum(pageInfo.getPageNum());
         return pageHelperEntity;
     }
@@ -135,5 +135,13 @@ public class UserService {
 
     public int batchDeleteByIds(String[] ids) {
         return userMapper.batchDeleteByIds(ids);
+    }
+
+    /**
+     * 获取所有用户名
+     * @return
+     */
+    public List<String> selectAllUnames(){
+        return userMapper.selectAllUnames();
     }
 }

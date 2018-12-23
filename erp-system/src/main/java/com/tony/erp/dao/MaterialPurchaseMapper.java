@@ -1,6 +1,7 @@
 package com.tony.erp.dao;
 
 import com.tony.erp.domain.MaterialPurchase;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -64,4 +65,11 @@ public interface MaterialPurchaseMapper {
      * @return
      */
     List<MaterialPurchase> selectByMphSn(String mphSn);
+
+    /**
+     * 查找采购订单下所有采购清单的状态
+     * @param mphPoId
+     * @return
+     */
+    List<String> selectStatusByMpoId(@Param("mphPoId") String mphPoId);
 }

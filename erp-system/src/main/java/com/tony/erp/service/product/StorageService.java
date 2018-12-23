@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tony.erp.constant.Constant.STRING_ONE;
+
 /**
  * @author jli2
  * @date 11/13/2018 9:55 AM
@@ -68,7 +70,7 @@ public class StorageService {
      */
     public int addStorage(Storage storage){
         storage.setStoId(KeyGeneratorUtils.keyUUID());
-        storage.setStoStatus(Constant.STRING_ONE);
+        storage.setStoStatus(STRING_ONE);
         if(StringUtils.isEmpty(storage.getStoProCode())){
             return Constant.ARG_NOT_MATCHED;
         }
@@ -115,7 +117,7 @@ public class StorageService {
             //根据入库计划编号获取对应生产计划
             ManPlan manPlan = manPlanService.getManPlanByMpSn(sto.getStoMpSn());
             //根据生产计划编号查找对应订单
-            Map<String, String> params = new HashMap<>();
+            Map<String, String> params = new HashMap<>(1);
             params.put("oNo", manPlan.getMpOrderId());
             Order order = orderService.getByCriteria(params).get(0);
             if (ObjectUtils.isEmpty(order)) {
@@ -129,6 +131,10 @@ public class StorageService {
             }
             //更新订单状态为待出货
             if (product.getProCount() >= order.getOCount()&&Constant.STRING_FIVE.equals(order.getOStatus())) {
+                product.setProLocked(STRING_ONE);
+                if(productService.upProduct(product)<0) {
+                    return Constant.ARG_NOT_MATCHED;
+                }
                 Shipment shipment = new Shipment();
                 shipment.setSOrderNo(order.getONo());
                 shipment.setSProCode(order.getOProductCode());
@@ -136,7 +142,7 @@ public class StorageService {
                 order.setOStatus(Constant.STRING_THREE);
                 int i = orderService.upOrderByShip(order) + shipmentService.addShip(shipment);
                 log.info("新增出货记录为[{}]",shipment.toString());
-                if (i < 0) {
+                if (i < 2) {
                     return Constant.ARG_NOT_MATCHED;
                 }
             }

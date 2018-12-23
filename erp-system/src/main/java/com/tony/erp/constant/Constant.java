@@ -26,6 +26,7 @@ public class Constant {
     public static final String ORDER_DATA_COLLECTION="order_data";
     public static final String MATERIAL_DATA_COLLECTION="material_data";
     public static final String PRODUCT_DATA_COLLECTION="product_data";
+    public static final String ALL_UNAMES="uanmes";
 
     /**
      * 数据加密参数
@@ -41,6 +42,9 @@ public class Constant {
     public static final String DATA_UPDATE_SUCCESS="数据更新成功";
     public static final String DATA_UPDATE_FAILED="数据更新失败";
     public static final String DATA_UDELETE_SUCCESS="数据删除成功";
+    public static final String PASS_RESET_SUCCESS="密码重置成功，重置后的密码为:";
+    public static final String PASS_RESET_FAILED="密码重置失败";
+    public static final String TRANTIONAL_PASSWORD="888888";
     public static final String DATA_DELETE_FAILED="数据删除失败";
     public static final String ARG_EXCEPTION="参数不允许为空";
     public static final String RESPONSE_SUCCESS="请求成功";
@@ -49,23 +53,32 @@ public class Constant {
     public static final String ACOUNT_LOCAKED_ADMIN="你的账号已被锁定，请联系管理员解锁！";
     public static final String LOGIN_SUCCESS="登陆成功";
     public static final String UNAME_EXISTS="用户名已被占用";
+    public static final String MPSN_EXISTS="生产计划编号已被占用";
+    public static final String MOSN_EXISTS="生产工单编号已被占用";
+    public static final String BOM_CODE_EXISTS="BOM编号已被占用";
+    public static final String ONO_EXISTS="订单编号已被占用";
+    public static final String NEED_SELECTED_ROLES="请选择至少一个角色";
     public static final String DEVICE_CODE_EXISTS="当前设备编号已被占用";
-    public static final String PROD_CODE_EXISTS="当前设备编号已被占用";
-    public static final String UNAME_NOT_EXISTS="用户名可用";
+    public static final String PROD_CODE_EXISTS="当前产品编号已被占用";
+    public static final String ALREADY_PURGE="该产品当前处于锁定状态，不可去库存";
     public static final String NUMBER_BIG="表单数量不可大于仓库剩余数量";
     public static final String CANNOT_CHANGE="已出货记录不可更改";
     public static final String NEED_AUDIT="需要先审核通过";
-    public static final String PRO_SHORTAGE="审核通过，但库存数量不足";
+    public static final String PRO_SHORTAGE="~~【系统消息:库存数量不足】";
     public static final String PASSWORD_INCORRECT="原始密码错误";
     /**
      * 返回结果处理参数
      */
     public static final int ARG_NOT_MATCHED=-1;
+    public static final int OK=1;
+    public static final int NUMBER_TOO_BIG=-4;
+    public static final int ALREADY_PURGE_STORAGE=-5;
     public static final int STATUS_CANNOT_CHANGED=-2;
     public static final int STATUS_NEED_AUDIT=-3;
     public static final String STRING_ONE="1";
     public static final String STRING_TWO="2";
     public static final String STRING_FIVE="5";
+    public static final String STRING_SIX="6";
     public static final String STRING_THREE="3";
     public static final String STRING_FOUR="4";
 

@@ -40,12 +40,12 @@
         <li class="layui-nav-item">
             <a href="javascript:;">${user.uname}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                <dd><a onclick="x_admin_show('个人信息','admin-edit.html',600)">个人信息</a></dd>
+                <dd><a onclick="x_admin_show('个人信息','/profile?uname=${user.uname}',700,450)">个人信息</a></dd>
                 <dd><a onclick="x_admin_show('密码重置','/passwordReset?userId=${user.id}',600,500)">修改密码</a></dd>
                 <dd><a href="/logout">退出</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item to-index"><a href="/">前台页面</a></li>
+        <%--<li class="layui-nav-item to-index"><a href="/">前台页面</a></li>--%>
     </ul>
 
 </div>
@@ -57,21 +57,6 @@
         <ul id="nav">
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont">&#xe723;</i>
-                    <cite>订单管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/order/getAllOrders">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>所有订单</cite>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:;">
                     <i class="layui-icon">&#xe770;</i>
                     <cite>客户管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
@@ -81,52 +66,6 @@
                         <a _href="/custom/getAllCustoms/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有客户</cite>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe6b8;</i>
-                    <cite>供应商管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/vendor/getAllVendors/1">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>所有供应商</cite>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe6ce;</i>
-                    <cite>生产管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/manPlan/getAll">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>生产计划管理</cite>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/manOrder/getAll">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>生产工单管理</cite>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/materialConsume/getAll">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>领料单管理</cite>
                         </a>
                     </li>
                 </ul>
@@ -164,6 +103,75 @@
             </li>
             <li>
                 <a href="javascript:;">
+                    <i class="iconfont">&#xe723;</i>
+                    <cite>订单管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/order/getAllOrders">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>所有订单</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6ce;</i>
+                    <cite>生产管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/manPlan/getAll">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>生产计划管理</cite>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/manOrder/getAll">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>生产工单管理</cite>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/materialConsume/getAll">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>领料单管理</cite>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/bom/getAll">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>BOM管理</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6b8;</i>
+                    <cite>供应商管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/vendor/getAllVendors/1">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>所有供应商</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
                     <i class="iconfont">&#xe75f;</i>
                     <cite>物料管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
@@ -178,7 +186,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/materialPurchase/getAll">
+                        <a _href="/pO/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>采购记录</cite>
                         </a>
@@ -189,6 +197,42 @@
                         <a _href="/materialConsume/getAll">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>领料记录</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe753;</i>
+                    <cite>部门管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/department/getAllDepartments">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>部门列表</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe70b;</i>
+                    <cite>人员管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/getAllUsers/1">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>管理员列表</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="/role/getAllRoles">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>角色管理</cite>
                         </a>
                     </li>
                 </ul>
@@ -234,42 +278,6 @@
             </li>
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont">&#xe753;</i>
-                    <cite>部门管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/department/getAllDepartments">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>部门列表</cite>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe70b;</i>
-                    <cite>人员管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/getAllUsers/1">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>管理员列表</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="/role/getAllRoles">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>角色管理</cite>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:;">
                     <i class="iconfont">&#xe6ae;</i>
                     <cite>系统权限配置</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
@@ -281,41 +289,7 @@
                             <cite>URL权限配置</cite>
                         </a>
                     </li>
-                    <li>
-                        <a _href="admin-list.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>角色配置</cite>
-                        </a>
-                    </li>
                 </ul>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="layui-icon">&#xe62c;</i>
-                    <cite>系统监控</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/system">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>系统配置信息</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="/urlConfigure/getAllUrls">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>内存监控</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="admin-list.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>接口访问监控</cite>
-                        </a>
-                    </li>
-                </ul>
-
             </li>
         </ul>
     </div>

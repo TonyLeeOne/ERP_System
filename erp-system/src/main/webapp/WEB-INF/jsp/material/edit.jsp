@@ -8,10 +8,10 @@
             <div class="layui-row">
                 <div class="layui-col-md6">
                     <label for="mName" class="layui-form-label">
-                        物料名
+                        物料名<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="mName" name="mName" value="${material.mName}"
+                        <input type="text" id="mName" name="mName" value="${material.mName}"  lay-verify="required"
                                autocomplete="off"
                                class="layui-input">
                     </div>
@@ -19,10 +19,10 @@
                 <div class="layui-col-md6">
 
                     <label for="mSn" class="layui-form-label">
-                        物料编号
+                        物料编号<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="mSn" name="mSn" value="${material.mSn}"
+                        <input type="text" id="mSn" name="mSn" value="${material.mSn}" lay-verify="required"
                                autocomplete="off"
                                class="layui-input">
                     </div>
@@ -32,16 +32,55 @@
                 <div class="layui-col-md6">
 
                     <label for="mCount" class="layui-form-label">
-                        库存数量
+                        库存数量<span class="x-red">*</span>
                     </label>
                     <div class="layui-input-inline">
-                        <input type="number" id="mCount" name="mCount"
+                        <input type="number" id="mCount" name="mCount" lay-verify="required"
                                value="${material.mCount}" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+
+                    <label for="mUnit" class="layui-form-label">
+                        单位 <span class="x-red">*</span>
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="mUnit" lay-verify="required" lay-search id="mUnit" lay-verify="required"
+                                value="${material.mUnit}">
+                            <c:if test="${! empty material.mUnit}">
+                                <option value="${material.mUnit}">${material.mUnit}</option>
+                            </c:if>
+                            <option value="PCS">PCS</option>
+                            <option value="m">m</option>
+                            <option value="m&sup2;">m&sup2;</option>
+                            <option value="kg">kg</option>
+                            <option value="瓶">瓶</option>
+                            <option value="盒">盒</option>
+                            <option value="包">包</option>
+                            <option value="条">条</option>
+                            <option value="卷">卷</option>
+                            <option value="本">本</option>
+                            <option value="台">台</option>
+                        </select>
+                        <%--<input type="number" id="mUnit" name="mUnit"--%>
+                               <%--value="${material.mUnit}" autocomplete="off" class="layui-input">--%>
                     </div>
                 </div>
                 <div class="layui-col-md6">
                     <div class="layui-col-md6">
                         <input type="hidden" class="input-file" name="mId" value="${material.mId}">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md6">
+
+                    <label for="mPrice" class="layui-form-label">
+                        单价<span class="x-red">*</span>
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="number" id="mPrice" name="mPrice" lay-verify="required"
+                               value="${material.mPrice}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>

@@ -43,12 +43,24 @@
                         </div>
                     </td>
                     <td>
-                        <%@include file="../common/user_status.jsp" %>
+
+                        <div class="layui-form">
+                            <c:if test="${user.status=='1'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="正常|锁定" checked>
+                            </c:if>
+                            <c:if test="${user.status =='2'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="正常|锁定">
+                            </c:if>
+                        </div>
                     </td>
                     <td class="td-manage">
                         <a title="编辑" onclick="x_admin_show('编辑用户','/edit?userId=${user.id}',700,430)"
                            href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
+                        </a>
+                        <a title="重置密码" onclick="x_admin_show('重置密码结果反馈','/pReset?userId=${user.id}',300,100)"
+                           href="javascript:;">
+                            <i class="layui-icon">&#xe673;</i>
                         </a>
                     </td>
                 </tr>
@@ -60,8 +72,8 @@
     <jsp:include page="../common/pagination.jsp" flush="true">
         <jsp:param name="pageurl" value="/user/getAllUsers/"/>
     </jsp:include>
-
 </div>
+
 </body>
 
 </html>

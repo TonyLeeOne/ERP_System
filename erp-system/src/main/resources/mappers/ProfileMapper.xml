@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tony.erp.dao.ProfileMapper">
-  <resultMap id="BaseResultMap" type="com.tony.erp.domain.Profile">
-    <id column="pid" jdbcType="VARCHAR" property="pid" />
-    <result column="p_uid" jdbcType="VARCHAR" property="pUid" />
-    <result column="p_indate" jdbcType="VARCHAR" property="pIndate" />
-    <result column="p_faredate" jdbcType="VARCHAR" property="pFaredate" />
-    <result column="p_major" jdbcType="VARCHAR" property="pMajor" />
-    <result column="p_id" jdbcType="VARCHAR" property="pId" />
-    <result column="p_sex" jdbcType="CHAR" property="pSex" />
-    <result column="p_edu" jdbcType="VARCHAR" property="pEdu" />
-    <result column="p_tel" jdbcType="VARCHAR" property="pTel" />
-    <result column="p_name" jdbcType="VARCHAR" property="pName" />
-    <result column="p_wechat" jdbcType="VARCHAR" property="pWechat" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.tony.erp.domain.Profile">
+        <id column="pid" jdbcType="VARCHAR" property="pid"/>
+        <result column="p_uid" jdbcType="VARCHAR" property="pUid"/>
+        <result column="p_indate" jdbcType="VARCHAR" property="pIndate"/>
+        <result column="p_faredate" jdbcType="VARCHAR" property="pFaredate"/>
+        <result column="p_major" jdbcType="VARCHAR" property="pMajor"/>
+        <result column="p_id" jdbcType="VARCHAR" property="pId"/>
+        <result column="p_sex" jdbcType="CHAR" property="pSex"/>
+        <result column="p_edu" jdbcType="VARCHAR" property="pEdu"/>
+        <result column="p_tel" jdbcType="VARCHAR" property="pTel"/>
+        <result column="p_name" jdbcType="VARCHAR" property="pName"/>
+        <result column="p_wechat" jdbcType="VARCHAR" property="pWechat"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     pid, p_uid, p_indate, p_faredate, p_major, p_id, p_sex, p_edu, p_tel, p_name, p_wechat
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from profile
-    where pid = #{pid,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from profile
+        where pid = #{pid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from profile
     where pid = #{pid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.tony.erp.domain.Profile">
+    <insert id="insert" parameterType="com.tony.erp.domain.Profile">
     insert into profile (pid, p_uid, p_indate, 
       p_faredate, p_major, p_id, 
       p_sex, p_edu, p_tel, p_name, 
@@ -37,116 +37,116 @@
       #{pSex,jdbcType=CHAR}, #{pEdu,jdbcType=VARCHAR}, #{pTel,jdbcType=VARCHAR}, #{pName,jdbcType=VARCHAR}, 
       #{pWechat,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.tony.erp.domain.Profile">
-    insert into profile
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="pid != null">
-        pid,
-      </if>
-      <if test="pUid != null">
-        p_uid,
-      </if>
-      <if test="pIndate != null">
-        p_indate,
-      </if>
-      <if test="pFaredate != null">
-        p_faredate,
-      </if>
-      <if test="pMajor != null">
-        p_major,
-      </if>
-      <if test="pId != null">
-        p_id,
-      </if>
-      <if test="pSex != null">
-        p_sex,
-      </if>
-      <if test="pEdu != null">
-        p_edu,
-      </if>
-      <if test="pTel != null">
-        p_tel,
-      </if>
-      <if test="pName != null">
-        p_name,
-      </if>
-      <if test="pWechat != null">
-        p_wechat,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="pid != null">
-        #{pid,jdbcType=VARCHAR},
-      </if>
-      <if test="pUid != null">
-        #{pUid,jdbcType=VARCHAR},
-      </if>
-      <if test="pIndate != null">
-        #{pIndate,jdbcType=VARCHAR},
-      </if>
-      <if test="pFaredate != null">
-        #{pFaredate,jdbcType=VARCHAR},
-      </if>
-      <if test="pMajor != null">
-        #{pMajor,jdbcType=VARCHAR},
-      </if>
-      <if test="pId != null">
-        #{pId,jdbcType=VARCHAR},
-      </if>
-      <if test="pSex != null">
-        #{pSex,jdbcType=CHAR},
-      </if>
-      <if test="pEdu != null">
-        #{pEdu,jdbcType=VARCHAR},
-      </if>
-      <if test="pTel != null">
-        #{pTel,jdbcType=VARCHAR},
-      </if>
-      <if test="pName != null">
-        #{pName,jdbcType=VARCHAR},
-      </if>
-      <if test="pWechat != null">
-        #{pWechat,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Profile">
-    update profile
-    <set>
-      <if test="pUid != null">
-        p_uid = #{pUid,jdbcType=VARCHAR},
-      </if>
-      <if test="pIndate != null">
-        p_indate = #{pIndate,jdbcType=VARCHAR},
-      </if>
-      <if test="pFaredate != null">
-        p_faredate = #{pFaredate,jdbcType=VARCHAR},
-      </if>
-      <if test="pMajor != null">
-        p_major = #{pMajor,jdbcType=VARCHAR},
-      </if>
-      <if test="pId != null">
-        p_id = #{pId,jdbcType=VARCHAR},
-      </if>
-      <if test="pSex != null">
-        p_sex = #{pSex,jdbcType=CHAR},
-      </if>
-      <if test="pEdu != null">
-        p_edu = #{pEdu,jdbcType=VARCHAR},
-      </if>
-      <if test="pTel != null">
-        p_tel = #{pTel,jdbcType=VARCHAR},
-      </if>
-      <if test="pName != null">
-        p_name = #{pName,jdbcType=VARCHAR},
-      </if>
-      <if test="pWechat != null">
-        p_wechat = #{pWechat,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where pid = #{pid,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Profile">
+    <insert id="insertSelective" parameterType="com.tony.erp.domain.Profile">
+        insert into profile
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pid != null">
+                pid,
+            </if>
+            <if test="pUid != null">
+                p_uid,
+            </if>
+            <if test="pIndate != null">
+                p_indate,
+            </if>
+            <if test="pFaredate != null">
+                p_faredate,
+            </if>
+            <if test="pMajor != null">
+                p_major,
+            </if>
+            <if test="pId != null">
+                p_id,
+            </if>
+            <if test="pSex != null">
+                p_sex,
+            </if>
+            <if test="pEdu != null">
+                p_edu,
+            </if>
+            <if test="pTel != null">
+                p_tel,
+            </if>
+            <if test="pName != null">
+                p_name,
+            </if>
+            <if test="pWechat != null">
+                p_wechat,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pid != null">
+                #{pid,jdbcType=VARCHAR},
+            </if>
+            <if test="pUid != null">
+                #{pUid,jdbcType=VARCHAR},
+            </if>
+            <if test="pIndate != null">
+                #{pIndate,jdbcType=VARCHAR},
+            </if>
+            <if test="pFaredate != null">
+                #{pFaredate,jdbcType=VARCHAR},
+            </if>
+            <if test="pMajor != null">
+                #{pMajor,jdbcType=VARCHAR},
+            </if>
+            <if test="pId != null">
+                #{pId,jdbcType=VARCHAR},
+            </if>
+            <if test="pSex != null">
+                #{pSex,jdbcType=CHAR},
+            </if>
+            <if test="pEdu != null">
+                #{pEdu,jdbcType=VARCHAR},
+            </if>
+            <if test="pTel != null">
+                #{pTel,jdbcType=VARCHAR},
+            </if>
+            <if test="pName != null">
+                #{pName,jdbcType=VARCHAR},
+            </if>
+            <if test="pWechat != null">
+                #{pWechat,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tony.erp.domain.Profile">
+        update profile
+        <set>
+            <if test="pUid != null">
+                p_uid = #{pUid,jdbcType=VARCHAR},
+            </if>
+            <if test="pIndate != null">
+                p_indate = #{pIndate,jdbcType=VARCHAR},
+            </if>
+            <if test="pFaredate != null">
+                p_faredate = #{pFaredate,jdbcType=VARCHAR},
+            </if>
+            <if test="pMajor != null">
+                p_major = #{pMajor,jdbcType=VARCHAR},
+            </if>
+            <if test="pId != null">
+                p_id = #{pId,jdbcType=VARCHAR},
+            </if>
+            <if test="pSex != null">
+                p_sex = #{pSex,jdbcType=CHAR},
+            </if>
+            <if test="pEdu != null">
+                p_edu = #{pEdu,jdbcType=VARCHAR},
+            </if>
+            <if test="pTel != null">
+                p_tel = #{pTel,jdbcType=VARCHAR},
+            </if>
+            <if test="pName != null">
+                p_name = #{pName,jdbcType=VARCHAR},
+            </if>
+            <if test="pWechat != null">
+                p_wechat = #{pWechat,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where pid = #{pid,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tony.erp.domain.Profile">
     update profile
     set p_uid = #{pUid,jdbcType=VARCHAR},
       p_indate = #{pIndate,jdbcType=VARCHAR},
@@ -160,4 +160,11 @@
       p_wechat = #{pWechat,jdbcType=VARCHAR}
     where pid = #{pid,jdbcType=VARCHAR}
   </update>
+
+    <select id="selectByPname" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from profile
+        where p_name=#{pname,jdbcType=VARCHAR}
+    </select>
 </mapper>

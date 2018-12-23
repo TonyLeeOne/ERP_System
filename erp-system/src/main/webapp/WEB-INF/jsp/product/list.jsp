@@ -8,21 +8,29 @@
     }
 </style>
 <body>
-<%@include file="../common/breadcrumb.jsp"%>
+<%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
+        <div class="layui-col-md2">
+            <button class="layui-btn layui-btn-danger x-left" onclick="delAll()" style="margin-right: 1%"><i
+                    class="layui-icon"></i>批量删除
+            </button>
+            <button class="layui-btn x-left" onclick="x_admin_show('新增产品','/product/edit',730,600)"
+                    style="margin-right: 1%"><i class="layui-icon"></i>添加
+            </button>
+        </div>
+        <form class="layui-form layui-col-md4 x-so">
             <input type="text" name="proCode" placeholder="请输入产品编号" autocomplete="off" class="layui-input">
             <input type="text" name="proName" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
-    </div>
-    <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('新增产品','/product/edit')"><i class="layui-icon"></i>添加
-        </button>
         <span class="x-right" style="line-height:40px">共${products.pageNum}页，数据: ${products.total} 条</span>
-    </xblock>
+    </div>
+    <%--<xblock>--%>
+    <%--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>--%>
+    <%--<button class="layui-btn" onclick="x_admin_show('新增产品','/product/edit',730,600)"><i class="layui-icon"></i>添加--%>
+    <%--</button>--%>
+    <%--</xblock>--%>
     <table class="layui-table">
         <thead>
         <tr>
@@ -34,8 +42,10 @@
             <th>产品名称</th>
             <th>库存数量</th>
             <th>单价</th>
+            <th>单位</th>
             <th>图片</th>
             <th>状态</th>
+            <%--<th>锁定</th>--%>
             <th>备注</th>
             <th>操作</th>
         </tr>
@@ -45,13 +55,15 @@
             <c:forEach items="${products.rows}" var="product">
                 <tr>
                     <td>
-                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${product.proCode}'><i
-                                class="layui-icon">&#xe605;</i></div>
+                        <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${product.proCode}'>
+                            <i
+                                    class="layui-icon">&#xe605;</i></div>
                     </td>
                     <td>${product.proCode}</td>
                     <td>${product.proName}</td>
                     <td>${product.proCount}</td>
                     <td>${product.proPrice}</td>
+                    <td>${product.proUnit}</td>
                     <td>
                         <c:if test="${! empty product.proImage}">
                             <c:set value="${fn:split(product.proImage,',')}" var="urls"/>
@@ -61,16 +73,25 @@
                         </c:if>
                     </td>
                     <td>
-                        <%@include file="../common/pro_status.jsp" %>
+                        <div class="layui-form">
+                            <c:if test="${product.proStatus=='1'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="量产|停产" checked>
+                            </c:if>
+                            <c:if test="${product.proStatus =='2'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="量产|停产">
+                            </c:if>
+                        </div>
                     </td>
+                    <%--<td>${product.proLocked}</td>--%>
                     <td>${product.proNote}</td>
                     <td class="td-manage">
-                        <a title="编辑" onclick="x_admin_show('编辑产品','/product/edit?proCode=${product.proCode}',730,550)" href="javascript:;">
+                        <a title="编辑" onclick="x_admin_show('编辑产品','/product/edit?proCode=${product.proCode}',730,600)"
+                           href="javascript:;">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
-                        <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
+                            <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
                             <%--<i class="layui-icon">&#xe640;</i>--%>
-                        <%--</a>--%>
+                            <%--</a>--%>
                     </td>
                 </tr>
             </c:forEach>
@@ -150,7 +171,7 @@
 
         var data = tableCheck.getData();
 
-        if(data.length>0) {
+        if (data.length > 0) {
             layer.confirm('确认要删除产品编号为【' + data + '】的记录吗？', function (index) {
                 //捉到所有被选中的，发异步进行删除
                 $.post('/product/batchDelete', {"proCodes": data.toString()}, function (res) {
@@ -159,7 +180,7 @@
                 });
 
             });
-        }else
+        } else
             layer.alert("请至少选择一行记录", {icon: 2});
     }
 </script>

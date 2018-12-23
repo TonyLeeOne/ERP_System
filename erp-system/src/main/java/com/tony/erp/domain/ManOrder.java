@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 public class ManOrder {
+
     private String moId;
 
     private String moSn;
@@ -26,5 +27,8 @@ public class ManOrder {
     private String moStatus;
 
     private ManPlan manPlan=new ManPlan();
+
+    private BOM mBom=new BOM();
+
 
 }

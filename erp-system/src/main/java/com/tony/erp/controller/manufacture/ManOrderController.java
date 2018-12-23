@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+import static com.tony.erp.constant.Constant.MOSN_EXISTS;
+
 /**
  * @author jli2
  * @date 11/26/2018 2:15 PM
@@ -41,6 +43,9 @@ public class ManOrderController {
     @RequestMapping("/add")
     @ResponseBody
     public String add(ManOrder manOrder){
+        if(manOrderService.checkMoExist(manOrder.getMoSn())){
+            return MOSN_EXISTS;
+        }
         return manOrderService.addManOrder(manOrder)>0?Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
     }
 
