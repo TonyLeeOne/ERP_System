@@ -10,7 +10,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jli2
@@ -31,7 +33,7 @@ public class CustomController {
      */
     @RequestMapping("/getAllCustoms")
     public String getAllCustoms(ModelMap modelMap) {
-        modelMap.addAttribute("customs", customService.getAllCustoms(1));
+        modelMap.addAttribute("customs", customService.getAllCustoms(1, null));
         return "/custom/list";
     }
 
@@ -43,14 +45,23 @@ public class CustomController {
      * @return
      */
     @RequestMapping("/getAllCustoms/{pageSize}")
-    public String getAllCustom(@PathVariable int pageSize, ModelMap modelMap) {
-        modelMap.addAttribute("page", customService.getAllCustoms(pageSize));
+    public String getAllCustom(@PathVariable int pageSize,
+                               ModelMap modelMap,
+                               @RequestParam(name = "customStatus", defaultValue = "1") String customStatus,
+                               String customName
+    ) {
+        Custom param = new Custom();
+        param.setCustomStatus(customStatus);
+        param.setCustomName(customName);
+        modelMap.addAttribute("custom", param);
+        modelMap.addAttribute("page", customService.getAllCustoms(pageSize, param));
         return "/custom/list";
     }
 
 
     /**
      * 新增客户信息
+     *
      * @param
      * @return
      */
@@ -65,6 +76,7 @@ public class CustomController {
 
     /**
      * 新增/编辑客户信息页面
+     *
      * @param customId
      * @param modelMap
      * @return
@@ -102,17 +114,17 @@ public class CustomController {
     @RequestMapping("/delete")
     @ResponseBody
     public String delCus(String customIds) {
-        if(customIds.indexOf(Constant.SPLITTER)>0){
-            String[] cids=customIds.split(Constant.SPLITTER);
-            for (String cId:cids
+        if (customIds.indexOf(Constant.SPLITTER) > 0) {
+            String[] cids = customIds.split(Constant.SPLITTER);
+            for (String cId : cids
                     ) {
-                if(customService.delCustom(cId)<1){
+                if (customService.delCustom(cId) < 1) {
                     return Constant.DATA_DELETE_FAILED;
                 }
             }
             return Constant.DATA_UDELETE_SUCCESS;
         }
-        return customService.delCustom(customIds)>0? Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
+        return customService.delCustom(customIds) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
     /**
@@ -133,6 +145,7 @@ public class CustomController {
 
     /**
      * 获取所有客户名和编号
+     *
      * @return
      */
     @RequestMapping("/getAllCusNames")
@@ -144,6 +157,7 @@ public class CustomController {
 
     /**
      * 根据客户编号获取客户信息
+     *
      * @return
      */
     @RequestMapping("/getCustomByCode")

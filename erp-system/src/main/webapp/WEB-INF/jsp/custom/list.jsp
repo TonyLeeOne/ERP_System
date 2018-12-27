@@ -10,20 +10,37 @@
                 <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
             </shiro:hasPermission>
             <shiro:hasPermission name="custom:add">
-                <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit',700,350)"><i class="layui-icon"></i>添加
+                <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit',700,350)"><i
+                        class="layui-icon"></i>添加
                 </button>
             </shiro:hasPermission>
         </div>
-        <form class="layui-form layui-col-md4 x-so">
-            <div class="layui-input-inline">
-                <select name="contrller">
-                    <option value="">客户状态</option>
-                    <option value="1">有效</option>
-                    <option value="2">无效</option>
-                </select>
+        <form class="layui-form layui-col-md8 x-so" style="margin-bottom: 0;" method="get"
+              action="/custom/getAllCustoms/1">
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <label class="layui-form-label">
+                        客户状态
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="customStatus" id="customStatus">
+                            <option value="1" <c:if test="${custom.customStatus=='1'}"> selected</c:if>>有效</option>
+                            <option value="2"<c:if test="${custom.customStatus=='2'}"> selected</c:if>>无效</option>
+                            <%--<option value="">请选择</option>--%>
+                            <%--<c:forEach items="${departments}" var="department">--%>
+                            <%--<option--%>
+                            <%--<c:if test="${u.departId == department.dId}">selected </c:if>--%>
+                            <%--value="${department.dId}">${department.dName}</option>--%>
+                            <%--</c:forEach>--%>
+                        </select>
+                    </div>
+                    <input type="text" name="customName" value="${custom.customName}" placeholder="请输入客户名"
+                           autocomplete="off" class="layui-input">
+                    <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i>
+                    </button>
+                </div>
             </div>
-            <input type="text" name="customName" placeholder="请输入客户名" autocomplete="off" class="layui-input">
-            <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+
         </form>
         <span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>
     </div>
@@ -69,22 +86,25 @@
                             </c:if>
                         </div>
                     </td>
-                    <shiro:hasPermission name="custom:update">
-                        <td class="td-manage">
+                    <td class="td-manage">
+                        <shiro:hasPermission name="custom:update">
                             <a title="编辑"
                                onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customCode}',700,350)"
                                href="javascript:;">
                                 <i class="layui-icon">&#xe642;</i>
                             </a>
-                        </td>
-                    </shiro:hasPermission>
+                        </shiro:hasPermission>
+                    </td>
                 </tr>
             </c:forEach>
 
         </c:if>
         </tbody>
     </table>
+
     <jsp:include page="../common/pagination.jsp">
+        <jsp:param name="pageurl" value="/custom/getAllCustoms/"/>
+        <jsp:param name="query" value="<%= request.getQueryString() %>"/>
         <jsp:param value="${customs.total}" name="total"/>
         <jsp:param value="${customs.pageNum}" name="pageNum"/>
     </jsp:include>

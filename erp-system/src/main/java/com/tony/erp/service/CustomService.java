@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+
 /**
  * @author jli2
  * @date  2018/11/12
@@ -24,14 +26,16 @@ public class CustomService {
     @Autowired
     private CustomMapper customMapper;
 
-    public PageHelperEntity getAllCustoms(int pageNum) {
-        PageHelper.startPage(pageNum, 10);
-        List<Custom> customs = customMapper.getAllCustoms();
+    public PageHelperEntity getAllCustoms(int pageNum, Custom param) {
+        Integer pageSize = 3;
+        PageHelper.startPage(pageNum, pageSize);
+        List<Custom> customs = customMapper.getAllCustoms(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(customs);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<Custom> pageInfo = new PageInfo<>(customs);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(pageInfo.getPageNum());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 
