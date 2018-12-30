@@ -70,7 +70,26 @@
                     <td>${plan.mpEndDate}</td>
                     <td>${plan.mpCount}</td>
                     <td>
-                        <%@include file="../common/mp_status.jsp" %>
+                        <style>
+                            .layui-form-switch{
+                                width: 60px;
+                            }
+                            .layui-form-switch em{
+                                width:42px;
+                            }
+                            .layui-form-onswitch i{
+                                left: 50px;
+                            }
+                        </style>
+                        <div class="layui-form">
+                            <c:if test="${plan.mpStatus=='1'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="进行中|已完成" checked>
+                            </c:if>
+                            <c:if test="${plan.mpStatus =='2'}">
+                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="进行中|已完成">
+                            </c:if>
+                        </div>
+                        <%--<%@include file="../common/mp_status.jsp" %>--%>
                     </td>
                     <td class="td-manage">
                         <shiro:hasPermission name="manfacturePlan:update">

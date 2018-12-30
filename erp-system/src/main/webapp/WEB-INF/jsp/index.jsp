@@ -86,7 +86,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/storage/getAll">
+                        <a _href="/storage/getAll/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>入库记录</cite>
                         </a>
@@ -94,7 +94,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/ship/getAll">
+                        <a _href="/ship/getAll/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>出货记录</cite>
                         </a>
@@ -178,7 +178,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/material/getAll">
+                        <a _href="/material/getAll/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>物料信息</cite>
                         </a>
@@ -186,7 +186,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/pO/getAll">
+                        <a _href="/pO/getAll/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>采购记录</cite>
                         </a>
@@ -194,7 +194,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/materialConsume/getAll">
+                        <a _href="/materialConsume/getAll/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>领料记录</cite>
                         </a>

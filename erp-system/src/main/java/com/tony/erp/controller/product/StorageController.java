@@ -10,6 +10,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author jli2
  * @date 11/14/2018 10:28 AM
@@ -30,7 +33,7 @@ public class StorageController {
      */
     @RequestMapping("/getAll")
     public String getAll(ModelMap modelMap) {
-        modelMap.addAttribute("storages", storageService.getAllStos(1));
+        modelMap.addAttribute("storages", storageService.getAllStos(1, null));
         return "/storage/list";
     }
 
@@ -42,8 +45,25 @@ public class StorageController {
      * @return
      */
     @RequestMapping("/getAll/{pageNum}")
-    public String getAll(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("storages", storageService.getAllStos(pageNum));
+    public String getAll(@PathVariable int pageNum,
+                         String stoRealDate,
+                         String stoMpSn,
+                         String stoMoSn,
+                         String stoProCode,
+                         String stoStatus,
+                         String proName,
+                         String stoSender,
+                         ModelMap modelMap) {
+        Map<String, String> param = new HashMap<>();
+        param.put("stoRealDate", stoRealDate);
+        param.put("stoMpSn", stoMpSn);
+        param.put("stoMoSn", stoMoSn);
+        param.put("stoProCode", stoProCode);
+        param.put("stoStatus", stoStatus);
+        param.put("proName", proName);
+        param.put("stoSender", stoSender);
+        modelMap.addAttribute("storage", param);
+        modelMap.addAttribute("page", storageService.getAllStos(pageNum, param));
         return "/storage/list";
     }
 
@@ -83,14 +103,14 @@ public class StorageController {
     public String delStorage(String sId) {
         if (sId.indexOf(Constant.SPLITTER) > 0) {
             String[] sids = sId.split(Constant.SPLITTER);
-            for (String sid: sids
-                 ) {
-                if(storageService.delStorage(sid)<0){
+            for (String sid : sids
+                    ) {
+                if (storageService.delStorage(sid) < 0) {
                     return Constant.DATA_DELETE_FAILED;
                 }
             }
         }
-        return storageService.delStorage(sId)>0?Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
+        return storageService.delStorage(sId) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
     /**
@@ -116,7 +136,7 @@ public class StorageController {
 
 
     @GetMapping("/confirm")
-    public String confirm(@RequestParam(defaultValue = "")String stoId,ModelMap modelMap){
+    public String confirm(@RequestParam(defaultValue = "") String stoId, ModelMap modelMap) {
         log.info("传来的stoId为[{}]", stoId);
         if (!StringUtils.isEmpty(stoId)) {
             modelMap.addAttribute("storage", storageService.getByPrimaryKey(stoId));

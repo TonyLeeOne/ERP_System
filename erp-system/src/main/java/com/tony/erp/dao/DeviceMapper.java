@@ -24,7 +24,7 @@ public interface DeviceMapper {
 
     int updateByPrimaryKey(Device record);
 
-    List<Device> getAllDevices();
+    List<Device> getAllDevices(Device param);
 
     int checkDeviceCode(@Param("deviceCode") String deviceCode);
 

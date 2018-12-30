@@ -54,7 +54,7 @@
         from shipment s
         inner join orders o on s.s_order_no=o.o_no
         left join product p on s.s_pro_code=p.pro_code
-        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+        <where>
             <if test="sId != null">
                 s.s_id=#{sId}
             </if>
@@ -65,12 +65,12 @@
                 s.s_pro_code=#{sProCode}
             </if>
             <if test="sShipDate != null">
-                s.s_ship_date=#{s_ship_date}
+                s.s_ship_date=#{sShipDate}
             </if>
             <if test="sStatus != null">
                 s.s_status=#{sStatus}
             </if>
-        </trim>
+        </where>
         order by s.s_status ASC
     </select>
 

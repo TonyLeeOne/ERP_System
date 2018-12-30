@@ -24,10 +24,10 @@ public class DeviceMaintainService {
     @Autowired
     private DeviceMaintainMapper deviceMaintainMapper;
 
-    public PageHelperEntity getAllDeviceMain(int pageNum) {
+    public PageHelperEntity getAllDeviceMain(int pageNum,DeviceMaintain param) {
         Integer pageSize = 10;
         PageHelper.startPage(pageNum, pageSize);
-        List<DeviceMaintain> devices = deviceMaintainMapper.getAllDeviceMaintains();
+        List<DeviceMaintain> devices = deviceMaintainMapper.getAllDeviceMaintains(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(devices);
         pageHelperEntity.setCurrentPage(pageNum);

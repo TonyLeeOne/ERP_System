@@ -3,6 +3,7 @@ package com.tony.erp.controller.order;
 import com.google.gson.Gson;
 import com.tony.erp.constant.Constant;
 import com.tony.erp.domain.Order;
+import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.service.OrderService;
 import com.tony.erp.utils.CurrentUser;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,11 @@ public class OrderController {
         param.setONo(oNo);
         param.setOStatus(oStatus);
         modelMap.addAttribute("order", param);
-        modelMap.addAttribute("page", orderService.getAllOrders(pageNum, param));
+        PageHelperEntity page = orderService.getAllOrders(pageNum, param);
+        modelMap.addAttribute("page", page);
+//        for (Object item:page.getRows()){
+//            System.out.println(item);
+//        }
         return "order/list";
     }
 

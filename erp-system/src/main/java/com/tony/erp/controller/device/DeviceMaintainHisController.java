@@ -22,8 +22,17 @@ public class DeviceMaintainHisController {
     DeviceMaintainService deviceMaintainService;
 
     @RequestMapping("getAllDeviceHis/{pageNum}")
-    public String getAllDevicehis(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("deviceHis", deviceMaintainService.getAllDeviceMain(pageNum));
+    public String getAllDevicehis(@PathVariable int pageNum,
+                                  String hisDate,
+                                  String hisDeviceCode,
+                                  String hisResult,
+                                  ModelMap modelMap) {
+        DeviceMaintain param = new DeviceMaintain();
+        param.setHisResult(hisResult);
+        param.setHisDate(hisDate);
+        param.setHisDeviceCode(hisDeviceCode);
+        modelMap.addAttribute("deviceHis", param);
+        modelMap.addAttribute("page", deviceMaintainService.getAllDeviceMain(pageNum, param));
         return "/device_maintain_his/list";
     }
 

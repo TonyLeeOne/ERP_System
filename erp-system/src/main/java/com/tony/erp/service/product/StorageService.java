@@ -55,10 +55,10 @@ public class StorageService {
      * @param pageNum
      * @return
      */
-    public PageHelperEntity getAllStos(int pageNum) {
+    public PageHelperEntity getAllStos(int pageNum,Map<String,String> param) {
         Integer pageSize = 10;
         PageHelper.startPage(pageNum, 10);
-        List<Storage> stos = storageMapper.find(null);
+        List<Storage> stos = storageMapper.find(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(stos);
         pageHelperEntity.setCurrentPage(pageNum);

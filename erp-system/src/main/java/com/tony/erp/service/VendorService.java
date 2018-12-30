@@ -33,11 +33,10 @@ public class VendorService {
         return vendorMapper.updateByPrimaryKeySelective(vendor);
     }
 
-    public PageHelperEntity getAllVendors(int pageNum) {
+    public PageHelperEntity getAllVendors(int pageNum,Vendor param) {
         Integer pageSize = 10;
-
         PageHelper.startPage(pageNum, pageSize);
-        List<Vendor> vendors = vendorMapper.getAllVendors();
+        List<Vendor> vendors = vendorMapper.getAllVendors(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(vendors);
         pageHelperEntity.setCurrentPage(pageNum);
@@ -60,6 +59,6 @@ public class VendorService {
     }
 
     public List<Vendor> getAll() {
-        return vendorMapper.getAllVendors();
+        return vendorMapper.getAllVendors(null);
     }
 }

@@ -27,7 +27,7 @@ public interface DeviceMaintainMapper {
 
     List<DeviceMaintain> selectAll();
 
-    List<DeviceMaintain> getAllDeviceMaintains();
+    List<DeviceMaintain> getAllDeviceMaintains(DeviceMaintain param);
     int batchDeleteByIds(@Param("ids") String[] ids);
 
 }

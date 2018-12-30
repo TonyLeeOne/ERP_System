@@ -48,10 +48,10 @@ public class ShipmentService {
      * @param pageNum
      * @return
      */
-    public PageHelperEntity getAllShips(int pageNum) {
+    public PageHelperEntity getAllShips(int pageNum,Map<String,String> param) {
         Integer pageSize = 10;
         PageHelper.startPage(pageNum, pageSize);
-        List<Shipment> shipments = shipmentMapper.find(null);
+        List<Shipment> shipments = shipmentMapper.find(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(shipments);
         pageHelperEntity.setCurrentPage(pageNum);

@@ -9,7 +9,7 @@
             <input autocomplete="off" class="layui-input" value="${order.OCreateDate}" placeholder="下单日期" name="oCreateDate" id="oCreateDate">
             <input autocomplete="off" class="layui-input" value="${order.ONo}" placeholder="请输入订单号" name="oNo" id="oNo">
             <div class="layui-input-inline">
-                <select name="OStatus">
+                <select name="oStatus">
                     <option value="" >订单状态</option>
                     <option value="1" <c:if test="${order.OStatus=='1'}"> selected</c:if>>待审核</option>
                     <option value="2" <c:if test="${order.OStatus=='2'}"> selected</c:if>>审核未通过</option>

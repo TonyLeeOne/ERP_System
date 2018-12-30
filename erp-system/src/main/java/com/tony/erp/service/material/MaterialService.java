@@ -1,6 +1,5 @@
 package com.tony.erp.service.material;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tony.erp.constant.Constant;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.beans.Transient;
 import java.util.List;
 
 /**
@@ -31,15 +29,16 @@ public class MaterialService {
         return materialMapper.checkBySn(msn);
     }
 
-    public PageHelperEntity getAllMaterials(int pageNum) {
+    public PageHelperEntity getAllMaterials(int pageNum, Material param) {
         Integer pageSize = 10;
         PageHelper.startPage(pageNum, pageSize);
-        List<Material> materials = materialMapper.getAllMaterials();
+        List<Material> materials = materialMapper.getAllMaterials(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(materials);
         pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<Material> pageInfo = new PageInfo<>(materials);
-        pageHelperEntity.setTotal(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
+        pageHelperEntity.setTotal(pageInfo.getTotal());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 

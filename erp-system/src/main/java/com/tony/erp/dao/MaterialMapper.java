@@ -23,7 +23,7 @@ public interface MaterialMapper {
 
     int updateByPrimaryKey(Material record);
 
-    List<Material> getAllMaterials();
+    List<Material> getAllMaterials(Material param);
 
     List<String> getAvailableMaterials();
 

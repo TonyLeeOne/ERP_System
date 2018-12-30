@@ -11,14 +11,6 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <div class="layui-col-md2">
-            <button class="layui-btn layui-btn-danger x-left" onclick="delAll()" style="margin-right: 1%"><i
-                    class="layui-icon"></i>批量删除
-            </button>
-            <button class="layui-btn x-left" onclick="x_admin_show('新增产品','/product/edit',730,600)"
-                    style="margin-right: 1%"><i class="layui-icon"></i>添加
-            </button>
-        </div>
         <form class="layui-form layui-col-md10 x-so" method="get" action="/product/getAll/1">
             <input type="text" name="proCode" value="${product.proCode}" placeholder="请输入产品编号"
                    autocomplete="off" class="layui-input">
@@ -34,13 +26,21 @@
             <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i>
             </button>
         </form>
-        <%--<span class="x-right" style="line-height:40px">共${products.pageNum}页，数据: ${products.total} 条</span>--%>
     </div>
-    <%--<xblock>--%>
-    <%--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>--%>
-    <%--<button class="layui-btn" onclick="x_admin_show('新增产品','/product/edit',730,600)"><i class="layui-icon"></i>添加--%>
-    <%--</button>--%>
-    <%--</xblock>--%>
+    <xblock>
+        <shiro:hasPermission name="product:delete">
+            <button class="layui-btn layui-btn-danger x-left" onclick="delAll()" style="margin-right: 1%"><i
+                    class="layui-icon"></i>批量删除
+            </button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="product:add">
+            <button class="layui-btn x-left" onclick="x_admin_show('新增产品','/product/edit',730,600)"
+                    style="margin-right: 1%"><i class="layui-icon"></i>添加
+            </button>
+        </shiro:hasPermission>
+
+    </xblock>
+
     <table class="layui-table">
         <thead>
         <tr>

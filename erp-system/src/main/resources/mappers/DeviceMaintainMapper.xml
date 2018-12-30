@@ -19,10 +19,21 @@
         where his_device_code = #{his_device_code,jdbcType=VARCHAR}
     </select>
 
-    <select id="getAllDeviceMaintains" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="getAllDeviceMaintains" parameterType="com.tony.erp.domain.DeviceMaintain" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from device_maintain_his
+        <where>
+            <if test="hisDate != null and hisDate != ''">
+                DATE_FORMAT(his_date, '%Y-%m-%d') = #{hisDate}
+            </if>
+            <if test="hisDeviceCode != null and hisDeviceCode != ''">
+                AND his_device_code = #{hisDeviceCode}
+            </if>
+            <if test="hisResult != null and hisResult != ''">
+                AND his_result = #{hisResult}
+            </if>
+        </where>
     </select>
 
     <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">

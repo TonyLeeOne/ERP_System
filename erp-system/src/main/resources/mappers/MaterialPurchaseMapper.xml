@@ -41,6 +41,14 @@
         <include refid="Base_Column_List"/>
         from material_purchase mp left join vendor v
         on mp.mph_po_id=v.v_id
+        <where>
+            <if test="mphSn != null and mphSn !=''">
+                mph_sn = #{mphSn}
+            </if>
+            <if test="mphSn != null and mphSn !=''">
+                and mph_status = #{mphStatus}
+            </if>
+        </where>
         order by mp.mph_date DESC
     </select>
 

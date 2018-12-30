@@ -23,7 +23,7 @@ public interface VendorMapper {
 
     int updateByPrimaryKey(Vendor record);
 
-    List<Vendor> getAllVendors();
+    List<Vendor> getAllVendors(Vendor param);
 
     int batchDeleteByIds(@Param("ids") String[] ids);
 

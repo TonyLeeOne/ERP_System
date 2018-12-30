@@ -21,10 +21,18 @@
         where v_id = #{vId,jdbcType=VARCHAR}
     </select>
 
-    <select id="getAllVendors" resultMap="BaseResultMap">
+    <select id="getAllVendors" resultMap="BaseResultMap" parameterType="com.tony.erp.domain.Vendor">
         select
         <include refid="Base_Column_List"/>
         from vendor
+        <where>
+            <if test="vName != null and vName !=''">
+                v_name = #{vName} OR v_fullname = #{vName}
+            </if>
+            <if test="vStatus != null and vStatus !=''">
+                AND v_status = #{vStatus}
+            </if>
+        </where>
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

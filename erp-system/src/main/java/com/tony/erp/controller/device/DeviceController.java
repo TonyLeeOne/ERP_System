@@ -31,14 +31,25 @@ public class DeviceController {
 
     @GetMapping("/getAllDevices")
     public String getAllDevices(int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("devices", deviceService.getAllDevices(1));
+        modelMap.addAttribute("devices", deviceService.getAllDevices(1,null));
         return "/device/list";
     }
 
 
     @GetMapping("/getAllDevices/{pageNum}")
-    public String getAllDevice(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("page", deviceService.getAllDevices(pageNum));
+    public String getAllDevice(@PathVariable int pageNum,
+                               String devicePurDate,
+                               String deviceName,
+                               String deviceCode,
+                               String deviceStatus,
+                               ModelMap modelMap) {
+        Device param = new Device();
+        param.setDevicePurDate(devicePurDate);
+        param.setDeviceName(deviceName);
+        param.setDeviceCode(deviceCode);
+        param.setDeviceStatus(deviceStatus);
+        modelMap.addAttribute("device", param);
+        modelMap.addAttribute("page", deviceService.getAllDevices(pageNum, param));
         return "/device/list";
     }
 

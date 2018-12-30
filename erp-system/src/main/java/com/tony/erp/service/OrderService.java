@@ -59,14 +59,21 @@ public class OrderService {
      * @param pageNum
      * @return
      */
-    public PageHelperEntity getAllOrders(int pageNum,Order param) {
+    public PageHelperEntity getAllOrders(int pageNum, Order param) {
         Integer pageSize = 10;
         PageHelper.startPage(pageNum, pageSize);
 //        List<Order> orders = orderMapper.find(null,param);
         List<Order> orders = orderMapper.search(param);
+//        Order ordertest = new Order();
+//        System.out.println(ordertest);
+//        for (Order item : orders) {
+//            System.out.println(item);
+//        }
+
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(orders);
         pageHelperEntity.setCurrentPage(pageNum);
+
         PageInfo<Order> pageInfo = new PageInfo<>(orders);
         pageHelperEntity.setTotal(pageInfo.getTotal());
         pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));

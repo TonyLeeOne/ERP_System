@@ -11,16 +11,33 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-            <input type="text" name="proCode" placeholder="请输入订单编号" autocomplete="off" class="layui-input">
+        <form class="layui-form layui-col-md12 x-so" method="get" action="/ship/getAll/1">
+            <input type="text" name="sShipDate" value="${ship.SShipDate}" id="sShipDate" placeholder="请选择出货日期"
+                   autocomplete="off" class="layui-input">
+            <input type="text" name="sProCode" value="${ship.SProCode}" placeholder="请输入产品编号" autocomplete="off"
+                   class="layui-input">
+            <input type="text" name="sOrderNo" value="${ship.SOrderNo}" placeholder="请输入订单编号" autocomplete="off"
+                   class="layui-input">
+            <div class="layui-input-inline">
+                <select name="sStatus" id="sStatus">
+                    <option value="">请选择入库状态</option>
+                    <option value="1" <c:if test="${ship.SStatus=='1'}"> selected</c:if>>待审核</option>
+                    <option value="2"<c:if test="${ship.SStatus=='2'}"> selected</c:if>>审核不通过</option>
+                    <option value="3"<c:if test="${ship.SStatus=='3'}"> selected</c:if>>待确认</option>
+                    <option value="4"<c:if test="${ship.SStatus=='4'}"> selected</c:if>>已安排出货</option>
+                </select>
+            </div>
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('新增出货记录','/ship/edit',530,350)"><i class="layui-icon"></i>添加
-        </button>
-        <span class="x-right" style="line-height:40px">共有数据: ${ships.total} 条</span>
+        <shiro:hasPermission name="ship:delete">
+            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="ship:add">
+            <button class="layui-btn" onclick="x_admin_show('新增出货记录','/ship/edit',530,350)"><i class="layui-icon"></i>添加
+            </button>
+        </shiro:hasPermission>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -45,8 +62,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:if test="${ships.total > 0}">
-            <c:forEach items="${ships.rows}" var="ship">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="ship">
                 <tr>
                     <td>
                         <c:if test="${ship.SStatus!='4'||ship.SStatus!='3'}">
@@ -97,16 +114,11 @@
         </c:if>
         </tbody>
     </table>
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
+
+    <jsp:include page="../common/pagination.jsp">
+        <jsp:param name="pageurl" value="/ship/getAll/"/>
+        <jsp:param name="query" value="<%= request.getQueryString() %>"/>
+    </jsp:include>
 
 </div>
 <script>
@@ -115,12 +127,7 @@
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#end' //指定元素
+            elem: '#sShipDate' //指定元素
         });
     });
 

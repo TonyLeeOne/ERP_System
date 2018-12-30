@@ -4,7 +4,7 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
+        <form class="layui-form layui-col-md12 x-so" method="get" action="/pO/getAll/1">
             <input type="text" name="oNo" placeholder="请输入物料号" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
@@ -127,17 +127,9 @@
         </c:if>
     </div>
 
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
-
+    <jsp:include page="../common/pagination.jsp">
+        <jsp:param name="query" value="<%= request.getQueryString() %>"/>
+    </jsp:include>
 </div>
 <script>
     layui.use('laydate', function () {

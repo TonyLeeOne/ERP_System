@@ -4,20 +4,31 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <div class="layui-col-md2">
+        <form class="layui-form layui-col-md4 x-so">
+            <input type="text" name="mSn" value="${material.mSn}" placeholder="请输入物料号" autocomplete="off"
+                   class="layui-input">
+            <input type="text" name="mName" value="${material.mName}" placeholder="请输入物料名" autocomplete="off"
+                   class="layui-input">
+            <div class="layui-input-inline">
+                <select name="mStatus" id="mStatus">
+                    <option value="">请选择物料状态</option>
+                    <option value="1" <c:if test="${material.mStatus=='1'}"> selected</c:if>>充足</option>
+                    <option value="2" <c:if test="${material.mStatus=='2'}"> selected</c:if>>短缺</option>
+                </select>
+            </div>
+            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+    </div>
+    <xblock>
+        <shiro:hasPermission name="material:delete">
             <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="material:add">
             <button class="layui-btn" onclick="x_admin_show('添加物料信息','/material/edit',730,500)"><i
                     class="layui-icon"></i>添加
             </button>
-        </div>
-        <form class="layui-form layui-col-md4 x-so">
-            <input type="text" name="oNo" placeholder="请输入物料号" autocomplete="off" class="layui-input">
-            <input type="text" name="oNo" placeholder="请输入物料名" autocomplete="off" class="layui-input">
-            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-        </form>
-        <span class="x-right" style="line-height:40px">共有数据: ${materials.total} 条</span>
-    </div>
-
+        </shiro:hasPermission>
+    </xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -37,8 +48,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:if test="${materials.total > 0}">
-            <c:forEach items="${materials.rows}" var="material">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="material">
                 <tr>
                     <td>
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${material.mId}'><i
@@ -58,9 +69,9 @@
                                 <input type="checkbox" name="yyy" lay-skin="switch" lay-text="可用|禁用">
                             </c:if>
                         </div>
-                        <%--<%@include file="../common/material_status.jsp" %>--%>
+                            <%--<%@include file="../common/material_status.jsp" %>--%>
                     </td>
-                    <%--<td>${material.mLocked}</td>--%>
+                        <%--<td>${material.mLocked}</td>--%>
                     <td>${material.mNote}</td>
                     <td class="td-manage">
                         <a title="编辑物料信息"
@@ -75,17 +86,10 @@
         </c:if>
         </tbody>
     </table>
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
-
+    <jsp:include page="../common/pagination.jsp" flush="true">
+        <jsp:param name="pageurl" value="/material/getAll/"/>
+        <jsp:param name="query" value="<%= request.getQueryString() %>"/>
+    </jsp:include>
 </div>
 <script>
     layui.use('laydate', function () {

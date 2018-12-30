@@ -5,17 +5,7 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <div class="layui-col-md2">
-            <shiro:hasPermission name="custom:delete">
-                <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="custom:add">
-                <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit',700,350)"><i
-                        class="layui-icon"></i>添加
-                </button>
-            </shiro:hasPermission>
-        </div>
-        <form class="layui-form layui-col-md8 x-so" style="margin-bottom: 0;" method="get"
+        <form class="layui-form layui-col-md8 x-so" method="get"
               action="/custom/getAllCustoms/1">
             <input type="text" name="customName" value="${custom.customName}" placeholder="请输入客户名"
                    autocomplete="off" class="layui-input">
@@ -29,8 +19,17 @@
             <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i>
             </button>
         </form>
-        <%--<span class="x-right" style="line-height:40px">共有数据：${page.total} 条</span>--%>
     </div>
+    <xblock>
+        <shiro:hasPermission name="custom:delete">
+            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="custom:add">
+            <button class="layui-btn" onclick="x_admin_show('添加客户','/custom/edit',700,350)"><i
+                    class="layui-icon"></i>添加
+            </button>
+        </shiro:hasPermission>
+    </xblock>
     <table class="layui-table">
         <thead>
         <tr>

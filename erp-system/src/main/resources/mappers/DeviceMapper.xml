@@ -36,9 +36,23 @@
 
     <select id="getAllDevices" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        device.*,vendor.v_name,vendor.v_tel
+        device.*,vendor.*
         from device
-        left join vendor on device_vendor=vendor.v_id
+        left join vendor on device.device_vendor=vendor.v_id
+        <where>
+            <if test="devicePurDate != null and devicePurDate != ''">
+                device.device_pur_date = #{devicePurDate}
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                AND device.device_name = #{deviceName}
+            </if>
+            <if test="deviceCode != null and deviceCode != ''">
+                AND device.device_code = #{deviceCode}
+            </if>
+            <if test="deviceStatus != null and deviceStatus != ''">
+                AND device.device_status = #{deviceStatus}
+            </if>
+        </where>
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

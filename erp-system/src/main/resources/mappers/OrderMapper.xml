@@ -410,7 +410,7 @@
 
     <delete id="batchDeleteByOno" parameterType="java.lang.String">
         delete from orders where o_no in
-        <foreach collection="orderNos" item="orderNo" index="index" open="(" close=")" separator=",">
+        <foreach close=")" collection="orderNos" index="index" item="orderNo" open="(" separator=",">
             #{orderNo}
         </foreach>
     </delete>
@@ -446,17 +446,15 @@
         on o.o_product_code=p.pro_code
         <where>
             <if test="oCreateDate != null and oCreateDate != ''">
-                o.o_create_date=#{oCreateDate}
+                DATE_FORMAT(o.o_create_date, '%Y-%m-%d') = #{oCreateDate}
             </if>
-            <if test="oNo != null">
+            <if test="oNo != null and oNo != ''">
                 and o.o_no=#{oNo}
             </if>
-            <if test="oStatus != null">
+            <if test="oStatus != null and oStatus != ''">
                 and o.o_status=#{oStatus}
             </if>
         </where>
         order by o.o_create_date DESC
     </select>
 </mapper>
-
-

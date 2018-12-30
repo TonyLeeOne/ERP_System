@@ -22,8 +22,22 @@ public class VendorController {
     private VendorService vendorService;
 
     @RequestMapping("/getAllVendors")
-    public String getAllVendors(ModelMap modelMap) {
-        modelMap.addAttribute("vendors", vendorService.getAllVendors(1));
+    public String getAllVendor(ModelMap modelMap) {
+        modelMap.addAttribute("page", vendorService.getAllVendors(1,null));
+        return "/vendor/list";
+    }
+
+    @RequestMapping("/getAllVendors/{pageNum}")
+    public String getAllVendors(@PathVariable int pageNum,
+                                ModelMap modelMap,
+                                String vName,
+                                String vStatus
+    ) {
+        Vendor param = new Vendor();
+        param.setVName(vName);
+        param.setVStatus(vStatus);
+        modelMap.addAttribute("vendor", param);
+        modelMap.addAttribute("page", vendorService.getAllVendors(pageNum, param));
         return "/vendor/list";
     }
 
@@ -42,12 +56,6 @@ public class VendorController {
             modelMap.addAttribute("vendor", vendor);
         }
         return "/vendor/edit";
-    }
-
-    @RequestMapping("/getAllVendors/{pageNum}")
-    public String getAllVendor(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("page", vendorService.getAllVendors(pageNum));
-        return "/vendor/list";
     }
 
     /**
@@ -94,6 +102,7 @@ public class VendorController {
 
     /**
      * 批量删除
+     *
      * @param ids
      * @return
      */
