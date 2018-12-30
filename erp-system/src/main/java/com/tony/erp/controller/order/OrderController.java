@@ -34,20 +34,29 @@ public class OrderController {
 
     @RequestMapping("/getAllOrders")
     public String getAllOrders(ModelMap modelMap) {
-        modelMap.addAttribute("orders", orderService.getAllOrders(1));
+        modelMap.addAttribute("orders", orderService.getAllOrders(1, null));
         return "order/list";
     }
 
     @RequestMapping("/getAllOrders/{pageNum}")
-    public String getByPage(@PathVariable int pageNum, ModelMap modelMap) {
-        modelMap.addAttribute("orders", orderService.getAllOrders(pageNum));
-        return "";
+    public String getByPage(@PathVariable int pageNum,
+                            String oCreateDate,
+                            String oNo,
+                            String oStatus,
+                            ModelMap modelMap) {
+        Order param = new Order();
+        param.setOCreateDate(oCreateDate);
+        param.setONo(oNo);
+        param.setOStatus(oStatus);
+        modelMap.addAttribute("order", param);
+        modelMap.addAttribute("page", orderService.getAllOrders(pageNum, param));
+        return "order/list";
     }
 
     @PostMapping("/add")
     @ResponseBody
     public String addOrders(Order order) {
-        if(orderService.checkOnoExists(order.getONo())){
+        if (orderService.checkOnoExists(order.getONo())) {
             return ONO_EXISTS;
         }
         return orderService.addOrder(order) > 0 ? Constant.DATA_ADD_SUCCESS : Constant.DATA_ADD_FAILED;
@@ -93,11 +102,11 @@ public class OrderController {
     @ResponseBody
     @RequestMapping("/confirm")
     public String confirm(Order order) {
-        if(StringUtils.isEmpty(order.getOStatus())){
+        if (StringUtils.isEmpty(order.getOStatus())) {
             return "请选择一项出货结果";
         }
-        if(StringUtils.isEmpty(order.getONote())){
-           order.setONote("暂无信息");
+        if (StringUtils.isEmpty(order.getONote())) {
+            order.setONote("暂无信息");
         }
         return orderService.confirmOrder(order.getOId(), order.getOStatus(), order.getONote()) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
     }

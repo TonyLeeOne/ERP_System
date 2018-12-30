@@ -11,6 +11,7 @@ import com.tony.erp.service.DetailService;
 import com.tony.erp.service.PurchaseOrderService;
 import com.tony.erp.utils.CurrentUser;
 import com.tony.erp.utils.KeyGeneratorUtils;
+import com.tony.erp.utils.ListUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,13 +52,16 @@ public class MaterialConsumService {
      * @param pageNum
      * @return
      */
-    public PageHelperEntity getAll(int pageNum) {
-        PageHelper.startPage(pageNum, 10);
-        List<MaterialConsume> consumes = materialConsumeMapper.selectAll();
+    public PageHelperEntity getAll(int pageNum,MaterialConsume param) {
+        Integer pageSize =10;
+        PageHelper.startPage(pageNum, pageSize);
+        List<MaterialConsume> consumes = materialConsumeMapper.selectAll(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(consumes);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<MaterialConsume> pageInfo = new PageInfo<>(consumes);
         pageHelperEntity.setTotal(pageInfo.getTotal());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 

@@ -14,6 +14,7 @@ import com.tony.erp.service.OrderService;
 import com.tony.erp.service.PurchaseOrderService;
 import com.tony.erp.utils.CurrentUser;
 import com.tony.erp.utils.KeyGeneratorUtils;
+import com.tony.erp.utils.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,12 +75,15 @@ public class MaterialPurchaseService {
      * @return
      */
     public PageHelperEntity getAll(int pageNum) {
-        PageHelper.startPage(pageNum, 10);
+        Integer pageSize =10;
+        PageHelper.startPage(pageNum, pageSize);
         List<MaterialPurchase> purchases=materialPurchaseMapper.selectAll();
         PageHelperEntity pageHelperEntity=new PageHelperEntity();
         pageHelperEntity.setRows(purchases);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<MaterialPurchase> pageInfo=new PageInfo<>(purchases);
         pageHelperEntity.setTotal(pageInfo.getTotal());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 

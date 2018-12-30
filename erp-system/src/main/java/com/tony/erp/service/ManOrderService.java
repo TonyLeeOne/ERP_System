@@ -8,6 +8,7 @@ import com.tony.erp.domain.ManOrder;
 import com.tony.erp.domain.ManPlan;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.utils.KeyGeneratorUtils;
+import com.tony.erp.utils.ListUtils;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -118,14 +119,16 @@ public class ManOrderService {
      * @param pageNum
      * @return
      */
-    public PageHelperEntity getAllManOrders(int pageNum){
-        PageHelper.startPage(pageNum,10);
-        List<ManOrder> orders=manOrderMapper.getAllManOrders();
+    public PageHelperEntity getAllManOrders(int pageNum,ManOrder param){
+        Integer pageSize =10;
+        PageHelper.startPage(pageNum,pageSize);
+        List<ManOrder> orders=manOrderMapper.getAllManOrders(param);
         PageHelperEntity pageHelperEntity=new PageHelperEntity();
         pageHelperEntity.setRows(orders);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo pageInfo=new PageInfo(orders);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(pageInfo.getPageNum());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 

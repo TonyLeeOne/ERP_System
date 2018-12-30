@@ -55,17 +55,21 @@ public class OrderService {
 
     /**
      * 分页查询订单数据
+     *
      * @param pageNum
      * @return
      */
-    public PageHelperEntity getAllOrders(int pageNum) {
-        PageHelper.startPage(pageNum, 10);
-        List<Order> orders = orderMapper.find(null);
+    public PageHelperEntity getAllOrders(int pageNum,Order param) {
+        Integer pageSize = 10;
+        PageHelper.startPage(pageNum, pageSize);
+//        List<Order> orders = orderMapper.find(null,param);
+        List<Order> orders = orderMapper.search(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(orders);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<Order> pageInfo = new PageInfo<>(orders);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(pageInfo.getPageNum());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 
@@ -76,8 +80,8 @@ public class OrderService {
      * @return
      */
     public int addOrder(Order order) {
-        Custom custom=customService.getCustom(order.getOCustomName());
-        if(!ObjectUtils.isEmpty(custom)){
+        Custom custom = customService.getCustom(order.getOCustomName());
+        if (!ObjectUtils.isEmpty(custom)) {
             order.setOStatus(Constant.STRING_ONE);
             order.setOId(KeyGeneratorUtils.keyUUID());
             order.setOCreateDate(KeyGeneratorUtils.dateGenerator());
@@ -85,7 +89,7 @@ public class OrderService {
             order.setOCustomName(custom.getCustomName());
             return orderMapper.insertSelective(order);
         }
-       return Constant.ARG_NOT_MATCHED;
+        return Constant.ARG_NOT_MATCHED;
 
     }
 
@@ -105,49 +109,50 @@ public class OrderService {
 
     /**
      * 审核订单
+     *
      * @param oId
      * @param status
      * @param notes
      * @return
      */
     public int confirmOrder(String oId, String status, String notes) {
-        int res=0;
+        int res = 0;
         Order order = this.getByOid(oId);
         order.setOAuditor(CurrentUser.getCurrentUser().getUname());
         order.setOAuditDate(KeyGeneratorUtils.dateGenerator());
-        if(notes!=null){
+        if (notes != null) {
             order.setONote(notes);
         }
         if (Constant.STRING_ONE.equals(order.getOStatus()) || Constant.STRING_TWO.equals(order.getOStatus())) {
             order.setOStatus(status);
-            if(Constant.STRING_TWO.equals(status)){
+            if (Constant.STRING_TWO.equals(status)) {
                 return orderMapper.updateByPrimaryKeySelective(order);
             }
             //订单数量大于库存数量
             if (order.getOCount() > order.getProduct().getProCount()) {
-                BOM bom=bomService.selectByPCode(order.getOProductCode());
+                BOM bom = bomService.selectByPCode(order.getOProductCode());
                 //存库物料不足，创建采购订单,获取当前产品的所有bom清单
-                if(ObjectUtils.isEmpty(bom)){
+                if (ObjectUtils.isEmpty(bom)) {
                     return Constant.ARG_NOT_MATCHED;
                 }
-                List<BomDetail> details=detailService.selectByBCode(bom.getBCode());
-                if(CollectionUtils.isEmpty(details)){
+                List<BomDetail> details = detailService.selectByBCode(bom.getBCode());
+                if (CollectionUtils.isEmpty(details)) {
                     return Constant.ARG_NOT_MATCHED;
                 }
-                List<MaterialPurchase> purchaseList=new ArrayList<>(details.size());
-                for (BomDetail d :details) {
-                    int needed=(int)Math.ceil(d.getBdNum()*(1+d.getBdRate())*order.getOCount());
-                    if(d.getMaterial().getmCount()<needed){
+                List<MaterialPurchase> purchaseList = new ArrayList<>(details.size());
+                for (BomDetail d : details) {
+                    int needed = (int) Math.ceil(d.getBdNum() * (1 + d.getBdRate()) * order.getOCount());
+                    if (d.getMaterial().getmCount() < needed) {
                         res++;
                     }
-                    MaterialPurchase materialPurchase=new MaterialPurchase();
+                    MaterialPurchase materialPurchase = new MaterialPurchase();
                     materialPurchase.setMphCount(needed);
                     materialPurchase.setMphSn(d.getMaterial().getmSn());
                     materialPurchase.setMphPrice(d.getMaterial().getmPrice());
                     purchaseList.add(materialPurchase);
                 }
-                if(res>0){
-                    PurchaseOrder purchaseOrder=new PurchaseOrder();
+                if (res > 0) {
+                    PurchaseOrder purchaseOrder = new PurchaseOrder();
                     purchaseOrder.setPoId(KeyGeneratorUtils.keyUUID());
                     purchaseOrder.setPoCdate(KeyGeneratorUtils.dateGenerator());
                     purchaseOrder.setPoCount(order.getOCount());
@@ -158,10 +163,10 @@ public class OrderService {
                         purchase.setMphPoId(purchaseOrder.getPoId());
                         purchaseService.addMPurchase(purchase);
                     });
-                    return purchaseOrderService.addPo(purchaseOrder)+orderMapper.updateByPrimaryKeySelective(order);
+                    return purchaseOrderService.addPo(purchaseOrder) + orderMapper.updateByPrimaryKeySelective(order);
                 }
                 order.setOStatus(Constant.STRING_FIVE);
-                order.setONote(order.getONote()+Constant.PRO_SHORTAGE);
+                order.setONote(order.getONote() + Constant.PRO_SHORTAGE);
                 return orderMapper.updateByPrimaryKeySelective(order);
             }
             //库存产品充足，创建出货记录，并更新订单状态
@@ -179,12 +184,12 @@ public class OrderService {
      * 修改订单信息,订单状态为3,4,5的，不允许修改
      */
     public int upOrder(Order order) {
-        Custom custom=customService.getCustom(order.getOCustomName());
-        if(!ObjectUtils.isEmpty(custom)){
+        Custom custom = customService.getCustom(order.getOCustomName());
+        if (!ObjectUtils.isEmpty(custom)) {
             order.setOCustomName(custom.getCustomName());
         }
         Order exist = this.getByOid(order.getOId());
-        if (Constant.STRING_FOUR.equals(exist.getOStatus())||Constant.STRING_THREE.equals(exist.getOStatus())||Constant.STRING_SIX.equals(exist.getOStatus())||Constant.STRING_FIVE.equals(exist.getOStatus())) {
+        if (Constant.STRING_FOUR.equals(exist.getOStatus()) || Constant.STRING_THREE.equals(exist.getOStatus()) || Constant.STRING_SIX.equals(exist.getOStatus()) || Constant.STRING_FIVE.equals(exist.getOStatus())) {
             return Constant.STATUS_CANNOT_CHANGED;
         }
         order.setOModifier(CurrentUser.getCurrentUser().getUname());
@@ -220,6 +225,7 @@ public class OrderService {
 
     /**
      * 根据主键获取订单信息
+     *
      * @param oid
      * @return
      */
@@ -240,14 +246,16 @@ public class OrderService {
 
     /**
      * 检查订单标号是否被占用
+     *
      * @param oNo
      * @return
      */
-    public boolean checkOnoExists(String oNo){
-        Map<String,String> map=new HashMap<>();
-        map.put("oNo",oNo);
+    public boolean checkOnoExists(String oNo) {
+        Map<String, String> map = new HashMap<>();
+        map.put("oNo", oNo);
         return !CollectionUtils.isEmpty(getByCriteria(map));
     }
+
     /**
      * 获取进行中的订单总数量
      *
@@ -260,6 +268,7 @@ public class OrderService {
 
     /**
      * 根据订单号，批量删除
+     *
      * @param orderNos
      * @return
      */
@@ -270,6 +279,7 @@ public class OrderService {
 
     /**
      * 获取所有待出货状态的订单
+     *
      * @return
      */
     public List<String> getONos(String oStatus) {
@@ -279,9 +289,10 @@ public class OrderService {
 
     /**
      * 统计数据
+     *
      * @return
      */
-    public List<String> dataCollection(){
+    public List<String> dataCollection() {
         return orderMapper.dataCollection();
     }
 }

@@ -47,7 +47,7 @@ public class CustomController {
     @RequestMapping("/getAllCustoms/{pageSize}")
     public String getAllCustom(@PathVariable int pageSize,
                                ModelMap modelMap,
-                               @RequestParam(name = "customStatus", defaultValue = "1") String customStatus,
+                               String customStatus,
                                String customName
     ) {
         Custom param = new Custom();

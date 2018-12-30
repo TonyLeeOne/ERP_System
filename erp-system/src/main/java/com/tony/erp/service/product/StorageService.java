@@ -10,6 +10,7 @@ import com.tony.erp.service.ManPlanService;
 import com.tony.erp.service.OrderService;
 import com.tony.erp.utils.CurrentUser;
 import com.tony.erp.utils.KeyGeneratorUtils;
+import com.tony.erp.utils.ListUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -50,28 +51,34 @@ public class StorageService {
 
     /**
      * 获取所有入库记录
+     *
      * @param pageNum
      * @return
      */
-    public PageHelperEntity getAllStos(int pageNum){
-        PageHelper.startPage(pageNum,10);
-        List<Storage> stos=storageMapper.find(null);
-        PageHelperEntity pageHelperEntity=new PageHelperEntity();
+    public PageHelperEntity getAllStos(int pageNum) {
+        Integer pageSize = 10;
+        PageHelper.startPage(pageNum, 10);
+        List<Storage> stos = storageMapper.find(null);
+        PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(stos);
-        PageInfo<Storage> pageInfo=new PageInfo<>(stos);
+        pageHelperEntity.setCurrentPage(pageNum);
+        PageInfo<Storage> pageInfo = new PageInfo<>(stos);
         pageHelperEntity.setTotal(pageInfo.getTotal());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
+
         return pageHelperEntity;
     }
 
     /**
      * 增加产品入库记录
+     *
      * @param storage
      * @return
      */
-    public int addStorage(Storage storage){
+    public int addStorage(Storage storage) {
         storage.setStoId(KeyGeneratorUtils.keyUUID());
         storage.setStoStatus(STRING_ONE);
-        if(StringUtils.isEmpty(storage.getStoProCode())){
+        if (StringUtils.isEmpty(storage.getStoProCode())) {
             return Constant.ARG_NOT_MATCHED;
         }
         return storageMapper.insertSelective(storage);
@@ -79,21 +86,23 @@ public class StorageService {
 
     /**
      * 更新入库记录
+     *
      * @param storage
      * @return
      */
-    public int upStorage(Storage storage){
+    public int upStorage(Storage storage) {
         return storageMapper.updateByPrimaryKeySelective(storage);
     }
 
     /**
      * 删除入库记录
+     *
      * @param sId
      * @return
      */
-    public int delStorage(String sId){
-        Storage sto=storageMapper.selectByPrimaryKey(sId);
-        if(Constant.STRING_THREE.equals(sto.getStoStatus())){
+    public int delStorage(String sId) {
+        Storage sto = storageMapper.selectByPrimaryKey(sId);
+        if (Constant.STRING_THREE.equals(sto.getStoStatus())) {
             return Constant.STATUS_CANNOT_CHANGED;
         }
         return storageMapper.deleteByPrimaryKey(sId);
@@ -101,18 +110,19 @@ public class StorageService {
 
     /**
      * 确认入库数量
-     * @param sId  主键
-     * @param indeed  实际入库数量
+     *
+     * @param sId    主键
+     * @param indeed 实际入库数量
      * @param status 确认状态
      * @return
      */
-    public int confirm(String sId,int indeed,String status) {
+    public int confirm(String sId, int indeed, String status) {
         Storage sto = storageMapper.selectByPrimaryKey(sId);
         sto.setStoSurer(CurrentUser.getCurrentUser().getUname());
         sto.setStoRealDate(KeyGeneratorUtils.dateGenerator());
         sto.setStoIndeedNum(indeed);
         sto.setStoStatus(status);
-        log.info("入库记录确认人为[{}],状态为[{}]",sto.getStoSurer(),sto.getStoStatus());
+        log.info("入库记录确认人为[{}],状态为[{}]", sto.getStoSurer(), sto.getStoStatus());
         if (Constant.STRING_THREE.equals(status)) {
             //根据入库计划编号获取对应生产计划
             ManPlan manPlan = manPlanService.getManPlanByMpSn(sto.getStoMpSn());
@@ -126,13 +136,13 @@ public class StorageService {
             //根据产品编号查找对应产品
             Product product = productService.getProduct(sto.getStoProCode());
             product.setProCount(product.getProCount() + indeed);
-            if(productService.upProduct(product)<0){
+            if (productService.upProduct(product) < 0) {
                 return Constant.ARG_NOT_MATCHED;
             }
             //更新订单状态为待出货
-            if (product.getProCount() >= order.getOCount()&&Constant.STRING_FIVE.equals(order.getOStatus())) {
+            if (product.getProCount() >= order.getOCount() && Constant.STRING_FIVE.equals(order.getOStatus())) {
                 product.setProLocked(STRING_ONE);
-                if(productService.upProduct(product)<0) {
+                if (productService.upProduct(product) < 0) {
                     return Constant.ARG_NOT_MATCHED;
                 }
                 Shipment shipment = new Shipment();
@@ -141,7 +151,7 @@ public class StorageService {
                 shipment.setSShipCount(order.getOCount());
                 order.setOStatus(Constant.STRING_THREE);
                 int i = orderService.upOrderByShip(order) + shipmentService.addShip(shipment);
-                log.info("新增出货记录为[{}]",shipment.toString());
+                log.info("新增出货记录为[{}]", shipment.toString());
                 if (i < 2) {
                     return Constant.ARG_NOT_MATCHED;
                 }
@@ -151,7 +161,7 @@ public class StorageService {
         return storageMapper.updateByPrimaryKeySelective(sto);
     }
 
-    public Storage getByPrimaryKey(String stoId){
+    public Storage getByPrimaryKey(String stoId) {
         return storageMapper.selectByPrimaryKey(stoId);
     }
 

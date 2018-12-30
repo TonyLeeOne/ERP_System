@@ -25,7 +25,7 @@ public interface MaterialConsumeMapper {
 
     List<MaterialConsume> selectByMcMSn(String msn);
 
-    List<MaterialConsume> selectAll();
+    List<MaterialConsume> selectAll(MaterialConsume param);
 
     int countByMcMSn(@Param("mcMsn") String mcMsn);
 

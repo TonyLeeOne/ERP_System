@@ -25,14 +25,15 @@ public class DeviceMaintainService {
     private DeviceMaintainMapper deviceMaintainMapper;
 
     public PageHelperEntity getAllDeviceMain(int pageNum) {
-        PageHelper.startPage(pageNum, 10);
+        Integer pageSize = 10;
+        PageHelper.startPage(pageNum, pageSize);
         List<DeviceMaintain> devices = deviceMaintainMapper.getAllDeviceMaintains();
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(devices);
         pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<DeviceMaintain> pageInfo = new PageInfo<>(devices);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), 10));
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 

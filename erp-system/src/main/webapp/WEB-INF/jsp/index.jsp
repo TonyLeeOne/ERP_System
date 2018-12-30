@@ -27,14 +27,14 @@
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
     <%--<ul class="layui-nav left fast-add" lay-filter="">--%>
-        <%--<li class="layui-nav-item">--%>
-            <%--<a href="javascript:;">+新增</a>--%>
-            <%--<dl class="layui-nav-child"> <!-- 二级菜单 -->--%>
-                <%--<dd><a onclick="x_admin_show('资讯','http://www.baidu.com')"><i class="iconfont">&#xe6a2;</i>资讯</a></dd>--%>
-                <%--<dd><a onclick="x_admin_show('图片','http://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a></dd>--%>
-                <%--<dd><a onclick="x_admin_show('用户','http://www.baidu.com')"><i class="iconfont">&#xe6b8;</i>用户</a></dd>--%>
-            <%--</dl>--%>
-        <%--</li>--%>
+    <%--<li class="layui-nav-item">--%>
+    <%--<a href="javascript:;">+新增</a>--%>
+    <%--<dl class="layui-nav-child"> <!-- 二级菜单 -->--%>
+    <%--<dd><a onclick="x_admin_show('资讯','http://www.baidu.com')"><i class="iconfont">&#xe6a2;</i>资讯</a></dd>--%>
+    <%--<dd><a onclick="x_admin_show('图片','http://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a></dd>--%>
+    <%--<dd><a onclick="x_admin_show('用户','http://www.baidu.com')"><i class="iconfont">&#xe6b8;</i>用户</a></dd>--%>
+    <%--</dl>--%>
+    <%--</li>--%>
     <%--</ul>--%>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
@@ -78,7 +78,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/product/getAll">
+                        <a _href="/product/getAll/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有产品</cite>
                         </a>
@@ -109,7 +109,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/order/getAllOrders">
+                        <a _href="/order/getAllOrders/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有订单</cite>
                         </a>
@@ -124,7 +124,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/manPlan/getAll">
+                        <a _href="/manPlan/getAll/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>生产计划管理</cite>
                         </a>
@@ -132,7 +132,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/manOrder/getAll">
+                        <a _href="/manOrder/getAll/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>生产工单管理</cite>
                         </a>
@@ -140,7 +140,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/materialConsume/getAll">
+                        <a _href="/materialConsume/getAll/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>领料单管理</cite>
                         </a>

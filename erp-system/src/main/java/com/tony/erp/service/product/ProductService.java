@@ -28,14 +28,16 @@ public class ProductService {
     @Autowired
     private ProductMapper productMapper;
 
-    public PageHelperEntity getAllProducts(int pageNum) {
-        PageHelper.startPage(pageNum, 10);
-        List<Product> products = productMapper.getAllProducts();
+    public PageHelperEntity getAllProducts(int pageNum,Product param) {
+        Integer pageSize = 10;
+        PageHelper.startPage(pageNum, pageSize);
+        List<Product> products = productMapper.getAllProducts(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(products);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<Product> pageInfo = new PageInfo<>(products);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), 10));
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 

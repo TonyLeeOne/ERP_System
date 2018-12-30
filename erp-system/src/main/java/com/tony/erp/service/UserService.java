@@ -81,14 +81,16 @@ public class UserService {
      *
      * @return
      */
-    public PageHelperEntity getAllUsers(int pageSize) {
-        PageHelper.startPage(pageSize, 10);
+    public PageHelperEntity getAllUsers(int pageNum) {
+        Integer pageSize = 10;
+        PageHelper.startPage(pageNum, pageSize);
         List<User> users = userMapper.getAllUsers();
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(users);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<User> pageInfo = new PageInfo<>(users);
-        pageHelperEntity.setTotal(getTotal());
-        pageHelperEntity.setPageNum(pageInfo.getPageNum());
+        pageHelperEntity.setTotal(pageInfo.getTotal());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 

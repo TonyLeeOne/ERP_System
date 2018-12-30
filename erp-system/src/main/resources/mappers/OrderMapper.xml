@@ -444,9 +444,9 @@
         from orders o
         left join product p
         on o.o_product_code=p.pro_code
-        <trim prefix="WHERE" prefixOverrides="AND |OR ">
-            <if test="oCreateDate != null">
-               and o.o_create_date=#{oCreateDate}
+        <where>
+            <if test="oCreateDate != null and oCreateDate != ''">
+                o.o_create_date=#{oCreateDate}
             </if>
             <if test="oNo != null">
                 and o.o_no=#{oNo}
@@ -454,7 +454,7 @@
             <if test="oStatus != null">
                 and o.o_status=#{oStatus}
             </if>
-        </trim>
+        </where>
         order by o.o_create_date DESC
     </select>
 </mapper>

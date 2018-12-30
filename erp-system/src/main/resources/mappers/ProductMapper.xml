@@ -23,10 +23,21 @@
     where pro_code = #{proCode,jdbcType=VARCHAR}
   </select>
 
-  <select id="getAllProducts" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="getAllProducts" parameterType="com.tony.erp.domain.Product" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from product
+    <where>
+      <if test="proName != null and proName !=''">
+        pro_name = #{proName}
+      </if>
+      <if test="proCode != null and proCode !=''">
+        AND pro_code= #{proCode}
+      </if>
+      <if test="proStatus != null and proStatus !=''">
+        AND pro_status = #{proStatus}
+      </if>
+    </where>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

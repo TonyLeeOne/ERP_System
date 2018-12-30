@@ -5,11 +5,21 @@
 <body>
 <%@include file="../common/breadcrumb.jsp" %>
 <li class="x-body">
+
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-            <input type="text" name="oNo" placeholder="请输入工单号" autocomplete="off" class="layui-input">
-            <input type="text" name="oNo" placeholder="请输入物料号" autocomplete="off" class="layui-input">
-            <input type="text" name="oNo" placeholder="请输入生产计划单号" autocomplete="off" class="layui-input">
+        <form class="layui-form layui-col-md12 x-so" method="get" action="/materialConsume/getAll/1">
+            <input type="text" name="mcMpSn" value="${mc.mcMpSn}" placeholder="请输入生产计划单号" autocomplete="off" class="layui-input">
+            <input type="text" name="mcMoSn" value="${mc.mcMoSn}" placeholder="请输入工单号" autocomplete="off" class="layui-input">
+            <input type="text" name="mcMSn" value="${mc.mcMSn}" placeholder="请输入BOM编号" autocomplete="off" class="layui-input">
+            <div class="layui-input-inline">
+                <select name="mcStatus" id="mcStatus">
+                    <option value="">请选择领料状态</option>
+                    <option value="1" <c:if test="${mc.mcStatus=='1'}"> selected</c:if>>待审核</option>
+                    <option value="2"<c:if test="${mc.mcStatus=='2'}"> selected</c:if>>审核不通过</option>
+                    <option value="3"<c:if test="${mc.mcStatus=='3'}"> selected</c:if>>待确认</option>
+                    <option value="4"<c:if test="${mc.mcStatus=='4'}"> selected</c:if>>已领料</option>
+                </select>
+            </div>
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
@@ -22,7 +32,6 @@
                     class="layui-icon"></i>添加
             </button>
         </shiro:hasPermission>
-        <span class="x-right" style="line-height:40px">共有数据: ${consumes.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -46,8 +55,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:if test="${consumes.total > 0}">
-        <c:forEach items="${consumes.rows}" var="consume">
+        <c:if test="${page.total > 0}">
+        <c:forEach items="${page.rows}" var="consume">
         <tr>
             <td>
                 <c:if test="${consume.mcStatus!='4'}">
@@ -121,16 +130,11 @@
 </c:if>
 </tbody>
 </table>
-<div class="page">
-    <div>
-        <a class="prev" href="">&lt;&lt;</a>
-        <a class="num" href="">1</a>
-        <span class="current">2</span>
-        <a class="num" href="">3</a>
-        <a class="num" href="">489</a>
-        <a class="next" href="">&gt;&gt;</a>
-    </div>
-</div>
+
+<jsp:include page="../common/pagination.jsp">
+    <jsp:param name="pageurl" value="/materialConsume/getAll/"/>
+    <jsp:param name="query" value="<%= request.getQueryString() %>"/>
+</jsp:include>
 
 </div>
 <script>

@@ -11,6 +11,7 @@ import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.service.OrderService;
 import com.tony.erp.utils.CurrentUser;
 import com.tony.erp.utils.KeyGeneratorUtils;
+import com.tony.erp.utils.ListUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,12 +49,15 @@ public class ShipmentService {
      * @return
      */
     public PageHelperEntity getAllShips(int pageNum) {
-        PageHelper.startPage(pageNum, 10);
+        Integer pageSize = 10;
+        PageHelper.startPage(pageNum, pageSize);
         List<Shipment> shipments = shipmentMapper.find(null);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(shipments);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<Shipment> pageInfo = new PageInfo<>(shipments);
         pageHelperEntity.setTotal(pageInfo.getTotal());
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 
@@ -118,7 +122,7 @@ public class ShipmentService {
      */
     public int delShip(String sid) {
         Shipment shipment = shipmentMapper.selectByPrimaryKey(sid);
-        if (Constant.STRING_FOUR.equals(shipment.getSStatus())||Constant.STRING_THREE.equals(shipment.getSStatus())) {
+        if (Constant.STRING_FOUR.equals(shipment.getSStatus()) || Constant.STRING_THREE.equals(shipment.getSStatus())) {
             return Constant.STATUS_CANNOT_CHANGED;
         }
         Product product = productService.getProduct(shipment.getSProCode());
@@ -178,15 +182,15 @@ public class ShipmentService {
                 return Constant.ARG_NOT_MATCHED;
             }
             Order order = orders.get(0);
-            if(order.getOIndeedCount()!=null&&0<order.getOIndeedCount()){
-                log.info("已有订单数量[{}]",order.getOIndeedCount());
-                order.setOIndeedCount(order.getOIndeedCount()+shipment1.getSShipCount());
-            }else {
+            if (order.getOIndeedCount() != null && 0 < order.getOIndeedCount()) {
+                log.info("已有订单数量[{}]", order.getOIndeedCount());
+                order.setOIndeedCount(order.getOIndeedCount() + shipment1.getSShipCount());
+            } else {
                 order.setOIndeedCount(shipment1.getSShipCount());
             }
             order.setOModifier(shipment1.getSSurer());
             order.setOShipmentDate(shipment1.getSShipDate());
-            if(order.getOIndeedCount().equals(order.getOCount())){
+            if (order.getOIndeedCount().equals(order.getOCount())) {
                 order.setOStatus(Constant.STRING_FOUR);
             }
             log.info("订单信息：" + order.toString());
@@ -202,7 +206,7 @@ public class ShipmentService {
         return shipmentMapper.selectByPrimaryKey(sId);
     }
 
-    public List<Shipment> getByCriteria(Map<String,String> maps){
+    public List<Shipment> getByCriteria(Map<String, String> maps) {
         return shipmentMapper.find(maps);
     }
 

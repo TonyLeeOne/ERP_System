@@ -5,10 +5,24 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-            <input class="layui-input" placeholder="开始日期" name="start" id="start">
-            <input class="layui-input" placeholder="截止日期" name="end" id="end">
-            <input type="text" name="oNo" placeholder="请输入订单号" autocomplete="off" class="layui-input">
+        <form class="layui-form layui-col-md12 x-so" method="get" action="/manPlan/getAll/1">
+            <input autocomplete="off" class="layui-input" placeholder="开始日期" value="${mp.mpStartDate}"
+                   name="mpStartDate" id="mpStartDate">
+            <input autocomplete="off" class="layui-input" placeholder="截止日期" value="${mp.mpEndDate}" name="mpEndDate"
+                   id="mpEndDate">
+            <input type="text" name="mpSn" value="${mp.mpSn}" placeholder="请输入生产计划编号" autocomplete="off"
+                   class="layui-input">
+            <input type="text" name="mpProCode" value="${mp.mpProCode}" placeholder="请输入产品编号" autocomplete="off"
+                   class="layui-input">
+            <input type="text" name="mpOrderId" value="${mp.mpOrderId}" placeholder="请输入订单号" autocomplete="off"
+                   class="layui-input">
+            <div class="layui-input-inline">
+                <select name="mpStatus" id="mpStatus">
+                    <option value="0">请选择生产状态</option>
+                    <option value="1" <c:if test="${mp.mpStatus=='1'}">selected</c:if>>生产进行中</option>
+                    <option value="2" <c:if test="${mp.mpStatus=='2'}">selected</c:if>>生产完成</option>
+                </select>
+            </div>
             <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
@@ -21,7 +35,6 @@
                     class="layui-icon"></i>添加
             </button>
         </shiro:hasPermission>
-        <span class="x-right" style="line-height:40px">共有数据: ${plans.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -41,8 +54,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:if test="${plans.total > 0}">
-            <c:forEach items="${plans.rows}" var="plan">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="plan">
                 <tr>
                     <td>
                         <c:if test="${plan.mpStatus!='2'}">
@@ -61,12 +74,13 @@
                     </td>
                     <td class="td-manage">
                         <shiro:hasPermission name="manfacturePlan:update">
-                        <c:if test="${plan.mpStatus =='1'}">
-                        <a title="编辑生产计划" onclick="x_admin_show('编辑生产计划','/manPlan/edit?mpSn=${plan.mpSn}',730,500)"
-                           href="javascript:;">
-                            <i class="layui-icon">&#xe642;</i>
-                        </a>
-                        </c:if>
+                            <c:if test="${plan.mpStatus =='1'}">
+                                <a title="编辑生产计划"
+                                   onclick="x_admin_show('编辑生产计划','/manPlan/edit?mpSn=${plan.mpSn}',730,500)"
+                                   href="javascript:;">
+                                    <i class="layui-icon">&#xe642;</i>
+                                </a>
+                            </c:if>
                         </shiro:hasPermission>
                         <a title="查看生产工单记录"
                            onclick="x_admin_show('当前生产计划【${plan.mpSn}】','/manOrder/getManOrdersByMpsn?mpsn=${plan.mpSn}',730)"
@@ -76,23 +90,17 @@
                             <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
                             <%--<i class="layui-icon">&#xe640;</i>--%>
                             <%--</a>--%>
-                        </td>
+                    </td>
                 </tr>
             </c:forEach>
 
         </c:if>
         </tbody>
     </table>
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
+    <jsp:include page="../common/pagination.jsp">
+        <jsp:param name="pageurl" value="/manPlan/getAll/"/>
+        <jsp:param name="query" value="<%= request.getQueryString() %>"/>
+    </jsp:include>
 
 </div>
 <script>
@@ -101,12 +109,12 @@
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#start' //指定元素
+            elem: '#mpStartDate' //指定元素
         });
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#end' //指定元素
+            elem: '#mpEndDate' //指定元素
         });
     });
 

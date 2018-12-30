@@ -5,16 +5,18 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-            <input class="layui-input" placeholder="开始日期" name="start" id="start">
-            <input class="layui-input" placeholder="截止日期" name="end" id="end">
+        <form class="layui-form layui-col-md12 x-so" method="get" action="/manOrder/getAll/1">
+            <input autocomplete="off" class="layui-input" value="${mo.moStartDate}" placeholder="开始日期" name="moStartDate" id="moStartDate">
+            <input autocomplete="off" class="layui-input" value="${mo.moEndDate}" placeholder="截止日期" name="moEndDate" id="moEndDate">
+            <input type="text" name="moSn" value="${mo.moSn}" placeholder="请输入生产工单编号" autocomplete="off" class="layui-input">
+            <input type="text" name="moMpSn" value="${mo.moMpSn}" placeholder="请输入生产计划编号" autocomplete="off" class="layui-input">
             <div class="layui-input-inline">
-                <select name="contrller">
-                    <option value="1">生产中</option>
-                    <option value="2">已完工</option>
+                <select name="moStatus">
+                    <option value="">请选择生产状态</option>
+                    <option value="1" <c:if test="${mo.moStatus=='1'}">selected</c:if>>生产中</option>
+                    <option value="2" <c:if test="${mo.moStatus=='2'}">selected</c:if>>已完工</option>
                 </select>
             </div>
-            <input type="text" name="oNo" placeholder="请输入工单号" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
@@ -27,7 +29,6 @@
                     class="layui-icon"></i>添加
             </button>
         </shiro:hasPermission>
-        <span class="x-right" style="line-height:40px">共有数据: ${manOrders.total} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -48,8 +49,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:if test="${manOrders.total > 0}">
-            <c:forEach items="${manOrders.rows}" var="mOrder">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="mOrder">
                 <tr>
                     <td>
                         <c:if test="${mOrder.moStatus!='2'}">
@@ -100,17 +101,10 @@
         </c:if>
         </tbody>
     </table>
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
-
+    <jsp:include page="../common/pagination.jsp">
+        <jsp:param name="pageurl" value="/manOrder/getAll/"/>
+        <jsp:param name="query" value="<%= request.getQueryString() %>"/>
+    </jsp:include>
 </div>
 <script>
     layui.use('laydate', function () {
@@ -118,12 +112,12 @@
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#start' //指定元素
+            elem: '#moStartDate' //指定元素
         });
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#end' //指定元素
+            elem: '#moEndDate' //指定元素
         });
     });
 

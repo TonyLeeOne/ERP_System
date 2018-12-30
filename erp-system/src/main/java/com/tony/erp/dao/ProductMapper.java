@@ -24,7 +24,7 @@ public interface ProductMapper {
 
     int updateByPrimaryKey(Product record);
 
-    List<Product> getAllProducts();
+    List<Product> getAllProducts(Product param);
 
     int getTotal();
 

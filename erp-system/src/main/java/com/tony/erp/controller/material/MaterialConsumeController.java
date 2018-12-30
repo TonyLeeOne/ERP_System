@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * @author jli2
- * @date  2018/11/12
+ * @date 2018/11/12
  */
 @Controller
 @RequestMapping("/materialConsume")
@@ -27,134 +27,155 @@ public class MaterialConsumeController {
 
     /**
      * 查询首页领料记录
+     *
      * @param modelMap
      * @return
      */
     @RequestMapping("/getAll")
-    public String getAll(ModelMap modelMap){
-        modelMap.addAttribute("consumes",materialConsumService.getAll(1));
+    public String getAll(ModelMap modelMap) {
+        modelMap.addAttribute("consumes", materialConsumService.getAll(1,null));
         return "/mc/list";
     }
 
     /**
-     * 分页查询领料记录
+     *分页查询领料记录
      * @param pageNum
+     * @param mcMoSn
+     * @param mcMSn
+     * @param mcMpSn
      * @param modelMap
      * @return
      */
     @RequestMapping("/getAll/{pageNum}")
-    public String getAll(@PathVariable int pageNum, ModelMap modelMap){
-        modelMap.addAttribute("consumes",materialConsumService.getAll(pageNum));
+    public String getAll(@PathVariable int pageNum,
+                         String mcMoSn,
+                         String mcMSn,
+                         String mcMpSn,
+                         String mcStatus,
+                         ModelMap modelMap) {
+        MaterialConsume param = new MaterialConsume();
+        param.setMcMoSn(mcMoSn);
+        param.setMcMSn(mcMSn);
+        param.setMcMpSn(mcMpSn);
+        param.setMcStatus(mcStatus);
+        modelMap.addAttribute("mc", param);
+        modelMap.addAttribute("page", materialConsumService.getAll(pageNum,param));
         return "/mc/list";
     }
 
     /**
      * 新增领料记录
+     *
      * @param consume
      * @return
      */
     @RequestMapping("/add")
     @ResponseBody
-    public String addConsume(MaterialConsume consume){
-        int res=materialConsumService.addMConsume(consume);
-        if(Constant.NUMBER_TOO_BIG==res){
+    public String addConsume(MaterialConsume consume) {
+        int res = materialConsumService.addMConsume(consume);
+        if (Constant.NUMBER_TOO_BIG == res) {
             return Constant.NUMBER_BIG;
         }
-        return res>0? Constant.DATA_ADD_SUCCESS:Constant.DATA_ADD_FAILED;
+        return res > 0 ? Constant.DATA_ADD_SUCCESS : Constant.DATA_ADD_FAILED;
     }
 
 
     /**
      * 更新领料记录
+     *
      * @param consume
      * @return
      */
     @RequestMapping("/update")
     @ResponseBody
-    public String upConsume(MaterialConsume consume){
-        return materialConsumService.upMConsum(consume)>0? Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+    public String upConsume(MaterialConsume consume) {
+        return materialConsumService.upMConsum(consume) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
     }
 
     /**
      * 删除领料记录
+     *
      * @param mcId
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public String delConsume(String mcId){
-        String[] mcIds=mcId.split(",");
-        if(mcIds.length>1){
-            for (String mcid:mcIds
-                 ) {
-               if( materialConsumService.delMConsume(mcid)<0){
-                   return Constant.DATA_DELETE_FAILED;
-               }
+    public String delConsume(String mcId) {
+        String[] mcIds = mcId.split(",");
+        if (mcIds.length > 1) {
+            for (String mcid : mcIds
+                    ) {
+                if (materialConsumService.delMConsume(mcid) < 0) {
+                    return Constant.DATA_DELETE_FAILED;
+                }
             }
         }
-        return  materialConsumService.delMConsume(mcId)>0?Constant.DATA_UDELETE_SUCCESS:Constant.DATA_DELETE_FAILED;
+        return materialConsumService.delMConsume(mcId) > 0 ? Constant.DATA_UDELETE_SUCCESS : Constant.DATA_DELETE_FAILED;
     }
 
     /**
      * 根据料号查找所有领料记录
+     *
      * @param msn
      * @return
      */
     @RequestMapping("/getByMsn")
     @ResponseBody
-    public List<MaterialConsume> getConsumeByMsn(String msn){
+    public List<MaterialConsume> getConsumeByMsn(String msn) {
         return materialConsumService.getByMsn(msn);
     }
 
     /**
      * 确认领料单接口
+     *
      * @return
      */
     @ResponseBody
     @RequestMapping("/confirm")
-    public String confirm(MaterialConsume consume){
-        int res=materialConsumService.sureConsume(consume);
-        if(Constant.STATUS_NEED_AUDIT==res){
+    public String confirm(MaterialConsume consume) {
+        int res = materialConsumService.sureConsume(consume);
+        if (Constant.STATUS_NEED_AUDIT == res) {
             return Constant.NEED_AUDIT;
         }
-        if(Constant.NUMBER_TOO_BIG==res){
+        if (Constant.NUMBER_TOO_BIG == res) {
             return Constant.PRO_SHORTAGE;
         }
-        return res>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+        return res > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
     }
 
 
     /**
      * 审核领料单接口
+     *
      * @return
      */
     @ResponseBody
     @RequestMapping("/verify")
-    public String sure(MaterialConsume consume){
-      return materialConsumService.verifyConsume(consume)>0?Constant.DATA_UPDATE_SUCCESS:Constant.DATA_UPDATE_FAILED;
+    public String sure(MaterialConsume consume) {
+        return materialConsumService.verifyConsume(consume) > 0 ? Constant.DATA_UPDATE_SUCCESS : Constant.DATA_UPDATE_FAILED;
     }
 
     @RequestMapping("/edit")
-    public String get(@RequestParam(value = "mcId",required = false)String mcId,ModelMap modelMap){
-        if(!StringUtils.isEmpty(mcId)){
-            modelMap.addAttribute("consume",materialConsumService.getConsume(mcId));
+    public String get(@RequestParam(value = "mcId", required = false) String mcId, ModelMap modelMap) {
+        if (!StringUtils.isEmpty(mcId)) {
+            modelMap.addAttribute("consume", materialConsumService.getConsume(mcId));
         }
         return "/mc/edit";
     }
 
     @RequestMapping("/show")
-    public String show(@RequestParam(value = "mcId",required = false)String mcId,ModelMap modelMap){
-        if(!StringUtils.isEmpty(mcId)){
-            modelMap.addAttribute("consume",materialConsumService.getConsume(mcId));
+    public String show(@RequestParam(value = "mcId", required = false) String mcId, ModelMap modelMap) {
+        if (!StringUtils.isEmpty(mcId)) {
+            modelMap.addAttribute("consume", materialConsumService.getConsume(mcId));
         }
         return "/mc/show";
     }
 
 
     @RequestMapping("/sure")
-    public String sure(@RequestParam(value = "mcId",required = false)String mcId,ModelMap modelMap){
-        if(!StringUtils.isEmpty(mcId)){
-            modelMap.addAttribute("consume",materialConsumService.getConsume(mcId));
+    public String sure(@RequestParam(value = "mcId", required = false) String mcId, ModelMap modelMap) {
+        if (!StringUtils.isEmpty(mcId)) {
+            modelMap.addAttribute("consume", materialConsumService.getConsume(mcId));
         }
         return "/mc/confirm";
     }

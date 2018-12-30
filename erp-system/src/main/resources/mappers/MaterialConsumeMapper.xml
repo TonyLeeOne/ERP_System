@@ -81,12 +81,26 @@
     where mc_m_sn=#{mcMSn,jdbcType=VARCHAR} and mc_status = '1'
   </select>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.tony.erp.domain.MaterialConsume">
         select
         mc.*,bd.*,m.*
         from material_consume mc left join bom_detail bd
         on mc.mc_m_sn = bd.bd_bcode
         inner join material m on m.m_sn=bd.bd_msn
+        <where>
+            <if test="mcMoSn != null and mcMoSn != ''">
+                mc.mc_mo_sn=#{mcMoSn}
+            </if>
+            <if test="mcMSn != null and mcMSn != ''">
+                AND mc.mc_m_sn=#{mcMSn}
+            </if>
+            <if test="mcMpSn != null and mcMpSn != ''">
+                AND mc.mc_mp_sn=#{mcMpSn}
+            </if>
+            <if test="mcStatus != null and mcStatus != ''">
+                AND mc.mc_status=#{mcStatus}
+            </if>
+        </where>
         order by mc.mc_status asc,mc.mc_date DESC
     </select>
 

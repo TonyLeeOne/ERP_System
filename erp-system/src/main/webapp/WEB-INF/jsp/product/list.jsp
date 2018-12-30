@@ -19,12 +19,22 @@
                     style="margin-right: 1%"><i class="layui-icon"></i>添加
             </button>
         </div>
-        <form class="layui-form layui-col-md4 x-so">
-            <input type="text" name="proCode" placeholder="请输入产品编号" autocomplete="off" class="layui-input">
-            <input type="text" name="proName" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
-            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        <form class="layui-form layui-col-md10 x-so" method="get" action="/product/getAll/1">
+            <input type="text" name="proCode" value="${product.proCode}" placeholder="请输入产品编号"
+                   autocomplete="off" class="layui-input">
+            <input type="text" name="proName" value="${product.proName}" placeholder="请输入产品名称"
+                   autocomplete="off" class="layui-input">
+            <div class="layui-input-inline">
+                <select name="proStatus" id="proStatus">
+                    <option value="">请选择产品状态</option>
+                    <option value="1" <c:if test="${product.proStatus=='1'}"> selected</c:if>>量产</option>
+                    <option value="2"<c:if test="${product.proStatus=='2'}"> selected</c:if>>停产</option>
+                </select>
+            </div>
+            <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i>
+            </button>
         </form>
-        <span class="x-right" style="line-height:40px">共${products.pageNum}页，数据: ${products.total} 条</span>
+        <%--<span class="x-right" style="line-height:40px">共${products.pageNum}页，数据: ${products.total} 条</span>--%>
     </div>
     <%--<xblock>--%>
     <%--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>--%>
@@ -51,8 +61,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:if test="${products.total > 0}">
-            <c:forEach items="${products.rows}" var="product">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="product">
                 <tr>
                     <td>
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${product.proCode}'>
@@ -82,7 +92,7 @@
                             </c:if>
                         </div>
                     </td>
-                    <%--<td>${product.proLocked}</td>--%>
+                        <%--<td>${product.proLocked}</td>--%>
                     <td>${product.proNote}</td>
                     <td class="td-manage">
                         <a title="编辑" onclick="x_admin_show('编辑产品','/product/edit?proCode=${product.proCode}',730,600)"
@@ -99,16 +109,11 @@
         </c:if>
         </tbody>
     </table>
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
+
+    <jsp:include page="../common/pagination.jsp">
+        <jsp:param name="pageurl" value="/product/getAll/"/>
+        <jsp:param name="query" value="<%= request.getQueryString() %>"/>
+    </jsp:include>
 
 </div>
 <script>

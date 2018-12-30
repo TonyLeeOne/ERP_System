@@ -140,11 +140,12 @@
         <include refid="Base_Column_List"/>
         from custom
         <where>
-            <if test="customStatus != null">
+            <if test="customStatus != null and customName !=''">
                 custom_status = #{customStatus}
             </if>
             <if test="customName != null and customName !=''">
                 AND custom_name = #{customName}
+                OR custom_fullname = #{customName}
             </if>
         </where>
         order by custom_name

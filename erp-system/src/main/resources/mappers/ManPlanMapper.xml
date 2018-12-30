@@ -22,7 +22,7 @@
         where mp_id = #{mpId,jdbcType=VARCHAR}
     </select>
 
-    <select id="getTotal"  resultType="java.lang.Integer">
+    <select id="getTotal" resultType="java.lang.Integer">
         select
         count(1)
         from manufacture_plan
@@ -33,26 +33,26 @@
         select
         <include refid="Base_Column_List"/>
         from manufacture_plan
-        <trim prefix="WHERE" prefixOverrides="AND |OR ">
-            <if test="mpProCode != null">
+        <where>
+            <if test="mpProCode != null and mpProCode != ''">
                 mp_pro_code=#{mpProCode}
             </if>
-            <if test="mpSn != null">
-                mp_sn=#{mpSn}
+            <if test="mpSn != null and mpSn != ''">
+                AND mp_sn=#{mpSn}
             </if>
-            <if test="mpStartDate != null">
-                mp_start_date=#{mpStartDate}
+            <if test="mpStartDate != null and mpStartDate != ''">
+                AND mp_start_date <![CDATA[ >= ]]> #{mpStartDate}
             </if>
-            <if test="mpEndDate != null">
-                mp_end_date=#{mpEndDate}
+            <if test="mpEndDate != null and mpEndDate != ''">
+                AND mp_end_date <![CDATA[ <= ]]> #{mpEndDate}
             </if>
-            <if test="mpOrderId != null">
-                mp_order_id=#{mpOrderId}
+            <if test="mpOrderId != null and mpOrderId != ''">
+                AND mp_order_id=#{mpOrderId}
             </if>
-            <if test="mpStatus != null">
-                mp_status=#{mpStatus}
+            <if test="mpStatus != null and mpStatus != ''">
+                AND mp_status=#{mpStatus}
             </if>
-        </trim>
+        </where>
         order by mp_status ASC
     </select>
 

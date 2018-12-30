@@ -27,7 +27,7 @@ public class CustomService {
     private CustomMapper customMapper;
 
     public PageHelperEntity getAllCustoms(int pageNum, Custom param) {
-        Integer pageSize = 3;
+        Integer pageSize = 10;
         PageHelper.startPage(pageNum, pageSize);
         List<Custom> customs = customMapper.getAllCustoms(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();

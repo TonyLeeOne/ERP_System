@@ -73,14 +73,16 @@ public class ManPlanService {
      * @param pageNum
      * @return
      */
-    public PageHelperEntity getAll(int pageNum){
-        PageHelper.startPage(pageNum,10);
-        List<ManPlan> plans=manPlanMapper.find(null);
+    public PageHelperEntity getAll(int pageNum,Map<String,String> param){
+        Integer pageSize = 10;
+        PageHelper.startPage(pageNum,pageSize);
+        List<ManPlan> plans=manPlanMapper.find(param);
         PageHelperEntity pageHelperEntity=new PageHelperEntity();
         pageHelperEntity.setRows(plans);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<ManPlan> pageInfo=new PageInfo<>(plans);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(),10));
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(),pageSize));
         return pageHelperEntity;
     }
 

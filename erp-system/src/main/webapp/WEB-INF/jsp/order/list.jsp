@@ -5,32 +5,31 @@
 <%@include file="../common/breadcrumb.jsp" %>
 <div class="x-body">
     <div class="layui-row">
-        <div class="layui-col-md2">
-            <shiro:hasPermission name="order:delete">
-                <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="order:add">
-                <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit',730,700)"><i
-                        class="layui-icon"></i>添加
-                </button>
-            </shiro:hasPermission>
-        </div>
-        <form class="layui-form layui-col-md6 x-so">
-            <input class="layui-input" placeholder="下单日期" name="oCreateDate" id="start">
+        <form class="layui-form layui-col-md6 x-so" method="get" action="/order/getAllOrders/1">
+            <input autocomplete="off" class="layui-input" value="${order.OCreateDate}" placeholder="下单日期" name="oCreateDate" id="oCreateDate">
+            <input autocomplete="off" class="layui-input" value="${order.ONo}" placeholder="请输入订单号" name="oNo" id="oNo">
             <div class="layui-input-inline">
-                <select name="oStatus">
-                    <option value="">订单状态</option>
-                    <option value="1">待审核</option>
-                    <option value="2">审核未通过</option>
-                    <option value="3">待出货</option>
-                    <option value="4">已安排出货</option>
+                <select name="OStatus">
+                    <option value="" >订单状态</option>
+                    <option value="1" <c:if test="${order.OStatus=='1'}"> selected</c:if>>待审核</option>
+                    <option value="2" <c:if test="${order.OStatus=='2'}"> selected</c:if>>审核未通过</option>
+                    <option value="3" <c:if test="${order.OStatus=='3'}"> selected</c:if>>待出货</option>
+                    <option value="4" <c:if test="${order.OStatus=='4'}"> selected</c:if>>已安排出货</option>
                 </select>
             </div>
-            <input type="text" name="oNo" placeholder="请输入订单号" autocomplete="off" class="layui-input">
             <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
-        <span class="x-right" style="line-height:40px">共有数据: ${orders.total} 条</span>
     </div>
+    <xblock>
+        <shiro:hasPermission name="order:delete">
+            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="order:add">
+            <button class="layui-btn" onclick="x_admin_show('添加订单','/order/edit',730,700)"><i
+                    class="layui-icon"></i>添加
+            </button>
+        </shiro:hasPermission>
+    </xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -55,8 +54,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:if test="${orders.total > 0}">
-            <c:forEach items="${orders.rows}" var="order">
+        <c:if test="${page.total > 0}">
+            <c:forEach items="${page.rows}" var="order">
                 <tr>
                     <td>
                         <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
@@ -112,16 +111,11 @@
         </c:if>
         </tbody>
     </table>
-    <div class="page">
-        <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
-        </div>
-    </div>
+
+    <jsp:include page="../common/pagination.jsp">
+        <jsp:param name="pageurl" value="/order/getAllOrders/"/>
+        <jsp:param name="query" value="<%= request.getQueryString() %>"/>
+    </jsp:include>
 
 </div>
 <script>
@@ -130,7 +124,7 @@
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#start' //指定元素
+            elem: '#oCreateDate' //指定元素
         });
     });
 

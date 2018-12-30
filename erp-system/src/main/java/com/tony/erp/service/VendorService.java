@@ -34,13 +34,16 @@ public class VendorService {
     }
 
     public PageHelperEntity getAllVendors(int pageNum) {
-        PageHelper.startPage(pageNum, 10);
+        Integer pageSize = 10;
+
+        PageHelper.startPage(pageNum, pageSize);
         List<Vendor> vendors = vendorMapper.getAllVendors();
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(vendors);
+        pageHelperEntity.setCurrentPage(pageNum);
         PageInfo<Vendor> pageInfo = new PageInfo<>(vendors);
         pageHelperEntity.setTotal(pageInfo.getTotal());
-        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), 10));
+        pageHelperEntity.setPageNum(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 

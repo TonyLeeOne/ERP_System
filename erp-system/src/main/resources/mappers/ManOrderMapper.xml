@@ -31,10 +31,28 @@
     where mo_id = #{moId,jdbcType=VARCHAR}
   </select>
 
-  <select id="getAllManOrders" resultMap="BaseResultMap">
+  <select id="getAllManOrders" resultMap="BaseResultMap" parameterType="com.tony.erp.domain.ManOrder">
     select
     <include refid="Base_Column_List" />
-    from manufacture_order order by mo_status,mo_start_date ASC
+    from manufacture_order
+    <where>
+      <if test="moStartDate != null and moStartDate != ''">
+        mo_start_date <![CDATA[ >= ]]> #{moStartDate}
+      </if>
+      <if test="moEndDate != null and moEndDate != ''">
+        AND mo_end_date <![CDATA[ <= ]]> #{moEndDate}
+      </if>
+      <if test="moSn != null and moSn != ''">
+        AND mo_sn=#{moSn}
+      </if>
+      <if test="moMpSn != null and moMpSn != ''">
+        AND mo_mp_sn=#{moMpSn}
+      </if>
+      <if test="moStatus != null and moStatus != ''">
+        AND mo_status=#{moStatus}
+      </if>
+    </where>
+    order by mo_status,mo_start_date ASC
   </select>
 
 

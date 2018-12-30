@@ -16,5 +16,5 @@
     <c:if test="${page.currentPage < page.pageNum}">
         <a class="next" href="${param.pageurl}${ page.currentPage +1}?${param.query}">&gt;&gt;</a>
     </c:if>
-    <span>共 ${page.pageNum} 页</span>
+    <span>共 ${page.pageNum} 页</span> <span>共 ${page.total} 条</span>
 </div>

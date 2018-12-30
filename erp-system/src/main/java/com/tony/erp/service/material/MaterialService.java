@@ -8,15 +8,17 @@ import com.tony.erp.dao.MaterialMapper;
 import com.tony.erp.domain.Material;
 import com.tony.erp.domain.pagehelper.PageHelperEntity;
 import com.tony.erp.utils.KeyGeneratorUtils;
+import com.tony.erp.utils.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
 import java.util.List;
+
 /**
  * @author jli2
- * @date  2018/11/12
+ * @date 2018/11/12
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -25,44 +27,47 @@ public class MaterialService {
     @Autowired
     private MaterialMapper materialMapper;
 
-    public Material checkSnExist(String msn){
+    public Material checkSnExist(String msn) {
         return materialMapper.checkBySn(msn);
     }
 
-    public PageHelperEntity getAllMaterials(int pageNum){
-        PageHelper.startPage(pageNum,10);
-        List<Material> materials=materialMapper.getAllMaterials();
-        PageHelperEntity pageHelperEntity=new PageHelperEntity();
+    public PageHelperEntity getAllMaterials(int pageNum) {
+        Integer pageSize = 10;
+        PageHelper.startPage(pageNum, pageSize);
+        List<Material> materials = materialMapper.getAllMaterials();
+        PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(materials);
-        PageInfo<Material> pageInfo=new PageInfo<>(materials);
-        pageHelperEntity.setTotal(pageInfo.getTotal());
+        pageHelperEntity.setCurrentPage(pageNum);
+        PageInfo<Material> pageInfo = new PageInfo<>(materials);
+        pageHelperEntity.setTotal(ListUtils.getPageNum(pageInfo.getTotal(), pageSize));
         return pageHelperEntity;
     }
 
 
-    public int upMaterial(Material material){
+    public int upMaterial(Material material) {
         return materialMapper.updateByPrimaryKeySelective(material);
     }
 
-    public int addMaterial(Material material){
+    public int addMaterial(Material material) {
         material.setmId(KeyGeneratorUtils.keyUUID());
         material.setmStatus(Constant.STRING_ONE);
         return materialMapper.insert(material);
     }
 
-    public int delMaterial(String mid){
+    public int delMaterial(String mid) {
         return materialMapper.deleteByPrimaryKey(mid);
     }
 
     /**
      * 获取所有状态为1的物料编号
+     *
      * @return
      */
-    public List<String> getAvailableMaterials(){
+    public List<String> getAvailableMaterials() {
         return materialMapper.getAvailableMaterials();
     }
 
-    public List<String> dataCollection(){
+    public List<String> dataCollection() {
         return materialMapper.dataCollection();
     }
 
