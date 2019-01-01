@@ -32,14 +32,16 @@ public class PurchaseOrderController {
     @RequestMapping("/getAll/{pageNum}")
     public String getAll(
             @PathVariable int pageNum,
-//            String mphSn,
-//            String mphStatus,
+            String mphDate,
+            String mphSn,
+            String mphStatus,
             ModelMap modelMap) {
-//        MaterialPurchase param = new MaterialPurchase();
-//        param.setMphSn(mphSn);
-//        param.setMphStatus(mphStatus);
-//        modelMap.addAttribute("po", param);
-        modelMap.addAttribute("page", purchaseOrderService.getAll(pageNum));
+        MaterialPurchase param = new MaterialPurchase();
+        param.setMphDate(mphDate);
+        param.setMphSn(mphSn);
+        param.setMphStatus(mphStatus);
+        modelMap.addAttribute("po", param);
+        modelMap.addAttribute("page", purchaseOrderService.getAll(pageNum,param));
         return "/purchase/list";
     }
 

@@ -5,7 +5,18 @@
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so" method="get" action="/pO/getAll/1">
-            <input type="text" name="oNo" placeholder="请输入物料号" autocomplete="off" class="layui-input">
+            <input type="text" name="mphDate" id="mphDate" value="${po.mphDate}"
+                   placeholder="请选择入库日期"
+                   autocomplete="off" class="layui-input">
+            <input type="text" name="mphSn" value="${po.mphSn}" placeholder="请输入物料号" autocomplete="off"
+                   class="layui-input">
+            <div class="layui-input-inline">
+                <select name="mphStatus" id="mphStatus">
+                    <option value="">请选择状态</option>
+                    <option value="1" <c:if test="${po.mphStatus=='1'}"> selected</c:if>>待入库</option>
+                    <option value="2"<c:if test="${po.mphStatus=='2'}"> selected</c:if>>已入库</option>
+                </select>
+            </div>
             <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
@@ -14,7 +25,6 @@
         <button class="layui-btn" onclick="x_admin_show('添加物料采购信息','/materialPurchase/edit',730,500)"><i
                 class="layui-icon"></i>添加采购订单
         </button>
-        <span class="x-right" style="line-height:40px">共有数据: ${pos.total} 条</span>
     </xblock>
     <div class="layui-collapse" lay-accordion>
         <c:if test="${! empty pos.rows}">
@@ -26,21 +36,21 @@
                             【BOM编号】:${po.poBcode} 【当前状态】:
                             <%@include file="../common/po_status.jsp" %>
                             <c:if test="${! empty po.poVerifier}">
-                            【审核人】: ${po.poVerifier}
-                            【审核日期】: ${po.poDate}
+                                【审核人】: ${po.poVerifier}
+                                【审核日期】: ${po.poDate}
                             </c:if>
                             　 　
                         </div>
                         <div class="layui-col-md2">
                             <c:if test="${po.poStatus=='1'||po.poStatus=='2'}">
-                            <a title="新增物料采购清单"
-                               onclick="x_admin_show('新增物料采购清单','/materialPurchase/edit/${po.poBcode}/${po.poId}',800,280)">
-                                <i class="layui-icon" style="color: #bd10b6;font-size: 25px">&#xe654;</i>
-                            </a>　
+                                <a title="新增物料采购清单"
+                                   onclick="x_admin_show('新增物料采购清单','/materialPurchase/edit/${po.poBcode}/${po.poId}',800,280)">
+                                    <i class="layui-icon" style="color: #bd10b6;font-size: 25px">&#xe654;</i>
+                                </a>　
                             </c:if>
                             <c:if test="${po.poStatus=='1'||po.poStatus=='2'}">
-                            <a title="删除" id="delete" href="/pO/delete?poId=${po.poId}"><i class="layui-icon"
-                                                                                           style="color: #dd122c;font-size: 25px">&#xe640;</i></a>　
+                                <a title="删除" id="delete" href="/pO/delete?poId=${po.poId}"><i class="layui-icon"
+                                                                                               style="color: #dd122c;font-size: 25px">&#xe640;</i></a>　
                             </c:if>
                             <c:if test="${po.poStatus=='1'||po.poStatus=='2'}">
                                 <a title="去库存"
@@ -49,10 +59,10 @@
                                 </a>　
                             </c:if>
                             <c:if test="${po.poStatus=='1'||po.poStatus=='2'}">
-                            <a title="审核采购订单"
-                               onclick="x_admin_show('审核采购申请','/pO/verify?poId=${po.poId}',530,200)">
-                                <i class="layui-icon" style="color: #090abd;font-size: 20px">&#xe672;</i>
-                            </a>
+                                <a title="审核采购订单"
+                                   onclick="x_admin_show('审核采购申请','/pO/verify?poId=${po.poId}',530,200)">
+                                    <i class="layui-icon" style="color: #090abd;font-size: 20px">&#xe672;</i>
+                                </a>
                             </c:if>
                         </div>
                     </h2>
@@ -96,11 +106,11 @@
                                         </td>
                                         <td class="td-manage">
                                             <c:if test="${po.poStatus=='1'||po.poStatus=='2'}">
-                                            <a title="编辑采购信息"
-                                               onclick="x_admin_show('编辑采购信息','/materialPurchase/edit/${po.poBcode}/${po.poId}?mphId=${purchase.mphId}',730,280)"
-                                               href="javascript:;">
-                                                <i class="layui-icon">&#xe642;</i>
-                                            </a>
+                                                <a title="编辑采购信息"
+                                                   onclick="x_admin_show('编辑采购信息','/materialPurchase/edit/${po.poBcode}/${po.poId}?mphId=${purchase.mphId}',730,280)"
+                                                   href="javascript:;">
+                                                    <i class="layui-icon">&#xe642;</i>
+                                                </a>
                                             </c:if>
                                                 <%--<c:if test="${purchase.mphStatus=='1'||purchase.mphStatus=='2'}">--%>
                                                 <%--<a title="确认入库"--%>
@@ -109,11 +119,11 @@
                                                 <%--</a>--%>
                                                 <%--</c:if>--%>
                                             <c:if test="${po.poStatus=='3'}">
-                                            <a title="确认入库" onclick="member_confirm(this,'${purchase.mphId}')"
-                                               href="javascript:;"
-                                               id="confirm">
-                                                <i class="layui-icon">&#x1005;</i>
-                                            </a>
+                                                <a title="确认入库" onclick="member_confirm(this,'${purchase.mphId}')"
+                                                   href="javascript:;"
+                                                   id="confirm">
+                                                    <i class="layui-icon">&#x1005;</i>
+                                                </a>
                                             </c:if>
                                         </td>
                                     </tr>
@@ -128,21 +138,16 @@
     </div>
 
     <jsp:include page="../common/pagination.jsp">
+        <jsp:param name="pageurl" value="/pO/getAll/"/>
         <jsp:param name="query" value="<%= request.getQueryString() %>"/>
     </jsp:include>
 </div>
 <script>
     layui.use('laydate', function () {
         var laydate = layui.laydate;
-
         //执行一个laydate实例
         laydate.render({
-            elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#end' //指定元素
+            elem: '#mphDate' //指定元素
         });
     });
 
@@ -188,7 +193,7 @@
     function member_storage(obj, id) {
         layer.confirm('确认去库存<i class="layui-icon" style="font-size: 20px; color: #1E9FFF;">&#xe607;</i>', function (index) {
             //捉到所有被选中的，发异步进行删除
-            $.post('/pO/calculate', {poId:id}, function (res) {
+            $.post('/pO/calculate', {poId: id}, function (res) {
                 if (res == "数据更新成功")
                     layer.alert(res, {icon: 6}, function () {
                         window.location.reload();

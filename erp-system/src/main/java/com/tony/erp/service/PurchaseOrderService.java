@@ -68,10 +68,10 @@ public class PurchaseOrderService {
         return purchaseOrderMapper.deleteByPrimaryKey(poId);
     }
 
-    public PageHelperEntity getAll(int pageNum) {
+    public PageHelperEntity getAll(int pageNum,MaterialPurchase param) {
         Integer pageSize = 10;
         PageHelper.startPage(pageNum, pageSize);
-        List<PurchaseOrder> orders = purchaseOrderMapper.selectAll();
+        List<PurchaseOrder> orders = purchaseOrderMapper.selectAll(param);
         PageHelperEntity pageHelperEntity = new PageHelperEntity();
         pageHelperEntity.setRows(orders);
         pageHelperEntity.setCurrentPage(pageNum);

@@ -49,7 +49,7 @@
         where po.po_id = #{poId,jdbcType=VARCHAR}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.tony.erp.domain.MaterialPurchase">
         select
         po.*,mp.*,v.v_name from
         purchase_order po
@@ -58,6 +58,17 @@
         left join
         vendor v
         on v.v_id=mp.mph_vendor_id
+        <where>
+            <if test="mphDate != null and  mphDate != ''">
+                DATE_FORMAT(mp.mph_date, '%Y-%m-%d') = #{mphDate}
+            </if>
+            <if test="mphSn != null and  mphSn != ''">
+                AND mp.mph_sn = #{mphSn}
+            </if>
+            <if test="mphStatus != null and  mphStatus != ''">
+                AND mp.mph_status = #{mphStatus}
+            </if>
+        </where>
         order by po.po_cDate DESC,po.po_status ASC
     </select>
 
