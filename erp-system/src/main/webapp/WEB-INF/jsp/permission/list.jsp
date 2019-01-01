@@ -25,8 +25,8 @@
                         <input type="text" value="${url.authority}">
                     </td>
                     <td class="td-manage">
-                        <a title="更新" onclick="" href="javascript:;" value="${url.id}" id="update">
-                            <i class="layui-icon">&#xe642;</i>
+                        <a title="更新" class="layui-btn layui-btn-warm layui-btn-xs" onclick="" href="javascript:;" value="${url.id}" id="update">
+                            <i class="layui-icon">&#xe642;</i>更新
                         </a>
                     </td>
                 </tr>

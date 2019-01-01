@@ -54,9 +54,10 @@
                         <%--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">--%>
                         <%--<i class="layui-icon">&#xe601;</i>--%>
                         <%--</a>--%>
-                    <a title="编辑" onclick="x_admin_show('编辑角色信息','/role/edit?rid=${role.rid}',1000,600)"
+                    <a title="编辑 class="layui-btn layui-btn layui-btn-xs"
+                            onclick="x_admin_show('编辑角色信息','/role/edit?rid=${role.rid}',1000,600)"
                        href="javascript:;">
-                        <i class="layui-icon">&#xe642;</i>
+                        <i class="layui-icon">&#xe642;</i>编辑
                     </a>
                         <%--<a title="删除" id="delete" href="/role/delete?rid=${role.rid}">--%>
                         <%--<i class="layui-icon">&#xe640;</i>--%>

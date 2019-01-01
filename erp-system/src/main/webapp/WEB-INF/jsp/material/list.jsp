@@ -74,10 +74,10 @@
                         <%--<td>${material.mLocked}</td>--%>
                     <td>${material.mNote}</td>
                     <td class="td-manage">
-                        <a title="编辑物料信息"
+                        <a title="编辑物料信息" class="layui-btn layui-btn layui-btn-xs"
                            onclick="x_admin_show('编辑物料信息','/material/edit?mSn=${material.mSn}',730,500)"
                            href="javascript:;">
-                            <i class="layui-icon">&#xe642;</i>
+                            <i class="layui-icon">&#xe642;</i>编辑
                         </a>
                     </td>
                 </tr>

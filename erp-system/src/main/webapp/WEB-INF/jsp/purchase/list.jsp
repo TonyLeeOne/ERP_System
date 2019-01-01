@@ -106,10 +106,10 @@
                                         </td>
                                         <td class="td-manage">
                                             <c:if test="${po.poStatus=='1'||po.poStatus=='2'}">
-                                                <a title="编辑采购信息"
+                                                <a title="编辑采购信息" class="layui-btn layui-btn layui-btn-xs"
                                                    onclick="x_admin_show('编辑采购信息','/materialPurchase/edit/${po.poBcode}/${po.poId}?mphId=${purchase.mphId}',730,280)"
                                                    href="javascript:;">
-                                                    <i class="layui-icon">&#xe642;</i>
+                                                    <i class="layui-icon">&#xe642;</i>编辑
                                                 </a>
                                             </c:if>
                                                 <%--<c:if test="${purchase.mphStatus=='1'||purchase.mphStatus=='2'}">--%>

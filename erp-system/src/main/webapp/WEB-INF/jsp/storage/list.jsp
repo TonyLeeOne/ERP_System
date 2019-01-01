@@ -85,17 +85,17 @@
                     </td>
                     <td class="td-manage">
                         <c:if test="${storage.stoStatus=='1'||storage.stoStatus=='2'}">
-                            <a title="编辑"
+                            <a title="编辑" class="layui-btn layui-btn layui-btn-xs"
                                onclick="x_admin_show('编辑入库清单','/storage/edit?stoId=${storage.stoId}',730,350)"
                                href="javascript:;">
-                                <i class="layui-icon">&#xe642;</i>
+                                <i class="layui-icon">&#xe642;</i>编辑
                             </a>
                         </c:if>
                         <c:if test="${storage.stoStatus=='1'}">
-                            <a title="确认入库"
+                            <a title="确认入库" class="layui-btn layui-btn-warm layui-btn-xs"
                                onclick="x_admin_show('确认入库记录清单','/storage/confirm?stoId=${storage.stoId}',730,350)"
                                id="confirm">
-                                <i class="layui-icon">&#x1005;</i>
+                                <i class="layui-icon">&#x1005;</i>确认入库
                             </a>
                         </c:if>
                     </td>

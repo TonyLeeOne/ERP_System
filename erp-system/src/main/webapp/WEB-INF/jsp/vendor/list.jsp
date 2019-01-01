@@ -70,12 +70,14 @@
                         <%--<td>${vendor.VNote}</td>--%>
                     <td class="td-manage">
                         <shiro:hasPermission name="vendor:update">
-                            <a title="编辑" onclick="x_admin_show('编辑','/vendor/edit?vId=${vendor.VId}',700,500)"
+                            <a title="编辑"  class="layui-btn layui-btn layui-btn-xs"
+                               onclick="x_admin_show('编辑','/vendor/edit?vId=${vendor.VId}',700,500)"
                                href="javascript:;">
-                                <i class="layui-icon">&#xe642;</i>
+                                <i class="layui-icon">&#xe642;</i>编辑
                             </a>
-                            <a title="删除" id="delete" href="/vendor/delete?vId=${vendor.VId}">
-                                <i class="layui-icon">&#xe640;</i>
+                            <a title="删除" class="layui-btn-danger layui-btn layui-btn-xs"
+                               id="delete" href="/vendor/delete?vId=${vendor.VId}">
+                                <i class="layui-icon">&#xe640;</i>删除
                             </a>
                         </shiro:hasPermission>
                     </td>

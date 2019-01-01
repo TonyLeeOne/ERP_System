@@ -79,17 +79,17 @@
                     <td class="td-manage">
                         <shiro:hasPermission name="manfactureOrde:update">
                             <c:if test="${mOrder.moStatus=='1'}">
-                                <a title="编辑生产计划"
+                                <a title="编辑生产计划" class="layui-btn layui-btn layui-btn-xs"
                                    onclick="x_admin_show('编辑生产计划','/manOrder/edit?moId=${mOrder.moId}',730,500)"
                                    href="javascript:;">
-                                    <i class="layui-icon">&#xe642;</i>
+                                    <i class="layui-icon">&#xe642;</i>编辑
                                 </a>
                             </c:if>
                         </shiro:hasPermission>
-                        <a title="查看生产工单记录"
+                        <a title="查看生产工单记录" class="layui-btn layui-btn layui-btn-xs"
                            onclick="x_admin_show('生产工单记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)"
                            href="javascript:;">
-                            <i class="layui-icon">&#xe60a;</i>
+                            <i class="layui-icon">&#xe60a;</i>产看
                         </a>
                             <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
                             <%--<i class="layui-icon">&#xe640;</i>--%>

@@ -91,20 +91,23 @@
                     </td>
                     <td class="td-manage">
                         <c:if test="${ship.SStatus=='1'||ship.SStatus=='2'}">
-                            <a title="编辑" onclick="x_admin_show('编辑出货清单','/ship/edit?sId=${ship.SId}',530,350)"
+                            <a title="编辑" class="layui-btn layui-btn layui-btn-xs"
+                               onclick="x_admin_show('编辑出货清单','/ship/edit?sId=${ship.SId}',530,350)"
                                href="javascript:;">
-                                <i class="layui-icon">&#xe642;</i>
+                                <i class="layui-icon">&#xe642;</i>编辑
                             </a>
                         </c:if>
                         <c:if test="${ship.SStatus=='1'||ship.SStatus=='2'}">
-                            <a title="审核" onclick="x_admin_show('审核出货申请','/ship/verify?sId=${ship.SId}',530,300)">
-                                <i class="layui-icon">&#xe672;</i>
+                            <a title="审核"  class="layui-btn layui-btn layui-btn-xs"
+                               onclick="x_admin_show('审核出货申请','/ship/verify?sId=${ship.SId}',530,300)">
+                                <i class="layui-icon">&#xe672;</i>审核
                             </a>
                         </c:if>
                         <c:if test="${ship.SStatus=='3'}">
-                            <a title="确认出货" onclick="member_confirm(this,'${ship.SId}')" href="javascript:;"
+                            <a title="确认出货" class="layui-btn layui-btn-warn layui-btn-xs"
+                               onclick="member_confirm(this,'${ship.SId}')" href="javascript:;"
                                id="confirm">
-                                <i class="layui-icon">&#x1005;</i>
+                                <i class="layui-icon">&#x1005;</i>确认出货
                             </a>
                         </c:if>
                     </td>

@@ -87,23 +87,23 @@
                     </td>
                     <td class="td-manage">
                         <shiro:hasPermission name="order:update">
-                            <a title="查看订单详情"
+                            <a title="查看订单详情"  class="layui-btn layui-btn layui-btn-xs"
                                onclick="x_admin_show('查看订单信息，当前订单号【${order.ONo}】','/order/show?oId=${order.OId}')"
                                href="javascript:;">
-                                <i class="layui-icon">&#xe63c;</i>
+                                <i class="layui-icon">&#xe63c;</i>查看订单
                             </a>
                             <c:if test="${order.OStatus!='3'&&order.OStatus!='4'}">
-                                <a title="编辑订单信息"
+                                <a title="编辑订单信息" class="layui-btn layui-btn layui-btn-xs"
                                    onclick="x_admin_show('编辑订单信息','/order/edit?oId=${order.OId}',730,700)"
                                    href="javascript:;">
-                                    <i class="layui-icon">&#xe642;</i>
+                                    <i class="layui-icon">&#xe642;</i>编辑
                                 </a>
                             </c:if>
                         </shiro:hasPermission>
-                        <a title="查看出货记录"
+                        <a title="查看出货记录" class="layui-btn layui-btn layui-btn-xs"
                            onclick="x_admin_show('查看出货记录','/ship/findByOrderNo?sOrderNo=${order.ONo}',730)"
                            href="javascript:;">
-                            <i class="layui-icon">&#xe60e;</i>
+                            <i class="layui-icon">&#xe60e;</i>查看出货
                         </a>
                     </td>
                 </tr>

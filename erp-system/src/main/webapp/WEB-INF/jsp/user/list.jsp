@@ -54,13 +54,14 @@
                         </div>
                     </td>
                     <td class="td-manage">
-                        <a title="编辑" onclick="x_admin_show('编辑用户','/edit?userId=${user.id}',700,430)"
+                        <a title="编辑"  class="layui-btn layui-btn layui-btn-xs"
+                           onclick="x_admin_show('编辑用户','/edit?userId=${user.id}',700,430)"
                            href="javascript:;">
-                            <i class="layui-icon">&#xe642;</i>
+                            <i class="layui-icon">&#xe642;</i>编辑
                         </a>
-                        <a title="重置密码" onclick="x_admin_show('重置密码结果反馈','/pReset?userId=${user.id}',300,100)"
+                        <a title="重置密码" class="layui-btn layui-btn-warm layui-btn-xs" onclick="x_admin_show('重置密码结果反馈','/pReset?userId=${user.id}',300,100)"
                            href="javascript:;">
-                            <i class="layui-icon">&#xe673;</i>
+                            <i class="layui-icon">&#xe673;</i>重置密码
                         </a>
                     </td>
                 </tr>

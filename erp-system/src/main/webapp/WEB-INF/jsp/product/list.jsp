@@ -95,9 +95,10 @@
                         <%--<td>${product.proLocked}</td>--%>
                     <td>${product.proNote}</td>
                     <td class="td-manage">
-                        <a title="编辑" onclick="x_admin_show('编辑产品','/product/edit?proCode=${product.proCode}',730,600)"
+                        <a title="编辑" class="layui-btn layui-btn layui-btn-xs"
+                           onclick="x_admin_show('编辑产品','/product/edit?proCode=${product.proCode}',730,600)"
                            href="javascript:;">
-                            <i class="layui-icon">&#xe642;</i>
+                            <i class="layui-icon">&#xe642;</i>编辑
                         </a>
                             <%--<a title="删除" onclick="member_del(this,'${order.OId}')" href="javascript:;">--%>
                             <%--<i class="layui-icon">&#xe640;</i>--%>

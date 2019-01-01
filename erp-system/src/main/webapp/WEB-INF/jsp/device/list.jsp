@@ -74,15 +74,15 @@
                         <%--<td>${device.deviceNote}</td>--%>
                     <td class="td-manage">
                         <shiro:hasPermission name="device:edit">
-                            <a title="编辑"
+                            <a title="编辑" class="layui-btn layui-btn layui-btn-xs"
                                onclick="x_admin_show('编辑','/device/edit?deviceId=${device.deviceId}',700,500)"
                                href="javascript:;">
-                                <i class="layui-icon">&#xe642;</i>
+                                <i class="layui-icon">&#xe642;</i>编辑
                             </a>
                         </shiro:hasPermission>
                         <shiro:hasPermission name="custom:delete">
-                            <a title="删除" id="delete" href="/device/delete?deviceId=${device.deviceId}">
-                                <i class="layui-icon">&#xe640;</i>
+                            <a title="删除" class="layui-btn-danger layui-btn layui-btn-xs" id="delete" href="/device/delete?deviceId=${device.deviceId}">
+                                <i class="layui-icon">&#xe640;</i>删除
                             </a>
                         </shiro:hasPermission>
                     </td>

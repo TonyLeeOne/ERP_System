@@ -74,10 +74,10 @@
                     </td>
                     <td class="td-manage">
                         <shiro:hasPermission name="custom:update">
-                            <a title="编辑"
+                            <a title="编辑"  class="layui-btn layui-btn layui-btn-xs"
                                onclick="x_admin_show('编辑','/custom/edit?customId=${custom.customCode}',700,350)"
                                href="javascript:;">
-                                <i class="layui-icon">&#xe642;</i>
+                                <i class="layui-icon">&#xe642;</i>编辑
                             </a>
                         </shiro:hasPermission>
                     </td>
