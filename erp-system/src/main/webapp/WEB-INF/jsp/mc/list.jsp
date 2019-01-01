@@ -103,24 +103,24 @@
 <td class="td-manage">
     <shiro:hasPermission name="material:update">
         <c:if test="${consume.mcStatus=='1'||consume.mcStatus=='2'}">
-            <a title="编辑领料单"
+            <a title="编辑领料单" class="layui-btn layui-btn layui-btn-xs"
                onclick="x_admin_show('编辑领料单','/materialConsume/edit?mcId=${consume.mcId}',730,300)"
                href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
+                <i class="layui-icon">&#xe642;</i>编辑
             </a>
         </c:if>
         <c:if test="${consume.mcStatus=='1'||consume.mcStatus=='2'}">
-            <a title="审核领料单"
+            <a title="审核领料单" class="layui-btn layui-btn-warm layui-btn-xs"
                onclick="x_admin_show('审核领料单','/materialConsume/show?mcId=${consume.mcId}',730,500)"
                href="javascript:;">
-                <i class="layui-icon">&#xe672;</i>
+                <i class="layui-icon">&#xe672;</i>审核
             </a>
         </c:if>
         <c:if test="${consume.mcStatus=='3'}">
-            <a title="确认领料单"
+            <a title="确认领料单" class="layui-btn layui-btn-warm layui-btn-xs"
                onclick="x_admin_show('确认领料单','/materialConsume/sure?mcId=${consume.mcId}',730,230)"
                href="javascript:;">
-                <i class="layui-icon">&#xe605;</i>
+                <i class="layui-icon">&#xe605;</i>确认
             </a>
         </c:if>
     </shiro:hasPermission>
